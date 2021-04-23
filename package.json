@@ -1,0 +1,8 @@
+{
+  "name": "patrim-web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/vineboneto/patrim-web.git",
+  "author": "vineboneto <vineboneto@gmail.com>",
+  "license": "MIT"
+}
