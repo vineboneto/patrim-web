@@ -8,6 +8,9 @@
     "standard-with-typescript",
     "plugin:react/recommended"
   ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "plugins": ["react"],
   "rules": {
     "@typescript-eslint/consistent-type-definitions": "off",
