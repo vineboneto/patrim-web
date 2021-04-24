@@ -16,10 +16,14 @@ module.exports = merge(common, {
       }
     }, {
       test: /\.css$/,
-      use: [
-        'style-loader',
-        'css-loader'
-      ]
+      use: [{
+        loader: MiniCssExtractPlugin.loader
+      }, {
+        loader: 'css-loader',
+        options: {
+          modules: true
+        }
+      }]
     }]
   },
   plugins: [

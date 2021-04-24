@@ -2,7 +2,9 @@ import React from 'react'
 
 const Router: React.FC = () => {
   return (
-    <div>Ola Mundo!</div>
+    <div>
+      <button type="button" className="btn btn-primary"></button>
+    </div>
   )
 }
 
