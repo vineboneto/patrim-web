@@ -1,25 +1,23 @@
 {
-"compilerOptions": {
-  "target": "es6",
-  "lib": [
-    "dom",
-    "dom.iterable",
-    "esnext"
-  ],
-  "outDir": "dist",
-  "esModuleInterop": true,
-  "module": "esnext",
-  "moduleResolution": "node",
-  "jsx": "react",
-  "rootDir": "src",
-  "baseUrl": "src",
-  "rootDirs": ["src", "tests"],
-  "paths": {
-    "@/*": ["*"],
-    "@/tests/*": ["../tests/*"]
-  },
-  "allowJs": true,
-  "resolveJsonModule": true
+  "compilerOptions": {
+    "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "baseUrl": "src",
+    "rootDirs": ["src", "tests"],
+    "allowJs": true,
+    "paths": {
+        "@/*": ["*"],
+        "@/tests/*": ["../tests/*"]
+    },
   },
   "include": [
     "src",
