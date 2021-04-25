@@ -4,12 +4,15 @@ import axios from 'axios'
 
 export class AxiosHttpClient implements HttpClient {
   async request (params: HttpRequest): Promise<HttpResponse> {
-    axios.request({
+    const axiosResponse = await axios.request({
       headers: params.headers,
       data: params.body,
       method: params.method,
       url: params.url
     })
-    return null
+    return {
+      statusCode: axiosResponse.status,
+      body: axiosResponse.data
+    }
   }
 }
