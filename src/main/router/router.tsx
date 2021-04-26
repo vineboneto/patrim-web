@@ -1,16 +1,14 @@
 import React from 'react'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import SignUp from '@/presentation/pages/signup/signup'
 
 const Router: React.FC = () => {
   return (
-    <div>
-      <div className="container">
-        <div className="col-4">
-          <div className="row">
-            <button type="button" className="btn btn-primary">Hello World</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/signup" exact component={SignUp} />
+      </Switch>
+    </BrowserRouter>
   )
 }
 

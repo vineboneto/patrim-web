@@ -1,0 +1,36 @@
+.signup-wrap {
+  height: 100vh;
+  display: flex;
+}
+
+.form-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  flex: 1;
+  background-color: var(--color-white);
+}
+
+.form-container {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-wrap .form-container button {
+  align-self: flex-end;
+  flex: 1;
+}
+
+@media (max-width: 720px) {
+  .signup-wrap {
+    flex-direction: column;
+  }
+  .form-wrap {
+    height: 50%;
+    padding-top: 30px;
+    justify-content: flex-start;
+  }
+}

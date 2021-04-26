@@ -1,0 +1,22 @@
+.logo-wrap {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+
+  background-color: var(--color-dark-light);
+  color: var(--color-white);
+}
+
+.logo-wrap h1 {
+  font-size: 45px;
+  font-weight: 100;
+  font-family: 'Poppins';
+}
+
+@media (max-width: 720px) {
+  .logo-wrap {
+    max-height: 40%;
+  }
+}

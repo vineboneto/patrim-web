@@ -1,0 +1,17 @@
+:root {
+  --color-primary: #00ADB5;
+  --color-white: #fff;
+  --color-background: #eee;
+  --color-dark-light: #222831;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  opacity: 0.9;
+}
