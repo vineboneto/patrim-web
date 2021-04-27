@@ -3,11 +3,19 @@
   --color-white: #fff;
   --color-background: #eee;
   --color-dark-light: #222831;
+  --color-danger: #Ef5350;
+  --color-disabled-background: #CCC;
+  --color-disabled-color: #666;
 }
 
 .btn-primary {
   background-color: var(--color-primary);
   border-color: var(--color-primary);
+}
+
+.btn-primary:disabled {
+  background-color: var(--color-disabled-background);
+  border-color: var(--color-disabled-background);
 }
 
 .btn-primary:hover {

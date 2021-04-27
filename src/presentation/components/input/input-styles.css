@@ -1,3 +1,13 @@
-.input-container {
+.form-floating {
   margin: 12px 0;
+  border-color: #fff;
 }
+
+.form-floating[data-status="invalid"] {
+  border-bottom: var(--color-danger);
+}
+
+.form-control:focus {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 0.10rem var(--color-danger);
+} 

@@ -1,6 +1,6 @@
-import React from 'react'
-
 import './input-styles.css'
+
+import React from 'react'
 
 const Logo: React.FC = () => {
   return (

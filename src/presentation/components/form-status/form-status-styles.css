@@ -1,0 +1,12 @@
+.form-status-wrap {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-status-wrap span {
+  margin-top: 20px;
+  color: var(--color-danger);
+}

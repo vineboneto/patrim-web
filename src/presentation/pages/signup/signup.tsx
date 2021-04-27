@@ -1,25 +1,59 @@
-import React from 'react'
-import { Input, Logo } from '@/presentation/components'
-
 import './signup-styles.css'
+import { Input, Logo, FormStatus, FormContext, SubmitButton } from '@/presentation/components'
+import { Validation } from '@/presentation/protocols'
 
-const SignUp: React.FC = () => {
+import React, { useEffect, useState } from 'react'
+
+type Props = {
+  validation: Validation
+}
+
+const SignUp: React.FC<Props> = ({ validation }: Props) => {
+  const [state, setState] = useState({
+    isLoading: false,
+    isFormInvalid: true,
+    mainError: '',
+    name: '',
+    nameError: '',
+    email: '',
+    emailError: '',
+    password: '',
+    passwordError: '',
+    passwordConfirmation: '',
+    passwordConfirmationError: ''
+  })
+
+  useEffect(() => { validate('name') }, [state.name])
+  useEffect(() => { validate('email') }, [state.email])
+  useEffect(() => { validate('password') }, [state.password])
+  useEffect(() => { validate('passwordConfirmation') }, [state.passwordConfirmation])
+
+  const validate = (field: string): void => {
+    const { name, email, password, passwordConfirmation } = state
+    const formData = { name, email, password, passwordConfirmation }
+    console.log(validation.validate === undefined)
+    setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
+  }
+
   return (
-    <div className="signup-wrap">
-      <Logo />
-      <div className="form-wrap">
-        <div className="form-container container">
-          <h2>Crie sua Conta</h2>
-          <form>
-            <Input type="name" name="name" placeholder="Digite o seu nome" />
-            <Input type="name" name="email" placeholder="Digite o seu email" />
-            <Input type="password" name="password" placeholder="Digite a sua senha" />
-            <Input type="password" name="password-confirmation" placeholder="Confirme a sua senha" />
-          </form>
-          <button type="button" className="btn btn-primary">Criar conta</button>
+    <FormContext.Provider value={{ state }}>
+      <div className="signup-wrap">
+        <Logo />
+        <div className="form-wrap">
+          <div className="form-container">
+            <h2>Crie sua Conta</h2>
+            <form>
+              <Input type="name" name="name" placeholder="Digite o seu nome" />
+              <Input type="name" name="email" placeholder="Digite o seu email" />
+              <Input type="password" name="password" placeholder="Digite a sua senha" />
+              <Input type="password" name="passwordConfirmation" placeholder="Confirme a sua senha" />
+            </form>
+            <SubmitButton text="Cadastrar" />
+          </div>
+          <FormStatus />
         </div>
       </div>
-    </div>
+    </FormContext.Provider>
   )
 }
 
