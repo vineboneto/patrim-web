@@ -50,7 +50,6 @@ describe('AxiosHttpClient', () => {
       response
     })
     const error = await sut.request(mockHttpRequest())
-    console.log(error)
     expect(error).toEqual({
       body: response.data,
       statusCode: response.status

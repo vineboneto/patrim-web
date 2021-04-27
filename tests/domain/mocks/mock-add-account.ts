@@ -16,3 +16,15 @@ export const mockAddAccountParams = (): AddAccount.Params => {
     passwordConfirmation: password
   }
 }
+
+export class AddAccountSpy implements AddAccount {
+  params: AddAccount.Params
+  account = mockAccountModel()
+  callsCount = 0
+
+  async add (params: AddAccount.Params): Promise<AddAccount.Model> {
+    this.callsCount++
+    this.params = params
+    return this.account
+  }
+}
