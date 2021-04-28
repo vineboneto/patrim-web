@@ -43,6 +43,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
   const handleSubmit = async (event: FormEvent): Promise<void> => {
     event.preventDefault()
     try {
+      if (state.isFormInvalid || state.isLoading) return
       setState(old => ({ ...old, isLoading: true }))
       const { name, email, password, passwordConfirmation } = state
       await addAccount.add({
