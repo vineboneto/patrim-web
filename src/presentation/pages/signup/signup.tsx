@@ -2,7 +2,7 @@ import './signup-styles.css'
 import { Input, Logo, FormStatus, FormContext, SubmitButton } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 
-import React, { useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 
 type Props = {
   validation: Validation
@@ -38,6 +38,16 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
     }))
   }
 
+  const handleSubmit = async (event: FormEvent): Promise<void> => {
+    event.preventDefault()
+    try {
+      if (state.isLoading || state.isFormInvalid) return
+      setState(old => ({ ...old, isLoading: true }))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <FormContext.Provider value={{ state }}>
       <div className="signup-wrap">
@@ -45,7 +55,7 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
         <div className="form-wrap">
           <div className="form-container">
             <h2>Crie sua Conta</h2>
-            <form>
+            <form data-testid="form" onSubmit={handleSubmit}>
               <Input type="name" name="name" placeholder="Digite o seu nome" />
               <Input type="name" name="email" placeholder="Digite o seu email" />
               <Input type="password" name="password" placeholder="Digite a sua senha" />
