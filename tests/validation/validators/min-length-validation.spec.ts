@@ -9,4 +9,10 @@ describe('MinLengthValidation', () => {
     const error = sut.validate({ field: 'four' })
     expect(error).toEqual(new InvalidFieldError())
   })
+
+  test('Should return nul if value is valid', () => {
+    const sut = makeSut('field')
+    const error = sut.validate({ field: 'seven' })
+    expect(error).toBeNull()
+  })
 })
