@@ -31,7 +31,6 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
   const validate = (field: string): void => {
     const { name, email, password, passwordConfirmation } = state
     const formData = { name, email, password, passwordConfirmation }
-    console.log(validation.validate === undefined)
     setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
   }
 

@@ -1,8 +1,8 @@
-const { DefinePlugin } = require('webpack')
+const common = require('./webpack.common')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { merge } = require('webpack-merge')
-const common = require('./webpack.common')
+const { DefinePlugin } = require('webpack')
 
 module.exports = merge(common, {
   mode: 'production',

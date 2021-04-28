@@ -1,7 +1,8 @@
-const { DefinePlugin } = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { merge } = require('webpack-merge')
 const common = require('./webpack.common')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { DefinePlugin } = require('webpack')
+const { merge } = require('webpack-merge')
 
 module.exports = merge(common, {
   mode: 'development',
@@ -15,10 +16,7 @@ module.exports = merge(common, {
       }
     }, {
       test: /\.css$/,
-      use: [
-        'style-loader',
-        'css-loader'
-      ],
+      use: [MiniCssExtractPlugin.loader, 'css-loader']
     }]
   },
   devtool: 'inline-source-map',
@@ -34,6 +32,9 @@ module.exports = merge(common, {
     }),
     new HtmlWebpackPlugin({
       template: './template.dev.html'
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'main-bundle-[contenthash].css'
     })
   ]
 })

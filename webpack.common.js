@@ -14,6 +14,17 @@ module.exports = {
       '@': path.join(__dirname, 'src')
     }
   },
+  optimization: { // substituto do CommonsChunkPlugin
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          filename: 'vendor.bundle.js', // bundle das bibliotecas de terceiros
+          test: /[\\/]node_modules[\\/](bootstrap)[\\/]/, 
+          chunks: 'all'
+        }
+      }
+    }
+  },
   plugins: [
     new CleanWebpackPlugin()
   ]
