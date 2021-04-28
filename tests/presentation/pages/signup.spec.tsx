@@ -164,4 +164,14 @@ describe('SignUp Component', () => {
     await simulateValidSubmit()
     expect(addAccountSpy.callsCount).toBe(0)
   })
+
+  test('Should present error if Authentication fails', async () => {
+    const { addAccountSpy } = makeSut()
+    const error = new Error()
+    error.message = 'something error'
+    jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(error)
+    await simulateValidSubmit()
+    expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
+  })
 })
