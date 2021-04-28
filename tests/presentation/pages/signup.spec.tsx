@@ -3,7 +3,7 @@ import { ValidationStub } from '@/tests/presentation/mocks'
 
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import faker from 'faker'
 
@@ -41,6 +41,17 @@ const testStatusForField = (fieldName: string, validationError: string = ''): vo
 const populateField = (fieldName: string, value = faker.random.word()): void => {
   const input = screen.getByTestId(fieldName)
   fireEvent.input(input, { target: { value } })
+}
+
+const simulateValidSubmit = async (name = faker.name.findName(), email = faker.internet.email(),
+  password = faker.internet.password()): Promise<void> => {
+  populateField('name', name)
+  populateField('email', email)
+  populateField('password', password)
+  populateField('passwordConfirmation', password)
+  const form = screen.getByTestId('form')
+  fireEvent.submit(form)
+  await waitFor(() => screen.getByTestId('form'))
 }
 
 describe('SignUp Component', () => {
@@ -114,5 +125,11 @@ describe('SignUp Component', () => {
     populateField('password')
     populateField('passwordConfirmation')
     expect(screen.getByTestId('submit')).toBeEnabled()
+  })
+
+  test('Should show spinner on submit', async () => {
+    makeSut()
+    await simulateValidSubmit()
+    expect(screen.queryByTestId('spinner')).toBeInTheDocument()
   })
 })
