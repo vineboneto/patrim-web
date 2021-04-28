@@ -1,14 +1,16 @@
 import './signup-styles.css'
 import { Input, Logo, FormStatus, FormContext, SubmitButton } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
+import { AddAccount } from '@/domain/usecases'
 
 import React, { FormEvent, useEffect, useState } from 'react'
 
 type Props = {
   validation: Validation
+  addAccount: AddAccount
 }
 
-const SignUp: React.FC<Props> = ({ validation }: Props) => {
+const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
   const [state, setState] = useState({
     isLoading: false,
     isFormInvalid: true,
@@ -41,15 +43,21 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
   const handleSubmit = async (event: FormEvent): Promise<void> => {
     event.preventDefault()
     try {
-      if (state.isLoading || state.isFormInvalid) return
       setState(old => ({ ...old, isLoading: true }))
+      const { name, email, password, passwordConfirmation } = state
+      await addAccount.add({
+        name,
+        email,
+        password,
+        passwordConfirmation
+      })
     } catch (error) {
       console.log(error)
     }
   }
 
   return (
-    <FormContext.Provider value={{ state }}>
+    <FormContext.Provider value={{ state, setState }}>
       <div className="signup-wrap">
         <Logo />
         <div className="form-wrap">

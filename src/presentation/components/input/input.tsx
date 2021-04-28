@@ -1,13 +1,17 @@
 import './input-styles.css'
+import { FormContext } from '@/presentation/components'
 
-import React, { InputHTMLAttributes, useContext } from 'react'
-import { FormContext } from '..'
+import React, { ChangeEvent, InputHTMLAttributes, useContext, useRef } from 'react'
 
 type Props = InputHTMLAttributes<HTMLInputElement>
 
 const Input: React.FC<Props> = (props: Props) => {
-  const { state } = useContext(FormContext)
+  const { state, setState } = useContext(FormContext)
   const error = state[`${props.name}Error`]
+  const inputRef = useRef<HTMLInputElement>()
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void =>
+    setState(old => ({ ...old, [e.target.name]: e.target.value }))
+
   return (
     <div
       data-testid={`${props.name}-wrap`}
@@ -16,10 +20,12 @@ const Input: React.FC<Props> = (props: Props) => {
     >
       <input
         { ...props }
+        ref={inputRef}
         data-testid={props.name}
         title={error}
         id={`floating-${props.name}`}
         className="form-control"
+        onChange={handleChange}
         placeholder=" "
       />
       <label
