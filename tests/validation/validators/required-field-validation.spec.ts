@@ -6,7 +6,7 @@ const makeSut = (field: string): RequiredFieldValidation => new RequiredFieldVal
 describe('RequiredFieldValidation', () => {
   test('Should return error if field is empty', () => {
     const sut = makeSut('field')
-    const error = sut.validation({
+    const error = sut.validate({
       field: ''
     })
     expect(error).toEqual(new RequiredFieldError())
@@ -14,7 +14,7 @@ describe('RequiredFieldValidation', () => {
 
   test('Should return null if field is not empty', () => {
     const sut = makeSut('field')
-    const error = sut.validation({
+    const error = sut.validate({
       field: 'any_value'
     })
     expect(error).toBe(null)
