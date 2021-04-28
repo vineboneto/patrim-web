@@ -3,7 +3,7 @@ import { ValidationStub } from '@/tests/presentation/mocks'
 
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import faker from 'faker'
 
@@ -38,6 +38,11 @@ const testStatusForField = (fieldName: string, validationError: string = ''): vo
   expect(label).toHaveProperty('title', validationError)
 }
 
+const populateField = (fieldName: string, value = faker.random.word()): void => {
+  const input = screen.getByTestId(fieldName)
+  fireEvent.input(input, { target: { value } })
+}
+
 describe('SignUp Component', () => {
   test('Should start with initial state', () => {
     const validationError = faker.random.words()
@@ -48,5 +53,12 @@ describe('SignUp Component', () => {
     testStatusForField('email', validationError)
     testStatusForField('password', validationError)
     testStatusForField('passwordConfirmation', validationError)
+  })
+
+  test('Should show name error if Validation fails', () => {
+    const validationError = faker.random.words()
+    makeSut({ validationError })
+    populateField('name')
+    testStatusForField('name', validationError)
   })
 })
