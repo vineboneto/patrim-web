@@ -4,6 +4,7 @@ import { Validation } from '@/presentation/protocols'
 import { AddAccount } from '@/domain/usecases'
 
 import React, { FormEvent, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
 type Props = {
   validation: Validation
@@ -11,6 +12,7 @@ type Props = {
 }
 
 const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
+  const history = useHistory()
   const [state, setState] = useState({
     isLoading: false,
     isFormInvalid: true,
@@ -42,6 +44,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
 
   const handleSubmit = async (event: FormEvent): Promise<void> => {
     event.preventDefault()
+    console.log('Chamou')
     try {
       if (state.isFormInvalid || state.isLoading) return
       setState(old => ({ ...old, isLoading: true }))
@@ -52,6 +55,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
         password,
         passwordConfirmation
       })
+      history.replace('/')
     } catch (error) {
       setState(old => ({
         ...old,
@@ -73,8 +77,8 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
               <Input type="name" name="email" placeholder="Digite o seu email" />
               <Input type="password" name="password" placeholder="Digite a sua senha" />
               <Input type="password" name="passwordConfirmation" placeholder="Confirme a sua senha" />
+              <SubmitButton text="Cadastrar" />
             </form>
-            <SubmitButton text="Cadastrar" />
           </div>
           <FormStatus />
         </div>

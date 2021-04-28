@@ -34,7 +34,7 @@ describe('RemoteAddAccount', () => {
   test('Should throw EmailInUseError if HttpClient returns 403', async () => {
     const { sut, httpClientSpy } = makeSut()
     httpClientSpy.response = {
-      statusCode: HttpStatusCode.forbidden
+      statusCode: HttpStatusCode.unprocessableEntity
     }
     const promise = sut.add(mockAddAccountParams())
     await expect(promise).rejects.toThrow(new EmailInUseError())
