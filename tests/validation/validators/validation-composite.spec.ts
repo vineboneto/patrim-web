@@ -32,4 +32,10 @@ describe('ValidationComposite', () => {
     const error = sut.validate('email', { email: 'invalid_email' })
     expect(error).toBe(errorMessage1)
   })
+
+  test('Should return falsy if validation success', () => {
+    const { sut } = makeSut('email')
+    const error = sut.validate('email', { email: 'valid@email.com' })
+    expect(error).toBeFalsy()
+  })
 })
