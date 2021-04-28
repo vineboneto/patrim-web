@@ -106,4 +106,13 @@ describe('SignUp Component', () => {
     populateField('passwordConfirmation')
     testStatusForField('passwordConfirmation')
   })
+
+  test('Should enable submit button if form is valid', () => {
+    makeSut()
+    populateField('name')
+    populateField('email')
+    populateField('password')
+    populateField('passwordConfirmation')
+    expect(screen.getByTestId('submit')).toBeEnabled()
+  })
 })
