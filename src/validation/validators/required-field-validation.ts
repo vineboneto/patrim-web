@@ -4,7 +4,7 @@ import { RequiredFieldError } from '../errors'
 export class RequiredFieldValidation implements FieldValidation {
   constructor (readonly field: string) {}
 
-  validation (input: object): Error {
+  validate (input: object): Error {
     return input[this.field] ? null : new RequiredFieldError()
   }
 }
