@@ -82,4 +82,16 @@ describe('SignUp Component', () => {
     populateField('passwordConfirmation')
     testStatusForField('passwordConfirmation', validationError)
   })
+
+  test('Should show valid name state if Validation succeeds', () => {
+    makeSut()
+    populateField('name')
+    testStatusForField('name')
+  })
+
+  test('Should show valid email state if Validation succeeds', () => {
+    makeSut()
+    populateField('email')
+    testStatusForField('email')
+  })
 })

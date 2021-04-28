@@ -5,7 +5,8 @@
   --color-dark-light: #222831;
   --color-danger: #Ef5350;
   --color-disabled-background: #CCC;
-  --color-disabled-color: #666;
+  --color-disabled: #666;
+  --color-success: #4caf50;
 }
 
 .btn-primary {
