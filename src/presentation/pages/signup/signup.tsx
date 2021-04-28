@@ -32,6 +32,10 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
     const { name, email, password, passwordConfirmation } = state
     const formData = { name, email, password, passwordConfirmation }
     setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
+    setState(old => ({
+      ...old,
+      isFormInvalid: !!old.nameError || !!old.emailError || !!old.passwordError || !!old.passwordConfirmationError
+    }))
   }
 
   return (
