@@ -9,6 +9,10 @@
   --color-success: #4caf50;
 }
 
+.btn:focus, .form-floating:focus, .form-control:focus {
+  box-shadow:none !important;
+}
+
 .btn-primary {
   background-color: var(--color-primary);
   border-color: var(--color-primary);

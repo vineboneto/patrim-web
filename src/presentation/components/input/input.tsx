@@ -15,13 +15,13 @@ const Input: React.FC<Props> = (props: Props) => {
   return (
     <div
       data-testid={`${props.name}-wrap`}
-      data-status={error ? 'invalid' : 'valid'}
       className="form-floating"
-    >
+      >
       <input
         { ...props }
         ref={inputRef}
         data-testid={props.name}
+        data-status={error ? 'invalid' : 'valid'}
         title={error}
         id={`floating-${props.name}`}
         className="form-control"

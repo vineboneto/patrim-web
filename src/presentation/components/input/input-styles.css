@@ -4,12 +4,10 @@
   box-shadow: none;
 }
 
-.form-control:focus {
+.form-control:focus[data-status="valid"] {
   border-color: var(--color-success);
-  box-shadow: 0 0 0 0.10rem rgba(76, 175, 80, 0.5);
 }
 
-/* .form-control:focus {
-  box-shadow: none;
-  box-shadow: 0 0 0 0.10rem var(--color-danger);
-}  */
+.form-control:focus[data-status="invalid"] {
+  border-color: var(--color-danger);
+}
