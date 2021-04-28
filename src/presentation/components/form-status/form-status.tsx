@@ -9,7 +9,7 @@ const FormStatus: React.FC = () => {
   return (
     <div data-testid="error-wrap" className="form-status-wrap">
       { state.isLoading && <div data-testid="spinner" className="spinner-border" /> }
-      { state.mainError && <span data-testid="main-error">Error</span> }
+      { state.mainError && <span data-testid="main-error">{state.mainError}</span> }
     </div>
   )
 }
