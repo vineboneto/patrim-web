@@ -15,4 +15,10 @@ describe('MinLengthValidation', () => {
     const error = sut.validate({ field: 'seven' })
     expect(error).toBeNull()
   })
+
+  test('Should return null if field does not exists in schema', () => {
+    const sut = makeSut('field')
+    const error = sut.validate({ any_field: 'any_value' })
+    expect(error).toBeNull()
+  })
 })
