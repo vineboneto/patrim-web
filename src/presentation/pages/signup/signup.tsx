@@ -1,9 +1,9 @@
 import './signup-styles.css'
-import { Input, Logo, FormStatus, FormContext, SubmitButton } from '@/presentation/components'
+import { Input, Logo, FormStatus, FormContext, SubmitButton, ApiContext } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { AddAccount } from '@/domain/usecases'
 
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 type Props = {
@@ -13,6 +13,7 @@ type Props = {
 
 const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
   const history = useHistory()
+  const { setCurrentAccount } = useContext(ApiContext)
   const [state, setState] = useState({
     isLoading: false,
     isFormInvalid: true,
@@ -48,12 +49,13 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
       if (state.isFormInvalid || state.isLoading) return
       setState(old => ({ ...old, isLoading: true }))
       const { name, email, password, passwordConfirmation } = state
-      await addAccount.add({
+      const account = await addAccount.add({
         name,
         email,
         password,
         passwordConfirmation
       })
+      setCurrentAccount(account)
       history.replace('/')
     } catch (error) {
       setState(old => ({
