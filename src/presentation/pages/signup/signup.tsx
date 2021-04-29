@@ -67,27 +67,25 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
   }
 
   return (
-    <FormContext.Provider value={{ state, setState }}>
-      <div className="signup-wrap">
-        <Logo />
+    <div className="signup-wrap">
+      <Logo />
+      <FormContext.Provider value={{ state, setState }}>
         <div className="form-wrap">
-          <div className="form-container">
+          <form data-testid="form" onSubmit={handleSubmit}>
             <h2>Crie sua Conta</h2>
-            <form data-testid="form" onSubmit={handleSubmit}>
-              <Input type="name" name="name" placeholder="Digite o seu nome" />
-              <Input type="name" name="email" placeholder="Digite o seu email" />
-              <Input type="password" name="password" placeholder="Digite a sua senha" />
-              <Input type="password" name="passwordConfirmation" placeholder="Confirme a sua senha" />
-              <div className="action-wrap">
-                <SubmitButton text="Cadastrar" />
-                <Link data-testid="login-link" replace to="/login" className="link">Voltar para login</Link>
-              </div>
-            </form>
-          </div>
+            <Input type="name" name="name" placeholder="Digite o seu nome" />
+            <Input type="name" name="email" placeholder="Digite o seu email" />
+            <Input type="password" name="password" placeholder="Digite a sua senha" />
+            <Input type="password" name="passwordConfirmation" placeholder="Confirme a sua senha" />
+            <div className="action-wrap">
+              <SubmitButton text="Cadastrar" />
+              <Link data-testid="login-link" replace to="/login" className="link">Voltar para login</Link>
+            </div>
+          </form>
           <FormStatus />
         </div>
-      </div>
-    </FormContext.Provider>
+      </FormContext.Provider>
+    </div>
   )
 }
 

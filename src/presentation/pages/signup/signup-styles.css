@@ -13,11 +13,11 @@
   background-color: var(--color-white);
 }
 
-.signup-wrap .form-wrap .form-container {
-  width: 75%;
+.signup-wrap .form-wrap form {
+  width: 60%;
 }
 
-.signup-wrap  .form-wrap .form-container h2 {
+.signup-wrap  .form-wrap form h2 {
   font-family: 'Poppins';
 }
 
@@ -34,7 +34,7 @@
   font-family: 'Poppins';
 }
 
-@media (max-width: 720px) {
+@media (max-width: 992px) {
   .signup-wrap {
     flex-direction: column;
   }
