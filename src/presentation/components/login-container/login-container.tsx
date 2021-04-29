@@ -4,7 +4,7 @@ import React from 'react'
 
 const LoginContainer: React.FC = ({ children }: any) => {
   return (
-    <div className="login-wrap">
+    <div className="form-login-wrap">
       {children}
     </div>
   )
