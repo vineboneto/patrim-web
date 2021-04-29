@@ -5,6 +5,7 @@ const scripts = [
   'npx rimraf .config',
   'npx husky install .config/husky',
   'npx husky add .config/husky/pre-commit "yarn lint-staged --config .lintstagedrc.json"',
+  'npx husky add .config/husky/pre-push "yarn test:ci"',
   'npx husky add .config/husky/commit-msg ".git/hooks/commit-msg $1"'
 ]
 
