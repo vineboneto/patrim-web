@@ -3,7 +3,7 @@
   display: flex;
 }
 
-.form-wrap {
+.signup-wrap .form-wrap {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,15 +13,25 @@
   background-color: var(--color-white);
 }
 
-.form-container {
+.signup-wrap .form-wrap .form-container {
   width: 75%;
-  display: flex;
-  flex-direction: column;
 }
 
-.form-wrap .form-container button {
-  align-self: flex-end;
-  flex: 1;
+.signup-wrap  .form-wrap .form-container h2 {
+  font-family: 'Poppins';
+}
+
+.signup-wrap .form-wrap .action-wrap {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.signup-wrap .form-wrap .action-wrap .link {
+  font-size: 18px;
+  color: var(--color-primary);
+  font-family: 'Poppins';
 }
 
 @media (max-width: 720px) {
