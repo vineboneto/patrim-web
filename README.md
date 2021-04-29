@@ -1,5 +1,7 @@
 # Patrim Web
 
+[![Known Vulnerabilities](https://snyk.io/test/github/vineboneto/patrim-web/badge.svg)](https://snyk.io/test/github/vineboneto/patrim-web) [![Build Status](https://travis-ci.com/vineboneto/patrim-web.svg?branch=master)](https://travis-ci.com/vineboneto/patrim-web) [![Coverage Status](https://coveralls.io/repos/github/vineboneto/patrim-web/badge.svg)](https://coveralls.io/github/vineboneto/patrim-web)
+
 Graphical interface used to consume REST api from a simple patrimony control software
 
 ## Libraries
@@ -12,7 +14,7 @@ Graphical interface used to consume REST api from a simple patrimony control sof
 - Bootstrap
 - Jest
 
-## Metodologia de desenvolvimento
+## Development Methodology
 
 - TDD
 - DDD
