@@ -3,32 +3,22 @@
   display: flex;
 }
 
-.signup-wrap .form-wrap {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  flex: 1;
-  background-color: var(--color-white);
-}
-
-.signup-wrap .form-wrap form {
+.signup-wrap form {
   width: 60%;
 }
 
-.signup-wrap  .form-wrap form h2 {
+.signup-wrap form h2 {
   font-family: 'Poppins';
 }
 
-.signup-wrap .form-wrap .action-wrap {
+.signup-wrap .action-wrap {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
 }
 
-.signup-wrap .form-wrap .action-wrap .link {
+.signup-wrap .action-wrap .link {
   font-size: 18px;
   color: var(--color-primary);
   font-family: 'Poppins';
@@ -38,9 +28,8 @@
   .signup-wrap {
     flex-direction: column;
   }
-  .form-wrap {
-    height: 50%;
+  .signup-wrap .login-wrap {
     padding-top: 30px;
-    justify-content: flex-start;
+    justify-content: flex-start !important;
   }
 }
