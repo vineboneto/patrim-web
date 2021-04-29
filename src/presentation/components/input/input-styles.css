@@ -1,13 +1,14 @@
 .form-floating {
   margin: 12px 0;
-  border-color: var(--color-disabled);
   box-shadow: none;
 }
 
-.form-control:focus[data-status="valid"] {
-  border-color: var(--color-success);
+.form-control[data-status="valid"] {
+  border: 1.5px solid var(--color-success);
+  box-shadow: 0 0 0 0.12rem rgba(76, 175, 80, 0.5);
 }
 
-.form-control:focus[data-status="invalid"] {
-  border-color: var(--color-danger);
+.form-control[data-status="invalid"] {
+  border: 1.5px solid var(--color-danger);
+  box-shadow: 0 0 0 0.12rem rgba(239, 83, 80, 0.5);
 }
