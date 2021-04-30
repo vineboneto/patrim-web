@@ -1,5 +1,6 @@
 import { Login } from '@/presentation/pages'
 import { populateField, testStatusForField, ValidationStub } from '@/tests/presentation/mocks'
+import { AuthenticationSpy } from '@/tests/domain/mocks'
 
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
@@ -13,19 +14,25 @@ type Params = {
 
 type SutTypes = {
   validationStub: ValidationStub
+  authenticationSpy: AuthenticationSpy
 }
 
 const history = createMemoryHistory({ initialEntries: ['/login'] })
 const makeSut = (params?: Params): SutTypes => {
+  const authenticationSpy = new AuthenticationSpy()
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.validationError
   render(
     <Router history={history}>
-      <Login validation={validationStub} />
+      <Login
+        validation={validationStub}
+        authentication={authenticationSpy}
+      />
     </Router>
   )
   return {
-    validationStub
+    validationStub,
+    authenticationSpy
   }
 }
 
@@ -85,5 +92,16 @@ describe('Login Component', () => {
     makeSut()
     await simulateValidSubmit()
     expect(screen.queryByTestId('spinner')).toBeInTheDocument()
+  })
+
+  test('Should call Authentication with correct values', async () => {
+    const { authenticationSpy } = makeSut()
+    const email = faker.internet.email()
+    const password = faker.internet.password()
+    await simulateValidSubmit(email, password)
+    expect(authenticationSpy.params).toEqual({
+      email,
+      password
+    })
   })
 })
