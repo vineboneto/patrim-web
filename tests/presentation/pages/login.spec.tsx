@@ -143,4 +143,12 @@ describe('Login Component', () => {
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/')
   })
+
+  test('Should go to signup page', async () => {
+    makeSut()
+    const signUpLink = screen.getByTestId('signup-link')
+    fireEvent.click(signUpLink)
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/signup')
+  })
 })
