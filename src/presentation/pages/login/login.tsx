@@ -1,10 +1,10 @@
 import './login-styles.css'
-import { FormContext, FormStatus, Input, LoginContainer, Logo, SubmitButton } from '@/presentation/components'
+import { ApiContext, FormContext, FormStatus, Input, LoginContainer, Logo, SubmitButton } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { Authentication } from '@/domain/usecases'
 
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 
 type Props = {
   validation: Validation
@@ -12,6 +12,8 @@ type Props = {
 }
 
 const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
+  const { setCurrentAccount } = useContext(ApiContext)
+  const history = useHistory()
   const [state, setState] = useState({
     isLoading: false,
     isFormInvalid: true,
@@ -42,10 +44,12 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
       if (state.isFormInvalid || state.isLoading) return
       setState(old => ({ ...old, isLoading: true }))
       const { email, password } = state
-      await authentication.auth({
+      const account = await authentication.auth({
         email,
         password
       })
+      setCurrentAccount(account)
+      history.replace('/')
     } catch (error) {
       setState(old => ({
         ...old,
