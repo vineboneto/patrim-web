@@ -47,7 +47,11 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
         password
       })
     } catch (error) {
-      console.log(error)
+      setState(old => ({
+        ...old,
+        mainError: error.message,
+        isLoading: false
+      }))
     }
   }
 
