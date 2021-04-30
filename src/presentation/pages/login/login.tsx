@@ -33,12 +33,22 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
     }))
   }
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault()
+
+    try {
+      setState(old => ({ ...old, isLoading: true }))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <div className="login-wrap">
       <Logo />
       <FormContext.Provider value={{ state, setState }}>
         <LoginContainer>
-          <form data-testid="form">
+          <form data-testid="form" onSubmit={handleSubmit}>
             <h2>Login</h2>
             <Input type="name" name="email" placeholder="Digite o seu email" />
             <Input type="password" name="password" placeholder="Digite a sua senha" />
