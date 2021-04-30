@@ -64,4 +64,11 @@ describe('Login Component', () => {
     populateField('password')
     testStatusForField('password')
   })
+
+  test('Should enable submit button if form is valid', () => {
+    makeSut()
+    populateField('email')
+    populateField('password')
+    expect(screen.getByTestId('submit')).toBeEnabled()
+  })
 })
