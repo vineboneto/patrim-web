@@ -39,6 +39,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     event.preventDefault()
 
     try {
+      if (state.isFormInvalid || state.isLoading) return
       setState(old => ({ ...old, isLoading: true }))
       const { email, password } = state
       await authentication.auth({
