@@ -58,4 +58,10 @@ describe('Login Component', () => {
     populateField('email')
     testStatusForField('email')
   })
+
+  test('Should show valid password state if Validation succeeds', () => {
+    makeSut()
+    populateField('password')
+    testStatusForField('password')
+  })
 })
