@@ -3,7 +3,7 @@ import { populateField, testStatusForField, ValidationStub } from '@/tests/prese
 
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import faker from 'faker'
 
@@ -27,6 +27,15 @@ const makeSut = (params?: Params): SutTypes => {
   return {
     validationStub
   }
+}
+
+const simulateValidSubmit = async (email = faker.internet.email(),
+  password = faker.internet.password()): Promise<void> => {
+  populateField('email', email)
+  populateField('password', password)
+  const form = screen.getByTestId('form')
+  fireEvent.submit(form)
+  await waitFor(() => screen.getByTestId('form'))
 }
 
 describe('Login Component', () => {
@@ -70,5 +79,11 @@ describe('Login Component', () => {
     populateField('email')
     populateField('password')
     expect(screen.getByTestId('submit')).toBeEnabled()
+  })
+
+  test('Should show spinner on submit', async () => {
+    makeSut()
+    await simulateValidSubmit()
+    expect(screen.queryByTestId('spinner')).toBeInTheDocument()
   })
 })
