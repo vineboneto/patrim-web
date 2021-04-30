@@ -1,5 +1,5 @@
 import { Login } from '@/presentation/pages'
-import { testStatusForField, ValidationStub } from '@/tests/presentation/mocks'
+import { populateField, testStatusForField, ValidationStub } from '@/tests/presentation/mocks'
 
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
@@ -37,5 +37,12 @@ describe('Login Component', () => {
     expect(screen.getByTestId('submit')).toBeDisabled()
     testStatusForField('email', validationError)
     testStatusForField('password', validationError)
+  })
+
+  test('Should show email error if Validation fails', () => {
+    const validationError = faker.random.words()
+    makeSut({ validationError })
+    populateField('email')
+    testStatusForField('email', validationError)
   })
 })
