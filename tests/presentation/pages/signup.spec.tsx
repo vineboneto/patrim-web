@@ -1,7 +1,7 @@
 import { SignUp } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
 import { AccountModel } from '@/domain/models'
-import { ValidationStub } from '@/tests/presentation/mocks'
+import { ValidationStub, populateField, testStatusForField } from '@/tests/presentation/mocks'
 import { AddAccountSpy } from '@/tests/domain/mocks'
 
 import { Router } from 'react-router-dom'
@@ -38,19 +38,6 @@ const makeSut = (params?: Params): SutTypes => {
     addAccountSpy,
     setCurrentAccountMock
   }
-}
-
-const testStatusForField = (fieldName: string, validationError: string = ''): void => {
-  const field = screen.getByTestId(`${fieldName}`)
-  const label = screen.getByTestId(`${fieldName}-label`)
-  expect(field).toHaveAttribute('data-status', validationError ? 'invalid' : 'valid')
-  expect(field).toHaveProperty('title', validationError)
-  expect(label).toHaveProperty('title', validationError)
-}
-
-const populateField = (fieldName: string, value = faker.random.word()): void => {
-  const input = screen.getByTestId(fieldName)
-  fireEvent.input(input, { target: { value } })
 }
 
 const simulateValidSubmit = async (name = faker.name.findName(), email = faker.internet.email(),
