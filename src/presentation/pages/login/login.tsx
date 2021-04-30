@@ -1,13 +1,33 @@
 import './login-styles.css'
 import { FormContext, FormStatus, Input, LoginContainer, Logo, SubmitButton } from '@/presentation/components'
+import { Validation } from '@/presentation/protocols'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-const Login: React.FC = () => {
-  const [state, setState] = useState({
+type Props = {
+  validation: Validation
+}
 
+const Login: React.FC<Props> = ({ validation }: Props) => {
+  const [state, setState] = useState({
+    isLoading: false,
+    isFormInvalid: true,
+    mainError: '',
+    email: '',
+    emailError: '',
+    password: '',
+    passwordError: ''
   })
+
+  useEffect(() => { validate('email') }, [state.email])
+  useEffect(() => { validate('password') }, [state.password])
+
+  const validate = (field: string): void => {
+    const { email, password } = state
+    const formData = { email, password }
+    setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
+  }
 
   return (
     <div className="login-wrap">
@@ -20,7 +40,7 @@ const Login: React.FC = () => {
             <Input type="password" name="password" placeholder="Digite a sua senha" />
             <div className="action-wrap">
               <SubmitButton text="Cadastrar" />
-              <Link data-testid="login-link" replace to="/login" className="link">Criar uma conta</Link>
+              <Link data-testid="signup-link" replace to="/signup" className="link">Criar uma conta</Link>
             </div>
             <FormStatus />
           </form>
