@@ -13,6 +13,7 @@ Graphical interface used to consume REST api from a simple patrimony control sof
 - Eslint
 - Bootstrap
 - Jest
+- Axios
 
 ## Development Methodology
 
