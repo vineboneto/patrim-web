@@ -1,4 +1,6 @@
 import { Login } from '@/presentation/pages'
+import { ApiContext } from '@/presentation/components'
+import { AccountModel } from '@/domain/models'
 import { populateField, testStatusForField, ValidationStub } from '@/tests/presentation/mocks'
 import { AuthenticationSpy } from '@/tests/domain/mocks'
 
@@ -15,24 +17,29 @@ type Params = {
 type SutTypes = {
   validationStub: ValidationStub
   authenticationSpy: AuthenticationSpy
+  setCurrentAccountMock: (account: AccountModel) => void
 }
 
 const history = createMemoryHistory({ initialEntries: ['/login'] })
 const makeSut = (params?: Params): SutTypes => {
   const authenticationSpy = new AuthenticationSpy()
+  const setCurrentAccountMock = jest.fn()
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.validationError
   render(
-    <Router history={history}>
-      <Login
-        validation={validationStub}
-        authentication={authenticationSpy}
-      />
-    </Router>
+    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+      <Router history={history}>
+        <Login
+          validation={validationStub}
+          authentication={authenticationSpy}
+        />
+      </Router>
+    </ApiContext.Provider>
   )
   return {
     validationStub,
-    authenticationSpy
+    authenticationSpy,
+    setCurrentAccountMock
   }
 }
 
@@ -127,5 +134,13 @@ describe('Login Component', () => {
     await simulateValidSubmit()
     expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
     expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
+  })
+
+  test('Should call SetCurrentAccount on success', async () => {
+    const { authenticationSpy, setCurrentAccountMock } = makeSut()
+    await simulateValidSubmit()
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(authenticationSpy.account)
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/')
   })
 })
