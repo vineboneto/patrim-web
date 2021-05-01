@@ -1,40 +1,31 @@
-import './input-styles.css'
+// import './input-styles.css'
 import { FormContext } from '@/presentation/components'
 
-import React, { ChangeEvent, InputHTMLAttributes, useContext, useRef } from 'react'
+import React, { ChangeEvent, InputHTMLAttributes, useContext } from 'react'
+import TextField from '@material-ui/core/TextField'
 
 type Props = InputHTMLAttributes<HTMLInputElement>
 
 const Input: React.FC<Props> = (props: Props) => {
   const { state, setState } = useContext(FormContext)
   const error = state[`${props.name}Error`]
-  const inputRef = useRef<HTMLInputElement>()
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void =>
     setState(old => ({ ...old, [e.target.name]: e.target.value }))
 
   return (
-    <div
-      data-testid={`${props.name}-wrap`}
-      className="form-floating"
-      >
-      <input
-        { ...props }
-        ref={inputRef}
-        data-testid={props.name}
-        data-status={error ? 'invalid' : 'valid'}
-        title={error}
-        id={`floating-${props.name}`}
-        className="form-control"
+    <div className="input-wrap">
+      <TextField
+        data-testid={`${props.name}`}
+        style={{ width: '100%', margin: '10px 0' }}
+        type={props.type}
+        name={props.name}
         onChange={handleChange}
-        placeholder=" "
-      />
-      <label
-        data-testid={`${props.name}-label`}
+        error={error !== undefined}
         title={error}
-        htmlFor={`floating-${props.name}`}
-      >
-        {props.placeholder}
-      </label>
+        variant="outlined"
+        label={props.placeholder}
+        autoComplete="off"
+      />
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { FormContext } from '@/presentation/components'
 
 import React, { useContext } from 'react'
+import Button from '@material-ui/core/Button'
 
 type Props = {
   text: string
@@ -9,14 +10,15 @@ type Props = {
 const SubmitButton: React.FC<Props> = ({ text }: Props) => {
   const { state } = useContext(FormContext)
   return (
-     <button
-      data-testid="submit"
+    <Button
       type="submit"
-      className="btn btn-primary btn-lg"
+      data-testid="submit"
+      variant="contained"
+      color="primary"
       disabled={state.isFormInvalid}
     >
       {text}
-    </button>
+    </Button>
   )
 }
 
