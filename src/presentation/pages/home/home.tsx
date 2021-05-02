@@ -1,13 +1,19 @@
 import './home-styles.css'
-import { Header, DashBoard } from '@/presentation/components'
+import { Header, DashBoard, DashboardContext } from '@/presentation/components'
 
-import React from 'react'
+import React, { useState } from 'react'
 
 const Home: React.FC = () => {
+  const [state] = useState({
+    openDashboard: false
+  })
+
   return (
     <div className="home-wrap">
       <Header />
-      <DashBoard />
+      <DashboardContext.Provider value ={{ state }}>
+        <DashBoard />
+      </DashboardContext.Provider>
     </div>
   )
 }
