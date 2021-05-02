@@ -1,0 +1,8 @@
+.menu-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.menu-wrap button span h6 {
+  padding: 20px;
+}

@@ -1,18 +1,15 @@
 import './home-styles.css'
+import { Header, DashBoard } from '@/presentation/components'
 
 import React from 'react'
 
-const DashBoard: React.FC = () => {
+const Home: React.FC = () => {
   return (
     <div className="home-wrap">
-      <header className="header-wrap">
-        <span className="dashboard-button">DashBoard</span>
-      </header>
-      <div className="dashboard-wrap">
-        <h1>Somebody</h1>
-      </div>
+      <Header />
+      <DashBoard />
     </div>
   )
 }
 
-export default DashBoard
+export default Home
