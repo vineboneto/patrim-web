@@ -59,4 +59,12 @@ describe('Home Component', () => {
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/owners')
   })
+
+  test('Should go to login page on exit', async () => {
+    makeSut()
+    const exitLink = screen.getByTestId('exit-link')
+    fireEvent.click(exitLink)
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/login')
+  })
 })
