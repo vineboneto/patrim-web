@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 
 const Home: React.FC = () => {
   const [state, setState] = useState({
-    openDashboard: false
+    openDashboard: true
   })
 
   return (

@@ -17,17 +17,15 @@ const makeSut = (): void => {
 describe('Home Component', () => {
   test('Should start with initial state', () => {
     makeSut()
-    const styles = screen.getByTestId('dashboard').children[0].getAttribute('style').split(';')
-    const visibly = styles[0].split(':')
-    const valueVisibly = visibly[1].trim()
-    expect(valueVisibly).toBe('hidden')
-  })
-
-  test('Should open dashboard on click menu', () => {
-    makeSut()
-    fireEvent.click(screen.getByTestId('menu'))
     const dashboard = screen.getByTestId('dashboard')
     expect(dashboard).toBeVisible()
+  })
+
+  test('Should close dashboard on click menu', async () => {
+    makeSut()
+    fireEvent.click(screen.queryByTestId('menu'))
+    const dashboardList = screen.getByTestId('dashboard').children[0]
+    expect(dashboardList.children).toHaveLength(0)
   })
 
   test('Should go to patrimonies page', async () => {

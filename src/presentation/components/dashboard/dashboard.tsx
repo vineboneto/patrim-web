@@ -23,11 +23,12 @@ const DashBoard: React.FC = () => {
       variant="persistent"
       data-testid="dashboard"
     >
+      { state.openDashboard &&
       <List>
         {optionsMenu.map((option) => (
           <Item key={option.text} text={option.text} link={option.link} />
         ))}
-      </List>
+      </List> }
     </Drawer>
   )
 }
