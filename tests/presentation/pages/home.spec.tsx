@@ -37,4 +37,12 @@ describe('Home Component', () => {
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/patrimonies')
   })
+
+  test('Should go to sectors page', async () => {
+    makeSut()
+    const patrimoniesLink = screen.getByTestId('sectors-link')
+    fireEvent.click(patrimoniesLink)
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/sectors')
+  })
 })
