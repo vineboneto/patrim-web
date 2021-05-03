@@ -4,14 +4,14 @@ import { Header, DashBoard, DashboardContext } from '@/presentation/components'
 import React, { useState } from 'react'
 
 const Home: React.FC = () => {
-  const [state] = useState({
+  const [state, setState] = useState({
     openDashboard: false
   })
 
   return (
     <div className="home-wrap">
-      <Header />
-      <DashboardContext.Provider value ={{ state }}>
+      <DashboardContext.Provider value ={{ state, setState }}>
+        <Header />
         <DashBoard />
       </DashboardContext.Provider>
     </div>

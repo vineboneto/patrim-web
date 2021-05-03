@@ -11,7 +11,13 @@ const DashBoard: React.FC = () => {
   const optionsMenu = ['Patrimônio', 'Setor', 'Proprietário', 'Categoria']
 
   return (
-    <Drawer open={state.openDashboard} anchor="left" className="dashboard-wrap" variant="persistent" data-testid="dashboard">
+    <Drawer
+      open={state.openDashboard}
+      anchor="left"
+      className="dashboard-wrap"
+      variant="persistent"
+      data-testid="dashboard"
+    >
       <List>
         {optionsMenu.map((text) => (
           <Item key={text} text={text} />
