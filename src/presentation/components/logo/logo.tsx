@@ -1,4 +1,4 @@
-import './input-styles.css'
+import './logo-styles.css'
 
 import React from 'react'
 
