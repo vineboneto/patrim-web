@@ -1,17 +1,32 @@
 import { Home } from '@/presentation/pages'
+import { ApiContext } from '@/presentation/components'
+import { AccountModel } from '@/domain/models'
+import { mockAccountModel } from '@/tests/domain/mocks'
 
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
-import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
+import { Router } from 'react-router-dom'
+import { createMemoryHistory, MemoryHistory } from 'history'
+import { fireEvent, render, screen } from '@testing-library/react'
 
-const history = createMemoryHistory({ initialEntries: ['/'] })
-const makeSut = (): void => {
+type SutTypes = {
+  history: MemoryHistory
+  setCurrentAccountMock: (account: AccountModel) => void
+}
+
+const makeSut = (): SutTypes => {
+  const history = createMemoryHistory({ initialEntries: ['/'] })
+  const setCurrentAccountMock = jest.fn()
   render(
-    <Router history={history}>
-      <Home/>
-    </Router>
+    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
+      <Router history={history}>
+        <Home/>
+      </Router>
+    </ApiContext.Provider>
   )
+  return {
+    history,
+    setCurrentAccountMock
+  }
 }
 
 describe('Home Component', () => {
@@ -29,42 +44,43 @@ describe('Home Component', () => {
   })
 
   test('Should go to patrimonies page', async () => {
-    makeSut()
+    const { history } = makeSut()
     const patrimoniesLink = screen.getByTestId('patrimonies-link')
     fireEvent.click(patrimoniesLink)
-    expect(history.length).toBe(1)
+    expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/patrimonies')
   })
 
   test('Should go to sectors page', async () => {
-    makeSut()
+    const { history } = makeSut()
     const sectorsLink = screen.getByTestId('sectors-link')
     fireEvent.click(sectorsLink)
-    expect(history.length).toBe(1)
+    expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/sectors')
   })
 
   test('Should go to categories page', async () => {
-    makeSut()
+    const { history } = makeSut()
     const categoriesLink = screen.getByTestId('categories-link')
     fireEvent.click(categoriesLink)
-    expect(history.length).toBe(1)
+    expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/categories')
   })
 
   test('Should go to owners page', async () => {
-    makeSut()
+    const { history } = makeSut()
     const ownersLink = screen.getByTestId('owners-link')
     fireEvent.click(ownersLink)
-    expect(history.length).toBe(1)
+    expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/owners')
   })
 
   test('Should go to login page on exit', async () => {
-    makeSut()
+    const { history, setCurrentAccountMock } = makeSut()
     const exitLink = screen.getByTestId('exit-link')
     fireEvent.click(exitLink)
     expect(history.length).toBe(1)
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
     expect(history.location.pathname).toBe('/login')
   })
 })
