@@ -13,7 +13,7 @@ type Props = {
 const DashBoardItem: React.FC<Props> = ({ text, link }: Props) => {
   return (
     <ListItem button className="item-wrap">
-      <Link to ={link} data-testid={`${link}-link`}>
+      <Link replace to={link} data-testid={`${link}-link`}>
         <ListItemText primary={text} />
       </Link>
     </ListItem>
