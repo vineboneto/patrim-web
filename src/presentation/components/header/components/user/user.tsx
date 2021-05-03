@@ -1,22 +1,25 @@
 import './user-styles.css'
+import { ApiContext } from '@/presentation/components'
 
-import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useLogout } from '@/presentation/hooks'
+import React, { MouseEvent, useContext } from 'react'
 import Typography from '@material-ui/core/Typography'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import IconButton from '@material-ui/core/IconButton'
 
 const User: React.FC = () => {
-  const history = useHistory()
+  const logout = useLogout()
+  const { getCurrentAccount } = useContext(ApiContext)
 
-  const handleExit = (): void => {
-    history.replace('/login')
+  const handleExit = (e: MouseEvent): void => {
+    e.preventDefault()
+    logout()
   }
 
   return (
     <div className="user-wrap">
-      <Typography color="inherit">
-        Vinicius
+      <Typography color="inherit" data-testid="username">
+        {getCurrentAccount().name}
       </Typography>
       <IconButton color="inherit" data-testid="exit-link" onClick={handleExit}>
         <ExitToAppIcon />
