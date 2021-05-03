@@ -9,6 +9,7 @@
 
 .signup-wrap form h2 {
   font-family: 'Poppins';
+  font-weight: 400;
 }
 
 .signup-wrap .action-wrap {
@@ -20,7 +21,7 @@
 
 .signup-wrap .action-wrap .link {
   font-size: 16px;
-  color: var(--color-primary);
+  color: var(--color-black);
   font-family: 'Poppins';
 }
 

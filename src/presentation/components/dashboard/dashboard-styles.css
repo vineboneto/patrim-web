@@ -3,7 +3,7 @@
   max-height: calc(100% - 100px);
   top: auto !important;
   background-color: var(--color-black);
-  width: 300px;
+  width: 225px;
 }
 
 @media (max-width: 992px) {

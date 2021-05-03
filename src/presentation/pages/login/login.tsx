@@ -69,7 +69,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
             <Input type="name" name="email" placeholder="Digite o seu email" />
             <Input type="password" name="password" placeholder="Digite a sua senha" />
             <div className="action-wrap">
-              <SubmitButton text="Cadastrar" />
+              <SubmitButton text="Entrar" />
               <Link data-testid="signup-link" replace to="/signup" className="link">Criar uma conta</Link>
             </div>
             <FormStatus />
