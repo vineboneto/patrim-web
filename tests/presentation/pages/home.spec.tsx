@@ -40,9 +40,17 @@ describe('Home Component', () => {
 
   test('Should go to sectors page', async () => {
     makeSut()
-    const patrimoniesLink = screen.getByTestId('sectors-link')
-    fireEvent.click(patrimoniesLink)
+    const sectorsLink = screen.getByTestId('sectors-link')
+    fireEvent.click(sectorsLink)
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/sectors')
+  })
+
+  test('Should go to categories page', async () => {
+    makeSut()
+    const categoriesLink = screen.getByTestId('categories-link')
+    fireEvent.click(categoriesLink)
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/categories')
   })
 })
