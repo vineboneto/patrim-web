@@ -8,7 +8,12 @@ import List from '@material-ui/core/List'
 
 const DashBoard: React.FC = () => {
   const { state } = useContext(DashboardContext)
-  const optionsMenu = ['Patrimônio', 'Setor', 'Proprietário', 'Categoria']
+  const optionsMenu = [
+    { text: 'Patrimônio', link: 'patrimonies' },
+    { text: 'Setor', link: 'sectors' },
+    { text: 'Proprietário', link: 'owners' },
+    { text: 'Categoria', link: 'categories' }
+  ]
 
   return (
     <Drawer
@@ -19,8 +24,8 @@ const DashBoard: React.FC = () => {
       data-testid="dashboard"
     >
       <List>
-        {optionsMenu.map((text) => (
-          <Item key={text} text={text} />
+        {optionsMenu.map((option) => (
+          <Item key={option.text} text={option.text} link={option.link} />
         ))}
       </List>
     </Drawer>

@@ -3,7 +3,6 @@
   max-height: calc(100% - 100px);
   top: auto !important;
   background-color: var(--color-black);
-  color: var(--color-white);
   width: 300px;
 }
 
