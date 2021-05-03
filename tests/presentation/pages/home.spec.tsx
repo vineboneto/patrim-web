@@ -53,4 +53,12 @@ describe('Home Component', () => {
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/categories')
   })
+
+  test('Should go to owners page', async () => {
+    makeSut()
+    const ownersLink = screen.getByTestId('owners-link')
+    fireEvent.click(ownersLink)
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/owners')
+  })
 })
