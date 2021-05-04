@@ -10,7 +10,6 @@ export namespace AddPatrimony {
     brand: string
     description?: string
     categoryId: number
-    sectorId: number
     ownerId: number
   }
 
