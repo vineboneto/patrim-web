@@ -8,3 +8,7 @@
   --color-disabled: #666;
   --color-success: #4caf50;
 }
+
+body {
+  background-color: var(--color-background);
+}

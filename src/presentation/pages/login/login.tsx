@@ -66,7 +66,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
         <LoginContainer>
           <form data-testid="form" onSubmit={handleSubmit}>
             <h2>Login</h2>
-            <Input type="name" name="email" placeholder="Digite o seu email" />
+            <Input type="text" name="email" placeholder="Digite o seu email" />
             <Input type="password" name="password" placeholder="Digite a sua senha" />
             <div className="action-wrap">
               <SubmitButton text="Entrar" />

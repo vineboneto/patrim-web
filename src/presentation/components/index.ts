@@ -1,5 +1,7 @@
 export { default as Logo } from './logo/logo'
 export { default as Input } from './input/input'
+export { default as Textarea } from './textarea/textarea'
+export { default as Select } from './select/select'
 export { default as FormStatus } from './form-status/form-status'
 export { default as SubmitButton } from './submit-button/submit-button'
 export { default as FormContext } from './contexts/form-context'

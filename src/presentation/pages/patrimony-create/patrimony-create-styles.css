@@ -1,0 +1,22 @@
+.patrimony-create-wrap {
+  min-height: 100vh;
+}
+
+.patrimony-create-wrap .form-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  max-width: 100%;
+}
+
+.patrimony-create-wrap .form-wrap form {
+  width: 500px;
+  justify-self: center;
+  background-color: var(--color-white);
+}
+
+.patrimony-create-wrap .form-wrap form h2 {
+  font-family: 'Poppins';
+  font-weight: 400;
+}
