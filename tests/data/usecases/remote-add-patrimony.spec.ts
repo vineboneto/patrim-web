@@ -1,4 +1,6 @@
 import { RemoteAddPatrimony } from '@/data/usecases'
+import { HttpStatusCode } from '@/data/protocols'
+import { AccessDeniedError } from '@/domain/errors'
 import { mockAddPatrimonyParams } from '@/tests/domain/mocks'
 import { HttpClientSpy } from '@/tests/data/mocks'
 
@@ -27,5 +29,14 @@ describe('RemoteAddPatrimony', () => {
     expect(httpClientSpy.params.body).toEqual(params)
     expect(httpClientSpy.params.method).toBe('post')
     expect(httpClientSpy.params.url).toBe(url)
+  })
+
+  test('Should throw AccessDeniedError if HttpGetClient returns 403', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.forbidden
+    }
+    const promise = sut.add(mockAddPatrimonyParams())
+    await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
 })
