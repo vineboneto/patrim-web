@@ -1,6 +1,6 @@
 import { AddPatrimony } from '@/domain/usecases'
 import { HttpClient, HttpStatusCode } from '@/data/protocols'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 
 export class RemoteAddPatrimony implements AddPatrimony {
   constructor (
@@ -15,8 +15,9 @@ export class RemoteAddPatrimony implements AddPatrimony {
       url: this.url
     })
     switch (httpResponse.statusCode) {
+      case HttpStatusCode.ok: return null
       case HttpStatusCode.forbidden: throw new AccessDeniedError()
+      default: throw new UnexpectedError()
     }
-    return null
   }
 }
