@@ -1,5 +1,6 @@
 import { UpdatePatrimony } from '@/domain/usecases'
-import { HttpClient } from '@/data/protocols'
+import { HttpClient, HttpStatusCode } from '@/data/protocols'
+import { AccessDeniedError } from '@/domain/errors'
 
 export class RemoteUpdatePatrimony implements UpdatePatrimony {
   constructor (
@@ -8,11 +9,14 @@ export class RemoteUpdatePatrimony implements UpdatePatrimony {
   ) {}
 
   async update (params: UpdatePatrimony.Params): Promise<UpdatePatrimony.Model> {
-    await this.httpClient.request({
+    const httpResponse = await this.httpClient.request({
       method: 'put',
       body: params,
       url: this.url
     })
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.forbidden: throw new AccessDeniedError()
+    }
     return null
   }
 }
