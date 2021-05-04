@@ -16,7 +16,7 @@ const PatrimonyCreate: React.FC = () => {
   return (
     <div className="patrimony-create-wrap">
       <DashboardContext.Provider value ={{ state, setState }}>
-        <Header />
+        <Header title="Novo Patrimônio" />
         <DashBoard />
       </DashboardContext.Provider>
       <FormContext.Provider value={{ state }} >

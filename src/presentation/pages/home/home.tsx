@@ -11,7 +11,7 @@ const Home: React.FC = () => {
   return (
     <div className="home-wrap">
       <DashboardContext.Provider value ={{ state, setState }}>
-        <Header />
+        <Header title="Home" />
         <DashBoard />
       </DashboardContext.Provider>
     </div>
