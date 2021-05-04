@@ -2,7 +2,7 @@ import { RemoteUpdatePatrimony } from '@/data/usecases'
 import { HttpStatusCode } from '@/data/protocols'
 import { AccessDeniedError, UnexpectedError, UnprocessableEntityError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
-import { mockUpdatePatrimonyParams } from '@/tests/domain/mocks'
+import { mockPatrimonyModel, mockUpdatePatrimonyParams } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -75,5 +75,16 @@ describe('RemoteUpdatePatrimony', () => {
     }
     const promise = sut.update(mockUpdatePatrimonyParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should return an patrimony if HttpClient returns 200', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    const body = mockPatrimonyModel()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body
+    }
+    const data = await sut.update(mockUpdatePatrimonyParams())
+    expect(data).toEqual(body)
   })
 })
