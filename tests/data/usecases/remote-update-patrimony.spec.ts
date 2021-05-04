@@ -1,6 +1,6 @@
 import { RemoteUpdatePatrimony } from '@/data/usecases'
 import { HttpStatusCode } from '@/data/protocols'
-import { AccessDeniedError, UnprocessableEntityError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError, UnprocessableEntityError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
 import { mockUpdatePatrimonyParams } from '@/tests/domain/mocks'
 
@@ -48,5 +48,14 @@ describe('RemoteUpdatePatrimony', () => {
     const params = mockUpdatePatrimonyParams()
     const promise = sut.update(params)
     await expect(promise).rejects.toThrow(new UnprocessableEntityError(params.number))
+  })
+
+  test('Should throw UnexpectedError if HttpClient returns 400', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest
+    }
+    const promise = sut.update(mockUpdatePatrimonyParams())
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
