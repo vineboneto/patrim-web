@@ -15,7 +15,7 @@ export class RemoteUpdatePatrimony implements UpdatePatrimony {
       url: this.url
     })
     switch (httpResponse.statusCode) {
-      case HttpStatusCode.ok: return null
+      case HttpStatusCode.ok: return httpResponse.body
       case HttpStatusCode.forbidden: throw new AccessDeniedError()
       case HttpStatusCode.unprocessableEntity: throw new UnprocessableEntityError(params.number)
       default: throw new UnexpectedError()
