@@ -1,6 +1,6 @@
 import { RemoteAddPatrimony } from '@/data/usecases'
 import { HttpStatusCode } from '@/data/protocols'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { mockAddPatrimonyParams } from '@/tests/domain/mocks'
 import { HttpClientSpy } from '@/tests/data/mocks'
 
@@ -38,5 +38,14 @@ describe('RemoteAddPatrimony', () => {
     }
     const promise = sut.add(mockAddPatrimonyParams())
     await expect(promise).rejects.toThrow(new AccessDeniedError())
+  })
+
+  test('Should throw UnexpectedError if HttpClient returns 400', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest
+    }
+    const promise = sut.add(mockAddPatrimonyParams())
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
