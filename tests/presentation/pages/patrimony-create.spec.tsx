@@ -1,6 +1,12 @@
 import { PatrimonyCreate } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
-import { populateField, testStatusForField, testStatusForFieldSelect, ValidationStub } from '@/tests/presentation/mocks'
+import {
+  populateField,
+  populateFieldSelect,
+  testStatusForField,
+  testStatusForFieldSelect,
+  ValidationStub
+} from '@/tests/presentation/mocks'
 import { mockAccountModel } from '@/tests/domain/mocks'
 
 import React from 'react'
@@ -60,5 +66,12 @@ describe('PatrimonyCreate Component', () => {
     makeSut({ validationError })
     populateField('brand')
     testStatusForField('brand', validationError)
+  })
+
+  test('Should show owner error if Validation fails', () => {
+    const validationError = faker.random.words()
+    makeSut({ validationError })
+    populateFieldSelect('owner')
+    testStatusForFieldSelect('owner', validationError)
   })
 })

@@ -18,3 +18,9 @@ export const populateField = (fieldName: string, value = faker.random.word()): v
   const input = field.children[1].children[0]
   fireEvent.input(input, { target: { value } })
 }
+
+export const populateFieldSelect = (fieldName: string, value = faker.random.word()): void => {
+  const field = screen.getByTestId(fieldName)
+  const select = field.children[1]
+  fireEvent.input(select, { target: { value } })
+}
