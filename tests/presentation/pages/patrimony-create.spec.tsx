@@ -1,6 +1,6 @@
 import { PatrimonyCreate } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
-import { testStatusForField, testStatusForFieldSelect, ValidationStub } from '@/tests/presentation/mocks'
+import { populateField, testStatusForField, testStatusForFieldSelect, ValidationStub } from '@/tests/presentation/mocks'
 import { mockAccountModel } from '@/tests/domain/mocks'
 
 import React from 'react'
@@ -46,5 +46,12 @@ describe('PatrimonyCreate', () => {
     testStatusForField('brand', validationError)
     testStatusForFieldSelect('owner', validationError)
     testStatusForFieldSelect('category', validationError)
+  })
+
+  test('Should show number error if Validation fails', () => {
+    const validationError = faker.random.words()
+    makeSut({ validationError })
+    populateField('number')
+    testStatusForField('number', validationError)
   })
 })
