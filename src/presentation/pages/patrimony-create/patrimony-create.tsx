@@ -12,7 +12,7 @@ import {
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 
-import React, { useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 
 type Props = {
   validation: Validation
@@ -60,6 +60,14 @@ const PatrimonyCreate: React.FC<Props> = ({ validation }: Props) => {
     }))
   }
 
+  const handleSubmit = async (event: FormEvent): Promise<void> => {
+    event.preventDefault()
+    try {
+      setState(old => ({ ...old, isLoading: true }))
+    } catch (error) {
+    }
+  }
+
   return (
     <div className="patrimony-create-wrap">
       <DashboardContext.Provider value ={{ state, setState }}>
@@ -68,7 +76,7 @@ const PatrimonyCreate: React.FC<Props> = ({ validation }: Props) => {
       </DashboardContext.Provider>
       <FormContext.Provider value={{ state, setState }} >
         <div className="form-wrap" style={ state.openDashboard ? {} : { marginLeft: '30px' }}>
-          <form>
+          <form data-testid="form" onSubmit={handleSubmit}>
             <h2>Novo Patrimônio</h2>
             <div className="input-group">
               <Input type="text" name="number" placeholder="Número" />
