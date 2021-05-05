@@ -164,4 +164,14 @@ describe('PatrimonyCreate Component', () => {
     await simulateValidSubmit()
     expect(addPatrimonySpy.callsCount).toBe(0)
   })
+
+  test('Should present error if add fails', async () => {
+    const { addPatrimonySpy } = makeSut()
+    const error = new Error()
+    error.message = 'something error'
+    jest.spyOn(addPatrimonySpy, 'add').mockRejectedValueOnce(error)
+    await simulateValidSubmit()
+    expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
+  })
 })
