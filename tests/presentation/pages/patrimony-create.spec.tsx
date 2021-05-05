@@ -81,4 +81,17 @@ describe('PatrimonyCreate Component', () => {
     populateFieldSelect('category')
     testStatusForFieldSelect('category', validationError)
   })
+
+  test('Should show category error if Validation fails', () => {
+    const validationError = faker.random.words()
+    makeSut({ validationError })
+    populateFieldSelect('category')
+    testStatusForFieldSelect('category', validationError)
+  })
+
+  test('Should show valid number state if Validation succeeds', () => {
+    makeSut()
+    populateField('number')
+    testStatusForField('number')
+  })
 })
