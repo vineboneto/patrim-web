@@ -82,13 +82,6 @@ describe('PatrimonyCreate Component', () => {
     testStatusForFieldSelect('category', validationError)
   })
 
-  test('Should show category error if Validation fails', () => {
-    const validationError = faker.random.words()
-    makeSut({ validationError })
-    populateFieldSelect('category')
-    testStatusForFieldSelect('category', validationError)
-  })
-
   test('Should show valid number state if Validation succeeds', () => {
     makeSut()
     populateField('number')
@@ -99,5 +92,11 @@ describe('PatrimonyCreate Component', () => {
     makeSut()
     populateField('brand')
     testStatusForField('brand')
+  })
+
+  test('Should show valid owner state if Validation succeeds', () => {
+    makeSut()
+    populateFieldSelect('owner')
+    testStatusForFieldSelect('owner')
   })
 })
