@@ -56,7 +56,7 @@ const PatrimonyCreate: React.FC<Props> = ({ validation }: Props) => {
     setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
     setState(old => ({
       ...old,
-      isFormInvalid: !!old.numberError || !!old.brandError
+      isFormInvalid: !!old.numberError || !!old.brandError || !!old.categoryError || !!old.ownerError
     }))
   }
 
