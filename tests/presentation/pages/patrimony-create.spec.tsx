@@ -94,4 +94,10 @@ describe('PatrimonyCreate Component', () => {
     populateField('number')
     testStatusForField('number')
   })
+
+  test('Should show valid brand state if Validation succeeds', () => {
+    makeSut()
+    populateField('brand')
+    testStatusForField('brand')
+  })
 })
