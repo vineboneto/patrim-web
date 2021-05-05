@@ -27,3 +27,15 @@ export const mockPatrimonyModel = (): PatrimonyModel => ({
     }
   }
 })
+
+export class AddPatrimonySpy implements AddPatrimony {
+  params: AddPatrimony.Params
+  account = mockPatrimonyModel()
+  callsCount = 0
+
+  async add (params: AddPatrimony.Params): Promise<AddPatrimony.Model> {
+    this.callsCount++
+    this.params = params
+    return this.account
+  }
+}

@@ -7,7 +7,7 @@ import {
   testStatusForFieldSelect,
   ValidationStub
 } from '@/tests/presentation/mocks'
-import { mockAccountModel } from '@/tests/domain/mocks'
+import { AddPatrimonySpy, mockAccountModel } from '@/tests/domain/mocks'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -21,10 +21,12 @@ type Params = {
 
 type SutTypes = {
   validationStub: ValidationStub
+  addPatrimonySpy: AddPatrimonySpy
 }
 
 const makeSut = (params?: Params): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/patrimonies/new'] })
+  const addPatrimonySpy = new AddPatrimonySpy()
   const setCurrentAccountMock = jest.fn()
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.validationError
@@ -32,13 +34,15 @@ const makeSut = (params?: Params): SutTypes => {
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
         <PatrimonyCreate
+          addPatrimony={addPatrimonySpy}
           validation={validationStub}
         />
       </Router>
     </ApiContext.Provider>
   )
   return {
-    validationStub
+    validationStub,
+    addPatrimonySpy
   }
 }
 
@@ -130,5 +134,20 @@ describe('PatrimonyCreate Component', () => {
     makeSut()
     await simulateValidSubmit()
     expect(screen.queryByTestId('spinner')).toBeInTheDocument()
+  })
+
+  test('Should call AddPatrimony with correct values', async () => {
+    const { addPatrimonySpy } = makeSut()
+    const number = faker.datatype.number().toString()
+    const brand = faker.random.word()
+    const category = faker.datatype.number({ min: 1, max: 3 })
+    const owner = faker.datatype.number({ min: 1, max: 3 })
+    await simulateValidSubmit(number, brand, owner.toString(), category.toString())
+    expect(addPatrimonySpy.params).toEqual({
+      number,
+      brand,
+      categoryId: category,
+      ownerId: owner
+    })
   })
 })
