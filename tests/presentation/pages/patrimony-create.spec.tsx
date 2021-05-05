@@ -150,4 +150,11 @@ describe('PatrimonyCreate Component', () => {
       ownerId: owner
     })
   })
+
+  test('Should call AddPatrimony only once', async () => {
+    const { addPatrimonySpy } = makeSut()
+    await simulateValidSubmit()
+    await simulateValidSubmit()
+    expect(addPatrimonySpy.callsCount).toBe(1)
+  })
 })
