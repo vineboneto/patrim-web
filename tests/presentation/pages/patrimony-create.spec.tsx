@@ -36,7 +36,7 @@ const makeSut = (params?: Params): SutTypes => {
   }
 }
 
-describe('PatrimonyCreate', () => {
+describe('PatrimonyCreate Component', () => {
   test('Should start with initial state', () => {
     const validationError = faker.random.words()
     makeSut({ validationError })
@@ -53,5 +53,12 @@ describe('PatrimonyCreate', () => {
     makeSut({ validationError })
     populateField('number')
     testStatusForField('number', validationError)
+  })
+
+  test('Should show brand error if Validation fails', () => {
+    const validationError = faker.random.words()
+    makeSut({ validationError })
+    populateField('brand')
+    testStatusForField('brand', validationError)
   })
 })
