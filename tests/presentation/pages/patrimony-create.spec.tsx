@@ -12,7 +12,7 @@ import { mockAccountModel } from '@/tests/domain/mocks'
 import React from 'react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import faker from 'faker'
 
 type Params = {
@@ -40,6 +40,17 @@ const makeSut = (params?: Params): SutTypes => {
   return {
     validationStub
   }
+}
+
+const simulateValidSubmit = async (number = faker.datatype.number().toString(), brand = faker.random.word(),
+  owner = faker.datatype.number().toString(), category = faker.datatype.number().toString()): Promise<void> => {
+  populateField('number', number)
+  populateField('brand', brand)
+  populateFieldSelect('owner', owner)
+  populateFieldSelect('category', category)
+  const form = screen.getByTestId('form')
+  fireEvent.submit(form)
+  await waitFor(() => screen.getByTestId('form'))
 }
 
 describe('PatrimonyCreate Component', () => {
@@ -113,5 +124,11 @@ describe('PatrimonyCreate Component', () => {
     populateFieldSelect('owner')
     populateFieldSelect('category')
     expect(screen.getByTestId('submit')).toBeEnabled()
+  })
+
+  test('Should show spinner on submit', async () => {
+    makeSut()
+    await simulateValidSubmit()
+    expect(screen.queryByTestId('spinner')).toBeInTheDocument()
   })
 })
