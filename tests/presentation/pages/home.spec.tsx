@@ -43,32 +43,72 @@ describe('Home Component', () => {
     expect(dashboardList.children).toHaveLength(0)
   })
 
+  test('Should go to patrimonies/new page', async () => {
+    const { history } = makeSut()
+    fireEvent.click(screen.getByTestId('Patrimony-menu'))
+    const patrimoniesLink = screen.getByTestId('patrimonies/new-link')
+    fireEvent.click(patrimoniesLink)
+    expect(history.length).toBe(2)
+    expect(history.location.pathname).toBe('/patrimonies/new')
+  })
+
   test('Should go to patrimonies page', async () => {
     const { history } = makeSut()
+    fireEvent.click(screen.getByTestId('Patrimony-menu'))
     const patrimoniesLink = screen.getByTestId('patrimonies-link')
     fireEvent.click(patrimoniesLink)
     expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/patrimonies')
   })
 
+  test('Should go to sectors/new page', async () => {
+    const { history } = makeSut()
+    fireEvent.click(screen.getByTestId('Sector-menu'))
+    const sectorsLink = screen.getByTestId('sectors/new-link')
+    fireEvent.click(sectorsLink)
+    expect(history.length).toBe(2)
+    expect(history.location.pathname).toBe('/sectors/new')
+  })
+
   test('Should go to sectors page', async () => {
     const { history } = makeSut()
+    fireEvent.click(screen.getByTestId('Sector-menu'))
     const sectorsLink = screen.getByTestId('sectors-link')
     fireEvent.click(sectorsLink)
     expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/sectors')
   })
 
+  test('Should go to categories/new page', async () => {
+    const { history } = makeSut()
+    fireEvent.click(screen.getByTestId('Category-menu'))
+    const categoriesLink = screen.getByTestId('categories/new-link')
+    fireEvent.click(categoriesLink)
+    expect(history.length).toBe(2)
+    expect(history.location.pathname).toBe('/categories/new')
+  })
+
   test('Should go to categories page', async () => {
     const { history } = makeSut()
+    fireEvent.click(screen.getByTestId('Category-menu'))
     const categoriesLink = screen.getByTestId('categories-link')
     fireEvent.click(categoriesLink)
     expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/categories')
   })
 
+  test('Should go to owners/new page', async () => {
+    const { history } = makeSut()
+    fireEvent.click(screen.getByTestId('Owner-menu'))
+    const ownersLink = screen.getByTestId('owners/new-link')
+    fireEvent.click(ownersLink)
+    expect(history.length).toBe(2)
+    expect(history.location.pathname).toBe('/owners/new')
+  })
+
   test('Should go to owners page', async () => {
     const { history } = makeSut()
+    fireEvent.click(screen.getByTestId('Owner-menu'))
     const ownersLink = screen.getByTestId('owners-link')
     fireEvent.click(ownersLink)
     expect(history.length).toBe(2)

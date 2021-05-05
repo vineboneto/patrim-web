@@ -1,19 +1,60 @@
 import './dashboard-styles.css'
-import { Item } from '@/presentation/components/dashboard/components'
-import { DashboardContext } from '@/presentation/components'
+import { ItemMenu, SubItemsMenu } from '@/presentation/components/dashboard/components'
+import { DashboardContext, DashboardMenuContext, List, Divider } from '@/presentation/components'
 
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Drawer from '@material-ui/core/Drawer'
-import List from '@material-ui/core/List'
+
+export const optionsMenu = [{
+  text: 'Patrimônio',
+  name: 'Patrimony',
+  subMenu: [{
+    text: 'Novo',
+    link: 'patrimonies/new'
+  },{
+    text: 'Buscar',
+    link: 'patrimonies'
+  }]
+}, {
+  text: 'Proprietário',
+  name: 'Owner',
+  subMenu: [{
+    text: 'Novo',
+    link: 'owners/new'
+  },{
+    text: 'Buscar',
+    link: 'owners'
+  }]
+}, {
+  text: 'Setor',
+  name: 'Sector',
+  subMenu: [{
+    text: 'Novo',
+    link: 'sectors/new'
+  },{
+    text: 'Buscar',
+    link: 'sectors'
+  }]
+}, {
+  text: 'Categoria',
+  name: 'Category',
+  subMenu: [{
+    text: 'Novo',
+    link: 'categories/new'
+  },{
+    text: 'Buscar',
+    link: 'categories'
+  }]
+}]
 
 const DashBoard: React.FC = () => {
   const { state } = useContext(DashboardContext)
-  const optionsMenu = [
-    { text: 'Patrimônio', link: 'patrimonies' },
-    { text: 'Setor', link: 'sectors' },
-    { text: 'Proprietário', link: 'owners' },
-    { text: 'Categoria', link: 'categories' }
-  ]
+  const [state_, setState_] = useState({
+    openMenuPatrimony: false,
+    openMenuCategory: false,
+    openMenuOwner: false,
+    openMenuSector: false
+  })
 
   return (
     <Drawer
@@ -25,9 +66,15 @@ const DashBoard: React.FC = () => {
     >
       { state.openDashboard &&
       <List>
-        {optionsMenu.map((option) => (
-          <Item key={option.text} text={option.text} link={option.link} />
-        ))}
+        <DashboardMenuContext.Provider value={{ state_, setState_ }}>
+          {optionsMenu.map(menu => (
+            <div key={menu.name}>
+              <ItemMenu text={menu.text} name={menu.name} />
+              <SubItemsMenu name={menu.name} itemLinks={menu.subMenu} />
+              <Divider />
+            </div>
+          ))}
+        </DashboardMenuContext.Provider>
       </List> }
     </Drawer>
   )
