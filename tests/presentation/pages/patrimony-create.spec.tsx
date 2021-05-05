@@ -157,4 +157,11 @@ describe('PatrimonyCreate Component', () => {
     await simulateValidSubmit()
     expect(addPatrimonySpy.callsCount).toBe(1)
   })
+
+  test('Should not call AddPatrimony if form is invalid', async () => {
+    const validationError = faker.random.words()
+    const { addPatrimonySpy } = makeSut({ validationError })
+    await simulateValidSubmit()
+    expect(addPatrimonySpy.callsCount).toBe(0)
+  })
 })
