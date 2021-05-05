@@ -6,6 +6,14 @@
   width: 225px;
 }
 
+.dashboard-wrap .home-logo {
+  text-decoration: none;
+}
+
+.dashboard-wrap .home-logo span {
+  font-weight: bold;
+}
+
 @media (max-width: 992px) {
   .dashboard-wrap > :first-child {
     position: absolute;

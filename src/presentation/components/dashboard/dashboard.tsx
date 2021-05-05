@@ -1,5 +1,5 @@
 import './dashboard-styles.css'
-import { ItemMenu, SubItemsMenu } from '@/presentation/components/dashboard/components'
+import { ItemMenu, SubItemsMenu, ItemLink } from '@/presentation/components/dashboard/components'
 import { DashboardContext, DashboardMenuContext, List, Divider } from '@/presentation/components'
 
 import React, { useContext, useState } from 'react'
@@ -10,40 +10,40 @@ export const optionsMenu = [{
   name: 'Patrimony',
   subMenu: [{
     text: 'Novo',
-    link: 'patrimonies/new'
+    link: '/patrimonies/new'
   },{
     text: 'Buscar',
-    link: 'patrimonies'
+    link: '/patrimonies'
   }]
 }, {
   text: 'Proprietário',
   name: 'Owner',
   subMenu: [{
     text: 'Novo',
-    link: 'owners/new'
+    link: '/owners/new'
   },{
     text: 'Buscar',
-    link: 'owners'
+    link: '/owners'
   }]
 }, {
   text: 'Setor',
   name: 'Sector',
   subMenu: [{
     text: 'Novo',
-    link: 'sectors/new'
+    link: '/sectors/new'
   },{
     text: 'Buscar',
-    link: 'sectors'
+    link: '/sectors'
   }]
 }, {
   text: 'Categoria',
   name: 'Category',
   subMenu: [{
     text: 'Novo',
-    link: 'categories/new'
+    link: '/categories/new'
   },{
     text: 'Buscar',
-    link: 'categories'
+    link: '/categories'
   }]
 }]
 
@@ -67,6 +67,8 @@ const DashBoard: React.FC = () => {
       { state.openDashboard &&
       <List>
         <DashboardMenuContext.Provider value={{ state_, setState_ }}>
+          <ItemLink text="Home" link="/" className="home-logo" data-testid="Home-link" />
+          <Divider />
           {optionsMenu.map(menu => (
             <div key={menu.name}>
               <ItemMenu text={menu.text} name={menu.name} />

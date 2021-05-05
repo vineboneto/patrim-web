@@ -36,86 +36,94 @@ describe('Home Component', () => {
     expect(dashboard).toBeVisible()
   })
 
-  test('Should close dashboard on click menu', async () => {
+  test('Should close dashboard on click menu', () => {
     makeSut()
     fireEvent.click(screen.queryByTestId('menu'))
     const dashboardList = screen.getByTestId('dashboard').children[0]
     expect(dashboardList.children).toHaveLength(0)
   })
 
-  test('Should go to patrimonies/new page', async () => {
+  test('Should go to home', () => {
+    const { history } = makeSut()
+    const homeLink = screen.getByTestId('Home-link')
+    fireEvent.click(homeLink)
+    expect(history.length).toBe(2)
+    expect(history.location.pathname).toBe('/')
+  })
+
+  test('Should go to patrimonies/new page', () => {
     const { history } = makeSut()
     fireEvent.click(screen.getByTestId('Patrimony-menu'))
-    const patrimoniesLink = screen.getByTestId('patrimonies/new-link')
+    const patrimoniesLink = screen.getByTestId('/patrimonies/new-link')
     fireEvent.click(patrimoniesLink)
     expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/patrimonies/new')
   })
 
-  test('Should go to patrimonies page', async () => {
+  test('Should go to patrimonies page', () => {
     const { history } = makeSut()
     fireEvent.click(screen.getByTestId('Patrimony-menu'))
-    const patrimoniesLink = screen.getByTestId('patrimonies-link')
+    const patrimoniesLink = screen.getByTestId('/patrimonies-link')
     fireEvent.click(patrimoniesLink)
     expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/patrimonies')
   })
 
-  test('Should go to sectors/new page', async () => {
+  test('Should go to sectors/new page', () => {
     const { history } = makeSut()
     fireEvent.click(screen.getByTestId('Sector-menu'))
-    const sectorsLink = screen.getByTestId('sectors/new-link')
+    const sectorsLink = screen.getByTestId('/sectors/new-link')
     fireEvent.click(sectorsLink)
     expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/sectors/new')
   })
 
-  test('Should go to sectors page', async () => {
+  test('Should go to sectors page', () => {
     const { history } = makeSut()
     fireEvent.click(screen.getByTestId('Sector-menu'))
-    const sectorsLink = screen.getByTestId('sectors-link')
+    const sectorsLink = screen.getByTestId('/sectors-link')
     fireEvent.click(sectorsLink)
     expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/sectors')
   })
 
-  test('Should go to categories/new page', async () => {
+  test('Should go to categories/new page', () => {
     const { history } = makeSut()
     fireEvent.click(screen.getByTestId('Category-menu'))
-    const categoriesLink = screen.getByTestId('categories/new-link')
+    const categoriesLink = screen.getByTestId('/categories/new-link')
     fireEvent.click(categoriesLink)
     expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/categories/new')
   })
 
-  test('Should go to categories page', async () => {
+  test('Should go to categories page', () => {
     const { history } = makeSut()
     fireEvent.click(screen.getByTestId('Category-menu'))
-    const categoriesLink = screen.getByTestId('categories-link')
+    const categoriesLink = screen.getByTestId('/categories-link')
     fireEvent.click(categoriesLink)
     expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/categories')
   })
 
-  test('Should go to owners/new page', async () => {
+  test('Should go to owners/new page', () => {
     const { history } = makeSut()
     fireEvent.click(screen.getByTestId('Owner-menu'))
-    const ownersLink = screen.getByTestId('owners/new-link')
+    const ownersLink = screen.getByTestId('/owners/new-link')
     fireEvent.click(ownersLink)
     expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/owners/new')
   })
 
-  test('Should go to owners page', async () => {
+  test('Should go to owners page', () => {
     const { history } = makeSut()
     fireEvent.click(screen.getByTestId('Owner-menu'))
-    const ownersLink = screen.getByTestId('owners-link')
+    const ownersLink = screen.getByTestId('/owners-link')
     fireEvent.click(ownersLink)
     expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/owners')
   })
 
-  test('Should go to login page on exit', async () => {
+  test('Should go to login page on exit', () => {
     const { history, setCurrentAccountMock } = makeSut()
     const exitLink = screen.getByTestId('exit-link')
     fireEvent.click(exitLink)
