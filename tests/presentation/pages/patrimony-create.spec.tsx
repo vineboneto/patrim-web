@@ -99,4 +99,10 @@ describe('PatrimonyCreate Component', () => {
     populateFieldSelect('owner')
     testStatusForFieldSelect('owner')
   })
+
+  test('Should show valid category state if Validation succeeds', () => {
+    makeSut()
+    populateFieldSelect('category')
+    testStatusForFieldSelect('category')
+  })
 })
