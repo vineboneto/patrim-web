@@ -10,10 +10,15 @@ import {
   SubmitButton,
   FormStatus
 } from '@/presentation/components'
+import { Validation } from '@/presentation/protocols'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const PatrimonyCreate: React.FC = () => {
+type Props = {
+  validation: Validation
+}
+
+const PatrimonyCreate: React.FC<Props> = ({ validation }: Props) => {
   const optionsCategory = [
     { value: '1', label: 'Computador' },
     { value: '2', label: 'Impressora' },
@@ -27,13 +32,33 @@ const PatrimonyCreate: React.FC = () => {
   const [state, setState] = useState({
     openDashboard: true,
     isLoading: false,
+    isFormInvalid: true,
     mainError: '',
     number: '',
     numberError: '',
     brand: '',
     brandError: '',
+    category: '',
+    categoryError: '',
+    owner: '',
+    ownerError: '',
     description: ''
   })
+
+  useEffect(() => { validate('number') }, [state.number])
+  useEffect(() => { validate('brand') }, [state.brand])
+  useEffect(() => { validate('owner') }, [state.owner])
+  useEffect(() => { validate('category') }, [state.category])
+
+  const validate = (field: string): void => {
+    const { number, brand } = state
+    const formData = { number, brand }
+    setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
+    setState(old => ({
+      ...old,
+      isFormInvalid: !!old.numberError || !!old.brandError
+    }))
+  }
 
   return (
     <div className="patrimony-create-wrap">
@@ -41,7 +66,7 @@ const PatrimonyCreate: React.FC = () => {
         <Header title="Novo Patrimônio" />
         <DashBoard />
       </DashboardContext.Provider>
-      <FormContext.Provider value={{ state }} >
+      <FormContext.Provider value={{ state, setState }} >
         <div className="form-wrap" style={ state.openDashboard ? {} : { marginLeft: '30px' }}>
           <form>
             <h2>Novo Patrimônio</h2>

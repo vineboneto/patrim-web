@@ -5,6 +5,19 @@ import { PatrimonyCreate } from '@/presentation/pages'
 
 import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { Validation } from '@/presentation/protocols'
+
+class ValidationStub implements Validation {
+  validate (fieldName: string, input: object): string {
+    return ''
+  }
+}
+
+const makePatrimonyCreate: React.FC = () => {
+  return (
+    <PatrimonyCreate validation={new ValidationStub()} />
+  )
+}
 
 const Router: React.FC = () => {
   return (
@@ -17,7 +30,7 @@ const Router: React.FC = () => {
           <Route path="/signup" exact component={makeSignUp} />
           <Route path="/login" exact component={makeLogin} />
           <PrivateRoute path="/" exact component={makeHome} />
-          <PrivateRoute path="/patrimonies/new" exact component={PatrimonyCreate} />
+          <PrivateRoute path="/patrimonies/new" exact component={makePatrimonyCreate} />
         </Switch>
       </BrowserRouter>
     </ApiContext.Provider>
