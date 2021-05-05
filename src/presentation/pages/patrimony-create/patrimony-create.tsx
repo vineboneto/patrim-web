@@ -75,6 +75,11 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) =
         ownerId: Number(owner)
       })
     } catch (error) {
+      setState(old => ({
+        ...old,
+        mainError: error.message,
+        isLoading: false
+      }))
     }
   }
 
