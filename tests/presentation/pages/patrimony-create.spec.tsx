@@ -105,4 +105,13 @@ describe('PatrimonyCreate Component', () => {
     populateFieldSelect('category')
     testStatusForFieldSelect('category')
   })
+
+  test('Should enable submit button if form is valid', () => {
+    makeSut()
+    populateField('number')
+    populateField('brand')
+    populateFieldSelect('owner')
+    populateFieldSelect('category')
+    expect(screen.getByTestId('submit')).toBeEnabled()
+  })
 })
