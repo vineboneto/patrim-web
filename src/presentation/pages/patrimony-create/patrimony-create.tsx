@@ -11,14 +11,16 @@ import {
   FormStatus
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
+import { AddPatrimony } from '@/domain/usecases'
 
 import React, { FormEvent, useEffect, useState } from 'react'
 
 type Props = {
   validation: Validation
+  addPatrimony: AddPatrimony
 }
 
-const PatrimonyCreate: React.FC<Props> = ({ validation }: Props) => {
+const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) => {
   const optionsCategory = [
     { value: '1', label: 'Computador' },
     { value: '2', label: 'Impressora' },
@@ -64,6 +66,13 @@ const PatrimonyCreate: React.FC<Props> = ({ validation }: Props) => {
     event.preventDefault()
     try {
       setState(old => ({ ...old, isLoading: true }))
+      const { brand, category, owner, number } = state
+      await addPatrimony.add({
+        number,
+        brand,
+        categoryId: Number(category),
+        ownerId: Number(owner)
+      })
     } catch (error) {
     }
   }
