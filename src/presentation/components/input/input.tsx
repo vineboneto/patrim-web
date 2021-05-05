@@ -1,4 +1,3 @@
-// import './input-styles.css'
 import { FormContext } from '@/presentation/components'
 
 import React, { ChangeEvent, InputHTMLAttributes, useContext } from 'react'
@@ -16,8 +15,8 @@ const Input: React.FC<Props> = (props: Props) => {
     <div className="input-wrap">
       <TextField
         data-testid={`${props.name}`}
-        style={{ width: '100%', margin: '10px 0' }}
         type={props.type}
+        style={{ width: '100%', margin: '10px 0' }}
         name={props.name}
         onChange={handleChange}
         error={error !== undefined}

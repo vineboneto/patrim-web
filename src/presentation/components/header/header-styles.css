@@ -12,3 +12,13 @@
   font-family: 'Poppins';
   font-weight: 200;
 }
+
+@media (max-width: 540px) {
+  .header-wrap {
+    padding: 0 10px;
+  }
+
+  .header-wrap h2 {
+    font-size: 15px;
+  }
+}

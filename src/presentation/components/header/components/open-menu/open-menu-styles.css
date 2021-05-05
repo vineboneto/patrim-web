@@ -6,3 +6,9 @@
 .menu-wrap button span h6 {
   padding: 20px;
 }
+
+@media (max-width: 540px) {
+  .menu-wrap h6 {
+    font-size: 18px;
+  }
+}
