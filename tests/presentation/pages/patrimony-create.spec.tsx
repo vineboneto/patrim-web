@@ -47,9 +47,11 @@ const makeSut = (params?: Params): SutTypes => {
 }
 
 const simulateValidSubmit = async (number = faker.datatype.number().toString(), brand = faker.random.word(),
-  owner = faker.datatype.number().toString(), category = faker.datatype.number().toString()): Promise<void> => {
+  owner = faker.datatype.number().toString(), category = faker.datatype.number().toString(),
+  description = faker.random.words()): Promise<void> => {
   populateField('number', number)
   populateField('brand', brand)
+  populateField('description', description)
   populateFieldSelect('owner', owner)
   populateFieldSelect('category', category)
   const form = screen.getByTestId('form')
@@ -61,7 +63,7 @@ describe('PatrimonyCreate Component', () => {
   test('Should start with initial state', () => {
     const validationError = faker.random.words()
     makeSut({ validationError })
-    expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
+    expect(screen.getByTestId('status-wrap').children).toHaveLength(0)
     expect(screen.getByTestId('submit')).toBeDisabled()
     testStatusForField('number', validationError)
     testStatusForField('brand', validationError)
@@ -130,32 +132,21 @@ describe('PatrimonyCreate Component', () => {
     expect(screen.getByTestId('submit')).toBeEnabled()
   })
 
-  test('Should show spinner on submit', async () => {
-    makeSut()
-    await simulateValidSubmit()
-    expect(screen.queryByTestId('spinner')).toBeInTheDocument()
-  })
-
   test('Should call AddPatrimony with correct values', async () => {
     const { addPatrimonySpy } = makeSut()
     const number = faker.datatype.number().toString()
     const brand = faker.random.word()
     const category = faker.datatype.number({ min: 1, max: 3 })
     const owner = faker.datatype.number({ min: 1, max: 3 })
-    await simulateValidSubmit(number, brand, owner.toString(), category.toString())
+    const description = faker.random.words()
+    await simulateValidSubmit(number, brand, owner.toString(), category.toString(), description)
     expect(addPatrimonySpy.params).toEqual({
       number,
       brand,
       categoryId: category,
-      ownerId: owner
+      ownerId: owner,
+      description
     })
-  })
-
-  test('Should call AddPatrimony only once', async () => {
-    const { addPatrimonySpy } = makeSut()
-    await simulateValidSubmit()
-    await simulateValidSubmit()
-    expect(addPatrimonySpy.callsCount).toBe(1)
   })
 
   test('Should not call AddPatrimony if form is invalid', async () => {
@@ -172,6 +163,12 @@ describe('PatrimonyCreate Component', () => {
     jest.spyOn(addPatrimonySpy, 'add').mockRejectedValueOnce(error)
     await simulateValidSubmit()
     expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
-    expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
+  })
+
+  test('Should present success message if add success', async () => {
+    const { addPatrimonySpy } = makeSut()
+    jest.spyOn(addPatrimonySpy, 'add').mockResolvedValueOnce(null)
+    await simulateValidSubmit()
+    expect(screen.getByTestId('success-message')).toHaveTextContent('Patrimônio adicionado com sucesso')
   })
 })
