@@ -166,8 +166,7 @@ describe('PatrimonyCreate Component', () => {
   })
 
   test('Should present success message if add success', async () => {
-    const { addPatrimonySpy } = makeSut()
-    jest.spyOn(addPatrimonySpy, 'add').mockResolvedValueOnce(null)
+    makeSut()
     await simulateValidSubmit()
     expect(screen.getByTestId('success-message')).toHaveTextContent('Patrimônio adicionado com sucesso')
   })
@@ -177,5 +176,24 @@ describe('PatrimonyCreate Component', () => {
     fireEvent.click(screen.getByTestId('menu'))
     const children = screen.getByTestId('form-wrap')
     expect(children.style.marginLeft).toBe('30px')
+  })
+
+  test('Should close alert success on click button close', async () => {
+    makeSut()
+    await simulateValidSubmit()
+    const alertButtonClose = screen.getByTestId('success-message').children[2].children[0]
+    fireEvent.click(alertButtonClose)
+    expect(screen.getByTestId('status-wrap').children).toHaveLength(0)
+  })
+
+  test('Should close alert error on click button close', async () => {
+    const { addPatrimonySpy } = makeSut()
+    const error = new Error()
+    error.message = 'something error'
+    jest.spyOn(addPatrimonySpy, 'add').mockRejectedValueOnce(error)
+    await simulateValidSubmit()
+    const alertButtonClose = screen.getByTestId('main-error').children[2].children[0]
+    fireEvent.click(alertButtonClose)
+    expect(screen.getByTestId('status-wrap').children).toHaveLength(0)
   })
 })
