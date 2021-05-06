@@ -56,7 +56,7 @@ describe('Login Component', () => {
   test('Should start with initial state', () => {
     const validationError = faker.random.words()
     makeSut({ validationError })
-    expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
+    expect(screen.getByTestId('status-wrap').children).toHaveLength(0)
     expect(screen.getByTestId('submit')).toBeDisabled()
     testStatusForField('email', validationError)
     testStatusForField('password', validationError)
@@ -133,7 +133,7 @@ describe('Login Component', () => {
     jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
     await simulateValidSubmit()
     expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
-    expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
+    expect(screen.getByTestId('status-wrap').children).toHaveLength(1)
   })
 
   test('Should call SetCurrentAccount on success', async () => {

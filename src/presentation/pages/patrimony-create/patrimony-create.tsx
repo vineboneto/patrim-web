@@ -8,8 +8,7 @@ import {
   Textarea,
   Select,
   SubmitButton,
-  Loading,
-  Alert
+  FormStatus
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { AddPatrimony } from '@/domain/usecases'
@@ -76,8 +75,18 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) =
       ownerId: Number(owner),
       description
     })
-      .then((patrimony) => setState(old => ({ ...old, successMessage: 'Patrimônio adicionado com sucesso', isLoading: false })))
-      .catch((error) => setState(old => ({ ...old, mainError: error.message, isLoading: false })))
+      .then((patrimony) => setState(old => ({
+        ...old,
+        successMessage: 'Patrimônio adicionado com sucesso',
+        isLoading: false,
+        mainError: ''
+      })))
+      .catch((error) => setState(old => ({
+        ...old,
+        mainError: error.message,
+        successMessage: '',
+        isLoading: false
+      })))
   }
 
   return (
@@ -100,11 +109,7 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) =
             </div>
             <Textarea name="description" placeholder="Observação" />
             <SubmitButton text="Salvar" />
-            <div className="status-wrap" data-testid="status-wrap">
-              { state.isLoading && <Loading /> }
-              { state.successMessage && <Alert type="success" message={state.successMessage} data-testid="success-message" /> }
-              { state.mainError && <Alert type="error" message={state.mainError} data-testid="main-error" /> }
-            </div>
+            <FormStatus />
           </form>
         </div>
       </FormContext.Provider>
