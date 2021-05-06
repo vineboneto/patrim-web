@@ -1,23 +1,9 @@
-import { makeSignUp, makeLogin, makeHome } from '@/main/factories/pages'
+import { makeSignUp, makeLogin, makeHome, makePatrimonyCreate } from '@/main/factories/pages'
 import { getCurrentAccountAdapter, setCurrentAccountAdapter } from '@/main/adapters'
 import { ApiContext, PrivateRoute } from '@/presentation/components'
-import { PatrimonyCreate } from '@/presentation/pages'
 
 import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import { Validation } from '@/presentation/protocols'
-
-class ValidationStub implements Validation {
-  validate (fieldName: string, input: object): string {
-    return ''
-  }
-}
-
-const makePatrimonyCreate: React.FC = () => {
-  return (
-    <PatrimonyCreate validation={new ValidationStub()} />
-  )
-}
 
 const Router: React.FC = () => {
   return (
