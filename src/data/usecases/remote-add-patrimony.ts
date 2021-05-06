@@ -17,7 +17,7 @@ export class RemoteAddPatrimony implements AddPatrimony {
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok: return httpResponse.body
       case HttpStatusCode.forbidden: throw new AccessDeniedError()
-      case HttpStatusCode.unprocessableEntity: throw new UnprocessableEntityError(params.number)
+      case HttpStatusCode.unprocessableEntity: throw new UnprocessableEntityError('número', params.number)
       default: throw new UnexpectedError()
     }
   }

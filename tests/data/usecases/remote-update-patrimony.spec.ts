@@ -47,7 +47,7 @@ describe('RemoteUpdatePatrimony', () => {
     }
     const params = mockUpdatePatrimonyParams()
     const promise = sut.update(params)
-    await expect(promise).rejects.toThrow(new UnprocessableEntityError(params.number))
+    await expect(promise).rejects.toThrow(new UnprocessableEntityError('número', params.number))
   })
 
   test('Should throw UnexpectedError if HttpClient returns 400', async () => {
