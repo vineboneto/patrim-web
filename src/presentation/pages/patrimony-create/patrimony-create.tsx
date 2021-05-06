@@ -87,7 +87,7 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) =
         <DashBoard />
       </DashboardContext.Provider>
       <FormContext.Provider value={{ state, setState }} >
-        <div className="form-wrap" style={ state.openDashboard ? {} : { marginLeft: '30px' }}>
+        <div className="form-wrap" style={ state.openDashboard ? {} : { marginLeft: '30px' }} data-testid="form-wrap">
           <form data-testid="form" onSubmit={handleSubmit}>
             <h2>Novo Patrimônio</h2>
             <div className="input-group">
