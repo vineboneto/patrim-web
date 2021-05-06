@@ -1,6 +1,6 @@
 import { AddPatrimony } from '@/domain/usecases'
 import { HttpClient, HttpStatusCode } from '@/data/protocols'
-import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError, UnprocessableEntityError } from '@/domain/errors'
 
 export class RemoteAddPatrimony implements AddPatrimony {
   constructor (
@@ -17,6 +17,7 @@ export class RemoteAddPatrimony implements AddPatrimony {
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok: return httpResponse.body
       case HttpStatusCode.forbidden: throw new AccessDeniedError()
+      case HttpStatusCode.unprocessableEntity: throw new UnprocessableEntityError(params.number)
       default: throw new UnexpectedError()
     }
   }
