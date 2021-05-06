@@ -8,7 +8,8 @@ import {
   Textarea,
   Select,
   SubmitButton,
-  FormStatus
+  Loading,
+  Alert
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { AddPatrimony } from '@/domain/usecases'
@@ -35,6 +36,7 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) =
     openDashboard: true,
     isLoading: false,
     isFormInvalid: true,
+    successMessage: '',
     mainError: '',
     number: '',
     numberError: '',
@@ -53,8 +55,8 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) =
   useEffect(() => { validate('category') }, [state.category])
 
   const validate = (field: string): void => {
-    const { number, brand } = state
-    const formData = { number, brand }
+    const { number, brand, category, owner } = state
+    const formData = { number, brand, category, owner }
     setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
     setState(old => ({
       ...old,
@@ -64,23 +66,18 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) =
 
   const handleSubmit = async (event: FormEvent): Promise<void> => {
     event.preventDefault()
-    try {
-      if (state.isFormInvalid || state.isLoading) return
-      setState(old => ({ ...old, isLoading: true }))
-      const { brand, category, owner, number } = state
-      await addPatrimony.add({
-        number,
-        brand,
-        categoryId: Number(category),
-        ownerId: Number(owner)
-      })
-    } catch (error) {
-      setState(old => ({
-        ...old,
-        mainError: error.message,
-        isLoading: false
-      }))
-    }
+    if (state.isFormInvalid || state.isLoading) return
+    setState(old => ({ ...old, isLoading: true }))
+    const { brand, category, owner, number, description } = state
+    addPatrimony.add({
+      number,
+      brand,
+      categoryId: Number(category),
+      ownerId: Number(owner),
+      description
+    })
+      .then((patrimony) => setState(old => ({ ...old, successMessage: 'Patrimônio adicionado com sucesso', isLoading: false })))
+      .catch((error) => setState(old => ({ ...old, mainError: error.message, isLoading: false })))
   }
 
   return (
@@ -103,7 +100,11 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) =
             </div>
             <Textarea name="description" placeholder="Observação" />
             <SubmitButton text="Salvar" />
-            <FormStatus />
+            <div className="status-wrap" data-testid="status-wrap">
+              { state.isLoading && <Loading /> }
+              { state.successMessage && <Alert type="success" message={state.successMessage} data-testid="success-message" /> }
+              { state.mainError && <Alert type="error" message={state.mainError} data-testid="main-error" /> }
+            </div>
           </form>
         </div>
       </FormContext.Provider>

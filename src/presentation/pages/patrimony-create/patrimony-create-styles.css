@@ -39,6 +39,14 @@
   width: 50%;
 }
 
+.patrimony-create-wrap .form-wrap .status-wrap {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 @media (max-width: 922px) {
   .patrimony-create-wrap .form-wrap .input-group {
     flex-direction: column;
