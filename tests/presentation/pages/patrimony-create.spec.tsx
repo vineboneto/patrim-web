@@ -7,7 +7,7 @@ import {
   testStatusForFieldSelect,
   ValidationStub
 } from '@/tests/presentation/mocks'
-import { AddPatrimonySpy, mockAccountModel } from '@/tests/domain/mocks'
+import { AddPatrimonySpy, mockAccountModel, UpdatePatrimonySpy } from '@/tests/domain/mocks'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -18,22 +18,27 @@ import { AccessDeniedError } from '@/domain/errors'
 import { AccountModel } from '@/domain/models'
 
 type Params = {
-  validationError: string
+  validationError?: string
+  addPatrimonySpy?: AddPatrimonySpy
 }
 
 type SutTypes = {
   validationStub: ValidationStub
   addPatrimonySpy: AddPatrimonySpy
+  updatePatrimonySpy: UpdatePatrimonySpy
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
 }
 
-const makeSut = (params?: Params, addPatrimonySpyParam?: AddPatrimonySpy): SutTypes => {
+const makeSut = ({
+  addPatrimonySpy = new AddPatrimonySpy(),
+  validationError = undefined
+}: Params = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/patrimonies/new'] })
   const setCurrentAccountMock = jest.fn()
-  const addPatrimonySpy = addPatrimonySpyParam || new AddPatrimonySpy()
+  const updatePatrimonySpy = new UpdatePatrimonySpy()
   const validationStub = new ValidationStub()
-  validationStub.errorMessage = params?.validationError
+  validationStub.errorMessage = validationError
   render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
@@ -47,6 +52,7 @@ const makeSut = (params?: Params, addPatrimonySpyParam?: AddPatrimonySpy): SutTy
   return {
     validationStub,
     addPatrimonySpy,
+    updatePatrimonySpy,
     setCurrentAccountMock,
     history
   }
@@ -206,7 +212,7 @@ describe('PatrimonyCreate Component', () => {
   test('Should logout on AccessDeniedError', async () => {
     const addPatrimonySpy = new AddPatrimonySpy()
     jest.spyOn(addPatrimonySpy, 'add').mockRejectedValueOnce(new AccessDeniedError())
-    const { history, setCurrentAccountMock } = makeSut(null, addPatrimonySpy)
+    const { history, setCurrentAccountMock } = makeSut({ addPatrimonySpy })
     await simulateValidSubmit()
     await waitFor(() => screen.getByTestId('form'))
     expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)

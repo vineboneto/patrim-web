@@ -1,4 +1,6 @@
 import { UpdatePatrimony } from '@/domain/usecases'
+import { mockPatrimonyModel } from '@/tests/domain/mocks'
+
 import faker from 'faker'
 
 export const mockUpdatePatrimonyParams = (): UpdatePatrimony.Params => ({
@@ -8,3 +10,15 @@ export const mockUpdatePatrimonyParams = (): UpdatePatrimony.Params => ({
   categoryId: faker.datatype.number(),
   ownerId: faker.datatype.number()
 })
+
+export class UpdatePatrimonySpy implements UpdatePatrimony {
+  params: UpdatePatrimony.Params
+  account = mockPatrimonyModel()
+  callsCount = 0
+
+  async update (params: UpdatePatrimony.Params): Promise<UpdatePatrimony.Model> {
+    this.callsCount++
+    this.params = params
+    return this.account
+  }
+}

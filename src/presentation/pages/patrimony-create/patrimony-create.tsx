@@ -105,7 +105,7 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) =
               <Select name="category" placeholder="Categoria" options={optionsCategory} />
             </div>
             <Textarea name="description" placeholder="Observação" />
-            <SubmitButton text="Salvar" />
+            <SubmitButton text="Criar" />
             <FormStatus />
           </form>
         </div>
