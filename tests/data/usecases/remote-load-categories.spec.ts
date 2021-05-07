@@ -1,6 +1,6 @@
 import { RemoteLoadCategories } from '@/data/usecases'
 import { HttpStatusCode } from '@/data/protocols'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
 
 import faker from 'faker'
@@ -19,7 +19,7 @@ const makeSut = (url = faker.internet.url()): SutTypes => {
   }
 }
 
-describe('LoadCategories', () => {
+describe('RemoteLoadCategories', () => {
   test('Should call HttpClient Client with correct values', async () => {
     const url = faker.internet.url()
     const { sut, httpClientSpy } = makeSut(url)
@@ -35,5 +35,14 @@ describe('LoadCategories', () => {
     }
     const promise = sut.load()
     await expect(promise).rejects.toThrow(new AccessDeniedError())
+  })
+
+  test('Should throw UnexpectedError if HttpClient returns 400', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest
+    }
+    const promise = sut.load()
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
