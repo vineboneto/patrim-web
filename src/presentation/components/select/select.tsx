@@ -7,7 +7,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
 import MenuItem from '@material-ui/core/MenuItem'
 
-type ItemProps = {
+export type ItemProps = {
   value: string
   label: string
 }

@@ -7,26 +7,28 @@ import {
   Input,
   Textarea,
   Select,
+  ItemProps,
   SubmitButton,
   FormStatus
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
-import { AddPatrimony } from '@/domain/usecases'
+import { AddPatrimony, LoadCategories } from '@/domain/usecases'
 
 import React, { FormEvent, useEffect, useState } from 'react'
 
 type Props = {
   validation: Validation
   addPatrimony: AddPatrimony
+  loadCategories: LoadCategories
 }
 
-const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) => {
-  const optionsCategory = [
-    { value: '1', label: 'Computador' },
-    { value: '2', label: 'Impressora' },
-    { value: '3', label: 'Monitor' }
-  ]
+const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCategories }: Props) => {
+  // const optionsCategory = [
+  //   { value: '1', label: 'Computador' },
+  //   { value: '2', label: 'Impressora' },
+  //   { value: '3', label: 'Monitor' }
+  // ]
   const optionsOwners = [
     { value: '1', label: 'Weusley' },
     { value: '2', label: 'Jessica' },
@@ -49,8 +51,18 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) =
     categoryError: '',
     owner: '',
     ownerError: '',
-    description: ''
+    description: '',
+    categories: [] as ItemProps[]
   })
+
+  useEffect(() => {
+    loadCategories.load()
+      .then(categories => setState({
+        ...state,
+        categories: categories.map(category => ({ value: category.id.toString(), label: category.name }))
+      }))
+      .catch(error => console.log(error))
+  }, [])
 
   useEffect(() => { validate('number') }, [state.number])
   useEffect(() => { validate('brand') }, [state.brand])
@@ -72,6 +84,7 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) =
     if (state.isFormInvalid || state.isLoading) return
     setState(old => ({ ...old, isLoading: true }))
     const { brand, category, owner, number, description } = state
+
     addPatrimony.add({
       number,
       brand,
@@ -102,7 +115,7 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) =
             </div>
             <div className="input-group">
               <Input type="text" name="brand" placeholder="Marca" />
-              <Select name="category" placeholder="Categoria" options={optionsCategory} />
+              <Select name="category" placeholder="Categoria" options={state.categories} />
             </div>
             <Textarea name="description" placeholder="Observação" />
             <SubmitButton text="Criar" />

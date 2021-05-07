@@ -8,7 +8,14 @@ export const mockCategoryModel = (): LoadCategories.Model => ({
 })
 
 export const mockCategoriesModel = (): LoadCategories.Model[] => ([
-  mockCategoryModel(),
-  mockCategoryModel(),
-  mockCategoryModel()
+  {
+    id: 1,
+    name: faker.name.findName()
+  }, {
+    id: 2,
+    name: faker.name.findName()
+  }, {
+    id: 3,
+    name: faker.name.findName()
+  }
 ])

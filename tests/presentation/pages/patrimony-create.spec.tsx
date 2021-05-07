@@ -1,5 +1,7 @@
 import { PatrimonyCreate } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
+import { AccountModel } from '@/domain/models'
+import { AccessDeniedError } from '@/domain/errors'
 import {
   populateField,
   populateFieldSelect,
@@ -7,15 +9,13 @@ import {
   testStatusForFieldSelect,
   ValidationStub
 } from '@/tests/presentation/mocks'
-import { AddPatrimonySpy, mockAccountModel, UpdatePatrimonySpy } from '@/tests/domain/mocks'
+import { AddPatrimonySpy, LoadCategoriesSpy, mockAccountModel } from '@/tests/domain/mocks'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import faker from 'faker'
-import { AccessDeniedError } from '@/domain/errors'
-import { AccountModel } from '@/domain/models'
 
 type Params = {
   validationError?: string
@@ -25,7 +25,7 @@ type Params = {
 type SutTypes = {
   validationStub: ValidationStub
   addPatrimonySpy: AddPatrimonySpy
-  updatePatrimonySpy: UpdatePatrimonySpy
+  loadCategoriesSpy: LoadCategoriesSpy
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
 }
@@ -36,13 +36,14 @@ const makeSut = ({
 }: Params = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/patrimonies/new'] })
   const setCurrentAccountMock = jest.fn()
-  const updatePatrimonySpy = new UpdatePatrimonySpy()
   const validationStub = new ValidationStub()
+  const loadCategoriesSpy = new LoadCategoriesSpy()
   validationStub.errorMessage = validationError
   render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
         <PatrimonyCreate
+          loadCategories={loadCategoriesSpy}
           addPatrimony={addPatrimonySpy}
           validation={validationStub}
         />
@@ -52,7 +53,7 @@ const makeSut = ({
   return {
     validationStub,
     addPatrimonySpy,
-    updatePatrimonySpy,
+    loadCategoriesSpy,
     setCurrentAccountMock,
     history
   }
@@ -61,6 +62,7 @@ const makeSut = ({
 const simulateValidSubmit = async (number = faker.datatype.number().toString(), brand = faker.random.word(),
   owner = faker.datatype.number().toString(), category = faker.datatype.number().toString(),
   description = faker.random.words()): Promise<void> => {
+  await waitFor(() => screen.getByTestId('form'))
   populateField('number', number)
   populateField('brand', brand)
   populateField('description', description)
@@ -151,6 +153,7 @@ describe('PatrimonyCreate Component', () => {
     const category = faker.datatype.number({ min: 1, max: 3 })
     const owner = faker.datatype.number({ min: 1, max: 3 })
     const description = faker.random.words()
+    await waitFor(() => screen.getByTestId('form'))
     await simulateValidSubmit(number, brand, owner.toString(), category.toString(), description)
     expect(addPatrimonySpy.params).toEqual({
       number,
@@ -217,5 +220,15 @@ describe('PatrimonyCreate Component', () => {
     await waitFor(() => screen.getByTestId('form'))
     expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
     expect(history.location.pathname).toBe('/login')
+  })
+
+  test('Should calls LoadCategories', async () => {
+    const { loadCategoriesSpy } = makeSut()
+    await waitFor(() => screen.getByTestId('form'))
+    fireEvent.click(screen.getByTestId('category').children[0])
+    // console.log(screen.getByRole('button'))
+    // console.log(screen.getByRole('listbox'))
+    await waitFor(() => screen.getByTestId('form'))
+    expect(loadCategoriesSpy.callsCount).toBe(1)
   })
 })
