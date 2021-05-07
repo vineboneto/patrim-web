@@ -11,6 +11,7 @@ import {
   FormStatus
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
+import { useErrorHandler } from '@/presentation/hooks'
 import { AddPatrimony } from '@/domain/usecases'
 
 import React, { FormEvent, useEffect, useState } from 'react'
@@ -31,6 +32,9 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) =
     { value: '2', label: 'Jessica' },
     { value: '3', label: 'Camila' }
   ]
+  const handleError = useErrorHandler((error: Error) => {
+    setState(old => ({ ...old, mainError: error.message, successMessage: '', isLoading: false }))
+  })
   const [state, setState] = useState({
     openDashboard: true,
     isLoading: false,
@@ -74,19 +78,12 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony }: Props) =
       categoryId: Number(category),
       ownerId: Number(owner),
       description
-    })
-      .then((patrimony) => setState(old => ({
-        ...old,
-        successMessage: 'Patrimônio adicionado com sucesso',
-        isLoading: false,
-        mainError: ''
-      })))
-      .catch((error) => setState(old => ({
-        ...old,
-        mainError: error.message,
-        successMessage: '',
-        isLoading: false
-      })))
+    }).then((patrimony) => setState(old => ({
+      ...old,
+      successMessage: 'Patrimônio adicionado com sucesso',
+      isLoading: false,
+      mainError: ''
+    }))).catch((error) => handleError(error))
   }
 
   return (
