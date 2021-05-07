@@ -13,8 +13,9 @@ export class RemoteLoadCategories implements LoadCategories {
       method: 'get',
       url: this.url
     })
+    const data = httpResponse.body
     switch (httpResponse.statusCode) {
-      case HttpStatusCode.ok: return null
+      case HttpStatusCode.ok: return data
       case HttpStatusCode.forbidden: throw new AccessDeniedError()
       default: throw new UnexpectedError()
     }
