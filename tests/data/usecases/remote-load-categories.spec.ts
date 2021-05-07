@@ -4,6 +4,7 @@ import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
 
 import faker from 'faker'
+import { mockCategoriesModel } from '../../domain/mocks'
 
 type SutTypes = {
   sut: RemoteLoadCategories
@@ -62,5 +63,16 @@ describe('RemoteLoadCategories', () => {
     }
     const promise = sut.load()
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should return an categories if HttpClient returns 200', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    const body = mockCategoriesModel()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body
+    }
+    const data = await sut.load()
+    expect(data).toEqual(body)
   })
 })
