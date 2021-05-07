@@ -1,4 +1,5 @@
-import { HttpClient } from '@/data/protocols'
+import { HttpClient, HttpStatusCode } from '@/data/protocols'
+import { AccessDeniedError } from '@/domain/errors'
 import { LoadCategories } from '@/domain/usecases'
 
 export class RemoteLoadCategories implements LoadCategories {
@@ -8,10 +9,13 @@ export class RemoteLoadCategories implements LoadCategories {
   ) {}
 
   async load (): Promise<LoadCategories.Model[]> {
-    await this.httpClient.request({
+    const httpResponse = await this.httpClient.request({
       method: 'get',
       url: this.url
     })
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.forbidden: throw new AccessDeniedError()
+    }
     return null
   }
 }
