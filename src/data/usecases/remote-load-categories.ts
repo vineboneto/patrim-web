@@ -1,5 +1,5 @@
 import { HttpClient, HttpStatusCode } from '@/data/protocols'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { LoadCategories } from '@/domain/usecases'
 
 export class RemoteLoadCategories implements LoadCategories {
@@ -14,8 +14,9 @@ export class RemoteLoadCategories implements LoadCategories {
       url: this.url
     })
     switch (httpResponse.statusCode) {
+      case HttpStatusCode.ok: return null
       case HttpStatusCode.forbidden: throw new AccessDeniedError()
+      default: throw new UnexpectedError()
     }
-    return null
   }
 }
