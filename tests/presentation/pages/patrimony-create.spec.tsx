@@ -11,9 +11,11 @@ import { AddPatrimonySpy, mockAccountModel } from '@/tests/domain/mocks'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { createMemoryHistory, MemoryHistory } from 'history'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import faker from 'faker'
+import { AccessDeniedError } from '@/domain/errors'
+import { AccountModel } from '@/domain/models'
 
 type Params = {
   validationError: string
@@ -22,12 +24,14 @@ type Params = {
 type SutTypes = {
   validationStub: ValidationStub
   addPatrimonySpy: AddPatrimonySpy
+  setCurrentAccountMock: (account: AccountModel) => void
+  history: MemoryHistory
 }
 
-const makeSut = (params?: Params): SutTypes => {
+const makeSut = (params?: Params, addPatrimonySpyParam?: AddPatrimonySpy): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/patrimonies/new'] })
-  const addPatrimonySpy = new AddPatrimonySpy()
   const setCurrentAccountMock = jest.fn()
+  const addPatrimonySpy = addPatrimonySpyParam || new AddPatrimonySpy()
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.validationError
   render(
@@ -42,7 +46,9 @@ const makeSut = (params?: Params): SutTypes => {
   )
   return {
     validationStub,
-    addPatrimonySpy
+    addPatrimonySpy,
+    setCurrentAccountMock,
+    history
   }
 }
 
@@ -195,5 +201,15 @@ describe('PatrimonyCreate Component', () => {
     const alertButtonClose = screen.getByTestId('main-error').children[2].children[0]
     fireEvent.click(alertButtonClose)
     expect(screen.getByTestId('status-wrap').children).toHaveLength(0)
+  })
+
+  test('Should logout on AccessDeniedError', async () => {
+    const addPatrimonySpy = new AddPatrimonySpy()
+    jest.spyOn(addPatrimonySpy, 'add').mockRejectedValueOnce(new AccessDeniedError())
+    const { history, setCurrentAccountMock } = makeSut(null, addPatrimonySpy)
+    await simulateValidSubmit()
+    await waitFor(() => screen.getByTestId('form'))
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
+    expect(history.location.pathname).toBe('/login')
   })
 })
