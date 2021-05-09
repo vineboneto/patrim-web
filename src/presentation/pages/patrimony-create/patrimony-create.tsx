@@ -13,7 +13,7 @@ import {
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
-import { AddPatrimony, LoadCategories } from '@/domain/usecases'
+import { AddPatrimony, LoadCategories, LoadOwners } from '@/domain/usecases'
 
 import React, { FormEvent, useEffect, useState } from 'react'
 
@@ -21,14 +21,10 @@ type Props = {
   validation: Validation
   addPatrimony: AddPatrimony
   loadCategories: LoadCategories
+  loadOwners: LoadOwners
 }
 
-const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCategories }: Props) => {
-  const optionsOwners = [
-    { value: '1', label: 'Weusley' },
-    { value: '2', label: 'Jessica' },
-    { value: '3', label: 'Camila' }
-  ]
+const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCategories, loadOwners }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({ ...old, mainError: error.message, successMessage: '', isLoading: false }))
   })
@@ -47,7 +43,8 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCatego
     owner: '',
     ownerError: '',
     description: '',
-    categories: [] as ItemProps[]
+    categories: [] as ItemProps[],
+    owners: [] as ItemProps[]
   })
 
   useEffect(() => {
@@ -55,6 +52,15 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCatego
       .then(categories => setState(old => ({
         ...old,
         categories: categories.map(category => ({ value: category.id.toString(), label: category.name }))
+      })))
+      .catch(error => handleError(error))
+  }, [])
+
+  useEffect(() => {
+    loadOwners.load()
+      .then(owners => setState(old => ({
+        ...old,
+        owners: owners.map(owner => ({ value: owner.id.toString(), label: owner.name }))
       })))
       .catch(error => handleError(error))
   }, [])
@@ -106,7 +112,7 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCatego
             <h2>Novo Patrimônio</h2>
             <div className="input-group">
               <Input type="text" name="number" placeholder="Número" />
-              <Select name="owner" placeholder="Proprietário" options={optionsOwners} />
+              <Select name="owner" placeholder="Proprietário" options={state.owners} />
             </div>
             <div className="input-group">
               <Input type="text" name="brand" placeholder="Marca" />

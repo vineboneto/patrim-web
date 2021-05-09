@@ -1,5 +1,5 @@
 import { makePatrimonyCreateValidation } from '@/main/factories/pages'
-import { makeRemoteAddPatrimony, makeRemoteLoadCategories } from '@/main/factories/usecases'
+import { makeRemoteAddPatrimony, makeRemoteLoadCategories, makeRemoteLoadOwners } from '@/main/factories/usecases'
 import { PatrimonyCreate } from '@/presentation/pages'
 
 import React from 'react'
@@ -10,6 +10,7 @@ export const makePatrimonyCreate: React.FC = () => {
       validation={makePatrimonyCreateValidation()}
       addPatrimony={makeRemoteAddPatrimony()}
       loadCategories={makeRemoteLoadCategories()}
+      loadOwners={makeRemoteLoadOwners()}
     />
   )
 }
