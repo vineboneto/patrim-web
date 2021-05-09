@@ -2,9 +2,9 @@ import { RemoteLoadCategories } from '@/data/usecases'
 import { HttpStatusCode } from '@/data/protocols'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
+import { mockCategoriesModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
-import { mockCategoriesModel } from '../../domain/mocks'
 
 type SutTypes = {
   sut: RemoteLoadCategories
