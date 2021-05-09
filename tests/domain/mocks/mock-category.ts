@@ -1,13 +1,13 @@
-import { LoadCategories } from '@/domain/usecases'
+import { CategoryModel } from '@/domain/models'
 
 import faker from 'faker'
 
-export const mockCategoryModel = (): LoadCategories.Model => ({
+export const mockCategoryModel = (): CategoryModel => ({
   id: faker.datatype.number(),
   name: faker.name.findName()
 })
 
-export const mockCategoriesModel = (): LoadCategories.Model[] => ([
+export const mockCategoriesModel = (): CategoryModel[] => ([
   {
     id: 1,
     name: faker.name.findName()
