@@ -75,4 +75,15 @@ describe('RemoteLoadOwners', () => {
     const data = await sut.load()
     expect(data).toEqual(body)
   })
+
+  test('Should return  array empty if HttpClient returns 204', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    const body = []
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.noContent,
+      body
+    }
+    const data = await sut.load()
+    expect(data).toEqual(body)
+  })
 })
