@@ -20,6 +20,7 @@ import faker from 'faker'
 type Params = {
   validationError?: string
   addPatrimonySpy?: AddPatrimonySpy
+  loadCategoriesSpy?: LoadCategoriesSpy
 }
 
 type SutTypes = {
@@ -32,12 +33,12 @@ type SutTypes = {
 
 const makeSut = ({
   addPatrimonySpy = new AddPatrimonySpy(),
-  validationError = undefined
+  validationError = undefined,
+  loadCategoriesSpy = new LoadCategoriesSpy()
 }: Params = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/patrimonies/new'] })
   const setCurrentAccountMock = jest.fn()
   const validationStub = new ValidationStub()
-  const loadCategoriesSpy = new LoadCategoriesSpy()
   validationStub.errorMessage = validationError
   render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
@@ -153,7 +154,6 @@ describe('PatrimonyCreate Component', () => {
     const category = faker.datatype.number({ min: 1, max: 3 })
     const owner = faker.datatype.number({ min: 1, max: 3 })
     const description = faker.random.words()
-    await waitFor(() => screen.getByTestId('form'))
     await simulateValidSubmit(number, brand, owner.toString(), category.toString(), description)
     expect(addPatrimonySpy.params).toEqual({
       number,
@@ -224,11 +224,18 @@ describe('PatrimonyCreate Component', () => {
 
   test('Should calls LoadCategories', async () => {
     const { loadCategoriesSpy } = makeSut()
-    await waitFor(() => screen.getByTestId('form'))
     fireEvent.click(screen.getByTestId('category').children[0])
-    // console.log(screen.getByRole('button'))
-    // console.log(screen.getByRole('listbox'))
     await waitFor(() => screen.getByTestId('form'))
     expect(loadCategoriesSpy.callsCount).toBe(1)
+  })
+
+  test('Should render main error if LoadCategories fails', async () => {
+    const loadCategoriesSpy = new LoadCategoriesSpy()
+    const error = new Error()
+    error.message = 'something error'
+    jest.spyOn(loadCategoriesSpy, 'load').mockRejectedValueOnce(error)
+    makeSut({ loadCategoriesSpy })
+    await waitFor(() => screen.getByTestId('category'))
+    expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
   })
 })
