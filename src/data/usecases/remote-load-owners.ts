@@ -1,6 +1,6 @@
 import { HttpClient, HttpStatusCode } from '@/data/protocols'
 import { LoadOwners } from '@/domain/usecases'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 
 export class RemoteLoadOwners implements LoadOwners {
   constructor (
@@ -14,8 +14,10 @@ export class RemoteLoadOwners implements LoadOwners {
       url: this.url
     })
     switch (httpResponse.statusCode) {
+      case HttpStatusCode.noContent:
+      case HttpStatusCode.ok: return null
       case HttpStatusCode.forbidden: throw new AccessDeniedError()
+      default: throw new UnexpectedError()
     }
-    return null
   }
 }
