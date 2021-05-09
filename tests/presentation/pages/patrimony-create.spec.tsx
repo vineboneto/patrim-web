@@ -269,4 +269,13 @@ describe('PatrimonyCreate Component', () => {
     await waitFor(() => screen.getByTestId('owner'))
     expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
   })
+
+  test('Should logout on AccessDeniedError by LoadOwners', async () => {
+    const loadOwnersSpy = new LoadOwnersSpy()
+    jest.spyOn(loadOwnersSpy, 'load').mockRejectedValueOnce(new AccessDeniedError())
+    const { history, setCurrentAccountMock } = makeSut({ loadOwnersSpy })
+    await waitFor(() => screen.getByTestId('category'))
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
+    expect(history.location.pathname).toBe('/login')
+  })
 })
