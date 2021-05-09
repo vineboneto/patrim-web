@@ -24,11 +24,6 @@ type Props = {
 }
 
 const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCategories }: Props) => {
-  // const optionsCategory = [
-  //   { value: '1', label: 'Computador' },
-  //   { value: '2', label: 'Impressora' },
-  //   { value: '3', label: 'Monitor' }
-  // ]
   const optionsOwners = [
     { value: '1', label: 'Weusley' },
     { value: '2', label: 'Jessica' },
