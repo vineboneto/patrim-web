@@ -259,4 +259,14 @@ describe('PatrimonyCreate Component', () => {
     await waitFor(() => screen.getByTestId('form'))
     expect(loadOwnersSpy.callsCount).toBe(1)
   })
+
+  test('Should render main error if LoadOwners fails', async () => {
+    const loadOwnersSpy = new LoadOwnersSpy()
+    const error = new Error()
+    error.message = 'something error'
+    jest.spyOn(loadOwnersSpy, 'load').mockRejectedValueOnce(error)
+    makeSut({ loadOwnersSpy })
+    await waitFor(() => screen.getByTestId('owner'))
+    expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
+  })
 })
