@@ -57,11 +57,11 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCatego
 
   useEffect(() => {
     loadCategories.load()
-      .then(categories => setState({
-        ...state,
+      .then(categories => setState(old => ({
+        ...old,
         categories: categories.map(category => ({ value: category.id.toString(), label: category.name }))
-      }))
-      .catch(error => console.log(error))
+      })))
+      .catch(error => handleError(error))
   }, [])
 
   useEffect(() => { validate('number') }, [state.number])
