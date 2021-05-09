@@ -1,5 +1,6 @@
-import { HttpClient } from '@/data/protocols'
+import { HttpClient, HttpStatusCode } from '@/data/protocols'
 import { LoadOwners } from '@/domain/usecases'
+import { AccessDeniedError } from '@/domain/errors'
 
 export class RemoteLoadOwners implements LoadOwners {
   constructor (
@@ -8,10 +9,13 @@ export class RemoteLoadOwners implements LoadOwners {
   ) {}
 
   async load (): Promise<LoadOwners.Model[]> {
-    await this.httpClient.request({
+    const httpResponse = await this.httpClient.request({
       method: 'get',
       url: this.url
     })
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.forbidden: throw new AccessDeniedError()
+    }
     return null
   }
 }
