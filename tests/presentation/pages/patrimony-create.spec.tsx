@@ -9,7 +9,7 @@ import {
   testStatusForFieldSelect,
   ValidationStub
 } from '@/tests/presentation/mocks'
-import { AddPatrimonySpy, LoadCategoriesSpy, mockAccountModel } from '@/tests/domain/mocks'
+import { AddPatrimonySpy, LoadCategoriesSpy, LoadOwnersSpy, mockAccountModel } from '@/tests/domain/mocks'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -21,12 +21,14 @@ type Params = {
   validationError?: string
   addPatrimonySpy?: AddPatrimonySpy
   loadCategoriesSpy?: LoadCategoriesSpy
+  loadOwnersSpy?: LoadOwnersSpy
 }
 
 type SutTypes = {
   validationStub: ValidationStub
   addPatrimonySpy: AddPatrimonySpy
   loadCategoriesSpy: LoadCategoriesSpy
+  loadOwnersSpy: LoadOwnersSpy
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
 }
@@ -34,7 +36,8 @@ type SutTypes = {
 const makeSut = ({
   addPatrimonySpy = new AddPatrimonySpy(),
   validationError = undefined,
-  loadCategoriesSpy = new LoadCategoriesSpy()
+  loadCategoriesSpy = new LoadCategoriesSpy(),
+  loadOwnersSpy = new LoadOwnersSpy()
 }: Params = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/patrimonies/new'] })
   const setCurrentAccountMock = jest.fn()
@@ -45,6 +48,7 @@ const makeSut = ({
       <Router history={history}>
         <PatrimonyCreate
           loadCategories={loadCategoriesSpy}
+          loadOwners={loadOwnersSpy}
           addPatrimony={addPatrimonySpy}
           validation={validationStub}
         />
@@ -55,6 +59,7 @@ const makeSut = ({
     validationStub,
     addPatrimonySpy,
     loadCategoriesSpy,
+    loadOwnersSpy,
     setCurrentAccountMock,
     history
   }
@@ -246,5 +251,12 @@ describe('PatrimonyCreate Component', () => {
     await waitFor(() => screen.getByTestId('category'))
     expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
     expect(history.location.pathname).toBe('/login')
+  })
+
+  test('Should calls LoadOwners', async () => {
+    const { loadOwnersSpy } = makeSut()
+    fireEvent.click(screen.getByTestId('owner').children[0])
+    await waitFor(() => screen.getByTestId('form'))
+    expect(loadOwnersSpy.callsCount).toBe(1)
   })
 })
