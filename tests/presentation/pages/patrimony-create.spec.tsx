@@ -212,7 +212,7 @@ describe('PatrimonyCreate Component', () => {
     expect(screen.getByTestId('status-wrap').children).toHaveLength(0)
   })
 
-  test('Should logout on AccessDeniedError', async () => {
+  test('Should logout on AccessDeniedError by AddPatrimony', async () => {
     const addPatrimonySpy = new AddPatrimonySpy()
     jest.spyOn(addPatrimonySpy, 'add').mockRejectedValueOnce(new AccessDeniedError())
     const { history, setCurrentAccountMock } = makeSut({ addPatrimonySpy })
@@ -237,5 +237,14 @@ describe('PatrimonyCreate Component', () => {
     makeSut({ loadCategoriesSpy })
     await waitFor(() => screen.getByTestId('category'))
     expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
+  })
+
+  test('Should logout on AccessDeniedError by LoadCategories', async () => {
+    const loadCategoriesSpy = new LoadCategoriesSpy()
+    jest.spyOn(loadCategoriesSpy, 'load').mockRejectedValueOnce(new AccessDeniedError())
+    const { history, setCurrentAccountMock } = makeSut({ loadCategoriesSpy })
+    await waitFor(() => screen.getByTestId('category'))
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
+    expect(history.location.pathname).toBe('/login')
   })
 })
