@@ -2,6 +2,7 @@ import { RemoteLoadPatrimonies } from '@/data/usecases'
 import { HttpStatusCode } from '@/data/protocols'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
+import { mockPatrimoniesModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -62,5 +63,16 @@ describe('RemoteLoadPatrimonies', () => {
     }
     const promise = sut.load()
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should return an patrimonies if HttpClient returns 200', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    const body = mockPatrimoniesModel()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body
+    }
+    const data = await sut.load()
+    expect(data).toEqual(body)
   })
 })
