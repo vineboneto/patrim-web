@@ -1,0 +1,10 @@
+.patrimony-list-wrap {
+  min-height: 100vh;
+}
+
+.patrimony-items-wrap {
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
