@@ -23,7 +23,7 @@ const Textarea: React.FC<Props> = (props: Props) => {
         variant="outlined"
         label={props.placeholder}
         autoComplete="off"
-        value={state[`${props.name}`] || null}
+        value={state[`${props.name}`]}
         onChange={handleChange}
       />
     </div>
