@@ -16,7 +16,7 @@ export class RemoteLoadPatrimonyById implements LoadPatrimonyById {
 
     switch (httpResponse.statusCode) {
       case HttpStatusCode.noContent:
-      case HttpStatusCode.ok: return null
+      case HttpStatusCode.ok: return httpResponse.body
       case HttpStatusCode.forbidden: throw new AccessDeniedError()
       default: throw new UnexpectedError()
     }
