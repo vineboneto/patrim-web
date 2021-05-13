@@ -277,6 +277,16 @@ describe('PatrimonyUpdate Component', () => {
     expect(descriptionTextarea.innerHTML).toBe(loadPatrimonyByIdSpy.model.description)
   })
 
+  test('Should render main error if LoadPatrimonyById fails', async () => {
+    const loadPatrimonyByIdSpy = new LoadPatrimonyByIdSpy()
+    const error = new Error()
+    error.message = 'something error'
+    jest.spyOn(loadPatrimonyByIdSpy, 'loadById').mockRejectedValueOnce(error)
+    makeSut({ loadPatrimonyByIdSpy })
+    await waitFor(() => screen.getByTestId('owner'))
+    expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
+  })
+
   test('Should calls LoadOwners', async () => {
     const { loadOwnersSpy } = makeSut()
     fireEvent.click(screen.getByTestId('owner').children[0])
