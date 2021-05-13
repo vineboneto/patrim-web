@@ -1,4 +1,5 @@
 import 'normalize.css'
+import 'bootstrap/dist/css/bootstrap-grid.css'
 import '@/presentation/styles/global.css'
 
 import React from 'react'
