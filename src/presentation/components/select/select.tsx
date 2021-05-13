@@ -39,6 +39,7 @@ const Select: React.FC<Props> = (props: Props) => {
           error={error !== undefined}
           title={error}
           label={props.placeholder}
+          value={state[`${props.name}`]}
           onChange={handleChange}
           defaultValue=""
         >

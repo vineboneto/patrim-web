@@ -11,7 +11,7 @@ import {
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
-import { UpdatePatrimony, LoadCategories, LoadOwners } from '@/domain/usecases'
+import { UpdatePatrimony, LoadCategories, LoadOwners, LoadPatrimonyById } from '@/domain/usecases'
 
 import React, { FormEvent, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -19,6 +19,7 @@ import { useParams } from 'react-router-dom'
 type Props = {
   validation: Validation
   updatePatrimony: UpdatePatrimony
+  loadPatrimonyById: LoadPatrimonyById
   loadCategories: LoadCategories
   loadOwners: LoadOwners
 }
@@ -27,7 +28,13 @@ type Params = {
   id: string
 }
 
-const PatrimonyUpdate: React.FC<Props> = ({ validation, updatePatrimony, loadCategories, loadOwners }: Props) => {
+const PatrimonyUpdate: React.FC<Props> = ({
+  validation,
+  updatePatrimony,
+  loadPatrimonyById,
+  loadCategories,
+  loadOwners
+}: Props) => {
   const { id } = useParams<Params>()
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({ ...old, mainError: error.message, successMessage: '', isLoading: false }))
@@ -64,6 +71,20 @@ const PatrimonyUpdate: React.FC<Props> = ({ validation, updatePatrimony, loadCat
       .then(owners => setState(old => ({
         ...old,
         owners: owners.map(owner => ({ value: owner.id.toString(), label: owner.name }))
+      })))
+      .catch(error => handleError(error))
+  }, [])
+
+  useEffect(() => {
+    console.log(id)
+    loadPatrimonyById.loadById({ id: Number(id) })
+      .then((patrimony) => setState(old => ({
+        ...old,
+        brand: patrimony.brand,
+        number: patrimony.number,
+        owner: patrimony.owner.id.toString(),
+        category: patrimony.category.id.toString(),
+        description: patrimony.description
       })))
       .catch(error => handleError(error))
   }, [])

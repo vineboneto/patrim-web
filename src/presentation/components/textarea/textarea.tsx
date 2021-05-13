@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField'
 type Props = TextareaHTMLAttributes<HTMLTextAreaElement>
 
 const Textarea: React.FC<Props> = (props: Props) => {
-  const { setState } = useContext(FormContext)
+  const { state, setState } = useContext(FormContext)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void =>
     setState(old => ({ ...old, [e.target.name]: e.target.value }))
@@ -23,6 +23,7 @@ const Textarea: React.FC<Props> = (props: Props) => {
         variant="outlined"
         label={props.placeholder}
         autoComplete="off"
+        value={state[`${props.name}`] || null}
         onChange={handleChange}
       />
     </div>
