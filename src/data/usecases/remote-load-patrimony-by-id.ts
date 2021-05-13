@@ -1,5 +1,6 @@
 import { LoadPatrimonyById } from '@/domain/usecases'
-import { HttpClient } from '@/data/protocols'
+import { AccessDeniedError } from '@/domain/errors'
+import { HttpClient, HttpStatusCode } from '@/data/protocols'
 
 export class RemoteLoadPatrimonyById implements LoadPatrimonyById {
   constructor (
@@ -8,10 +9,14 @@ export class RemoteLoadPatrimonyById implements LoadPatrimonyById {
   ) {}
 
   async loadById (params: LoadPatrimonyById.Params): Promise<LoadPatrimonyById.Model> {
-    await this.httpClient.request({
+    const httpResponse = await this.httpClient.request({
       method: 'get',
       url: this.url
     })
+
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.forbidden: throw new AccessDeniedError()
+    }
     return null
   }
 }
