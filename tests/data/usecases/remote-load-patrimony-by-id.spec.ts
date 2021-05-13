@@ -4,6 +4,7 @@ import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
 
 import faker from 'faker'
+import { mockPatrimonyModel } from '../../domain/mocks'
 
 type SutTypes = {
   sut: RemoteLoadPatrimonyById
@@ -54,5 +55,16 @@ describe('RemoteLoadPatrimonyById', () => {
     }
     const promise = sut.loadById({ id: faker.datatype.number() })
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should return an patrimony if HttpClient returns 200', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    const body = mockPatrimonyModel()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body
+    }
+    const data = await sut.loadById({ id: faker.datatype.number() })
+    expect(data).toEqual(body)
   })
 })
