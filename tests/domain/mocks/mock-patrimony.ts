@@ -17,7 +17,8 @@ export const mockPatrimonyModel = (): PatrimonyModel => ({
       id: faker.datatype.number(),
       name: faker.name.findName()
     }
-  }
+  },
+  description: faker.random.words()
 })
 
 export const mockPatrimoniesModel = (): PatrimonyModel[] => ([

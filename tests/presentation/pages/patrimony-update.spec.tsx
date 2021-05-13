@@ -9,7 +9,13 @@ import {
   testStatusForFieldSelect,
   ValidationStub
 } from '@/tests/presentation/mocks'
-import { UpdatePatrimonySpy, LoadCategoriesSpy, LoadOwnersSpy, mockAccountModel } from '@/tests/domain/mocks'
+import {
+  UpdatePatrimonySpy,
+  LoadCategoriesSpy,
+  LoadOwnersSpy,
+  LoadPatrimonyByIdSpy,
+  mockAccountModel
+} from '@/tests/domain/mocks'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -22,6 +28,7 @@ type Params = {
   updatePatrimonySpy?: UpdatePatrimonySpy
   loadCategoriesSpy?: LoadCategoriesSpy
   loadOwnersSpy?: LoadOwnersSpy
+  loadPatrimonyByIdSpy?: LoadPatrimonyByIdSpy
 }
 
 type SutTypes = {
@@ -29,6 +36,7 @@ type SutTypes = {
   updatePatrimonySpy: UpdatePatrimonySpy
   loadCategoriesSpy: LoadCategoriesSpy
   loadOwnersSpy: LoadOwnersSpy
+  loadPatrimonyByIdSpy: LoadPatrimonyByIdSpy
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
 }
@@ -37,7 +45,8 @@ const makeSut = ({
   updatePatrimonySpy = new UpdatePatrimonySpy(),
   validationError = undefined,
   loadCategoriesSpy = new LoadCategoriesSpy(),
-  loadOwnersSpy = new LoadOwnersSpy()
+  loadOwnersSpy = new LoadOwnersSpy(),
+  loadPatrimonyByIdSpy = new LoadPatrimonyByIdSpy()
 }: Params = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/patrimonies/update/1'] })
   const setCurrentAccountMock = jest.fn()
@@ -47,6 +56,7 @@ const makeSut = ({
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
         <PatrimonyUpdate
+          loadPatrimonyById={loadPatrimonyByIdSpy}
           loadCategories={loadCategoriesSpy}
           loadOwners={loadOwnersSpy}
           updatePatrimony={updatePatrimonySpy}
@@ -60,6 +70,7 @@ const makeSut = ({
     updatePatrimonySpy,
     loadCategoriesSpy,
     loadOwnersSpy,
+    loadPatrimonyByIdSpy,
     setCurrentAccountMock,
     history
   }
@@ -248,6 +259,22 @@ describe('PatrimonyUpdate Component', () => {
     await waitFor(() => screen.getByTestId('category'))
     expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
     expect(history.location.pathname).toBe('/login')
+  })
+
+  test('Should calls LoadPatrimonyById', async () => {
+    const { loadPatrimonyByIdSpy } = makeSut()
+    await waitFor(() => screen.getByTestId('form'))
+    expect(loadPatrimonyByIdSpy.callsCount).toBe(1)
+    const brandInput = screen.getByTestId('brand').children[1].children[0]
+    expect(brandInput.getAttribute('value')).toBe(loadPatrimonyByIdSpy.model.brand)
+    const numberInput = screen.getByTestId('number').children[1].children[0]
+    expect(numberInput.getAttribute('value')).toBe(loadPatrimonyByIdSpy.model.number)
+    const categorySelect = screen.getByTestId('category').children[1]
+    expect(categorySelect.getAttribute('value')).toBe(loadPatrimonyByIdSpy.model.category.id.toString())
+    const ownerSelect = screen.getByTestId('owner').children[1]
+    expect(ownerSelect.getAttribute('value')).toBe(loadPatrimonyByIdSpy.model.owner.id.toString())
+    const descriptionTextarea = screen.getByTestId('description').children[1].children[0]
+    expect(descriptionTextarea.innerHTML).toBe(loadPatrimonyByIdSpy.model.description)
   })
 
   test('Should calls LoadOwners', async () => {

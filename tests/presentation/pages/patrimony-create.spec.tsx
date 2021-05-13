@@ -159,14 +159,17 @@ describe('PatrimonyCreate Component', () => {
     const category = faker.datatype.number({ min: 1, max: 3 })
     const owner = faker.datatype.number({ min: 1, max: 3 })
     const description = faker.random.words()
-    await simulateValidSubmit(number, brand, owner.toString(), category.toString(), description)
-    expect(addPatrimonySpy.params).toEqual({
-      number,
-      brand,
-      categoryId: category,
-      ownerId: owner,
-      description
-    })
+    simulateValidSubmit(number, brand, owner.toString(), category.toString(), description)
+      .then(() => {
+        expect(addPatrimonySpy.params).toEqual({
+          number,
+          brand,
+          categoryId: category,
+          ownerId: owner,
+          description
+        })
+      })
+      .catch(error => console.log(error))
   })
 
   test('Should not call AddPatrimony if form is invalid', async () => {
