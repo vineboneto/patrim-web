@@ -2,6 +2,20 @@
   min-height: 100vh;
 }
 
+.sidebar {
+  position: fixed;
+  z-index: 100;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-background);
+  box-shadow: 0px 1px 3px -1px var(--color-black);
+}
+
+.sidebar ul {
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+}
+
 .patrimony-list-wrap .patrimony-items {
   display: flex;
   padding: 0 20px;

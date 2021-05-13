@@ -10,6 +10,39 @@ const PatrimonyList: React.FC = () => {
   return (
     <div className="patrimony-list-wrap">
       <Header title="Patrimônios" />
+
+      <aside className="sidebar">
+        <ul>
+          <li>
+            <Link replace to="#">
+              <Button>
+                Patrimônios
+              </Button>
+            </Link>
+          </li>
+          <li>
+            <Link replace to="#">
+              <Button>
+                Proprietários
+              </Button>
+            </Link>
+          </li>
+          <li>
+            <Link replace to="#">
+              <Button>
+                Setores
+              </Button>
+            </Link>
+          </li>
+          <li>
+            <Link replace to="#">
+              <Button>
+                Categorias
+              </Button>
+            </Link>
+          </li>
+        </ul>
+      </aside>
       <div className="patrimony-items">
         <div className="patrimony-item">
           <div className="item-body">
