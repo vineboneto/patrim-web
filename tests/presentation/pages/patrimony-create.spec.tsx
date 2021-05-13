@@ -191,13 +191,6 @@ describe('PatrimonyCreate Component', () => {
     expect(screen.getByTestId('success-message')).toHaveTextContent('Patrimônio adicionado com sucesso')
   })
 
-  test('Should add marginLeft 30px on close dashboard', async () => {
-    makeSut()
-    fireEvent.click(screen.getByTestId('menu'))
-    const children = screen.getByTestId('form-wrap')
-    expect(children.style.marginLeft).toBe('30px')
-  })
-
   test('Should close alert success on click button close', async () => {
     makeSut()
     await simulateValidSubmit()

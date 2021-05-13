@@ -1,5 +1,5 @@
 :root {
-  --color-primary: #00ADB5;
+  --color-primary: #3F51B5;
   --color-white: #fff;
   --color-background: #eee;
   --color-black: #222831;
@@ -11,4 +11,8 @@
 
 body {
   background-color: var(--color-background);
+}
+
+a {
+  text-decoration: none;
 }

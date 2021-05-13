@@ -1,8 +1,6 @@
 import './patrimony-create-styles.css'
 import {
   Header,
-  DashBoard,
-  DashboardContext,
   FormContext,
   Input,
   Textarea,
@@ -29,7 +27,6 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCatego
     setState(old => ({ ...old, mainError: error.message, successMessage: '', isLoading: false }))
   })
   const [state, setState] = useState({
-    openDashboard: true,
     isLoading: false,
     isFormInvalid: true,
     successMessage: '',
@@ -102,12 +99,9 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCatego
 
   return (
     <div className="patrimony-create-wrap">
-      <DashboardContext.Provider value ={{ state, setState }}>
-        <Header title="Novo Patrimônio" />
-        <DashBoard />
-      </DashboardContext.Provider>
+      <Header title="Novo Patrimônio" />
       <FormContext.Provider value={{ state, setState }} >
-        <div className="form-wrap" style={ state.openDashboard ? {} : { marginLeft: '30px' }} data-testid="form-wrap">
+        <div className="form-wrap" data-testid="form-wrap">
           <form data-testid="form" onSubmit={handleSubmit}>
             <h2>Novo Patrimônio</h2>
             <div className="input-group">
