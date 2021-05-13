@@ -1,2 +1,2 @@
 export * from './patrimony-create-validation'
-export * from './patrimony-create'
+export * from './patrimony-create-factory'

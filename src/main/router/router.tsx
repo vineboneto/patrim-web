@@ -1,4 +1,4 @@
-import { makeSignUp, makeLogin, makePatrimonyCreate, makePatrimonyList } from '@/main/factories/pages'
+import { makeSignUp, makeLogin, makePatrimonyCreate, makePatrimonyUpdate, makePatrimonyList } from '@/main/factories/pages'
 import { getCurrentAccountAdapter, setCurrentAccountAdapter } from '@/main/adapters'
 import { ApiContext, PrivateRoute } from '@/presentation/components'
 
@@ -17,6 +17,7 @@ const Router: React.FC = () => {
           <Route path="/login" exact component={makeLogin} />
           <PrivateRoute path="/" exact component={makePatrimonyList} />
           <PrivateRoute path="/patrimonies/new" exact component={makePatrimonyCreate} />
+          <PrivateRoute path="/patrimonies/update/:id" exact component={makePatrimonyUpdate} />
         </Switch>
       </BrowserRouter>
     </ApiContext.Provider>
