@@ -29,7 +29,6 @@ type Params = {
 
 const PatrimonyUpdate: React.FC<Props> = ({ validation, updatePatrimony, loadCategories, loadOwners }: Props) => {
   const { id } = useParams<Params>()
-  console.log(id)
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({ ...old, mainError: error.message, successMessage: '', isLoading: false }))
   })
@@ -83,13 +82,12 @@ const PatrimonyUpdate: React.FC<Props> = ({ validation, updatePatrimony, loadCat
       isFormInvalid: !!old.numberError || !!old.brandError || !!old.categoryError || !!old.ownerError
     }))
   }
-
   const handleSubmit = async (event: FormEvent): Promise<void> => {
     event.preventDefault()
     if (state.isFormInvalid || state.isLoading) return
     setState(old => ({ ...old, isLoading: true }))
+    console.log(id)
     const { brand, category, owner, number, description } = state
-
     updatePatrimony.update({
       id: Number(id),
       number,
@@ -99,7 +97,7 @@ const PatrimonyUpdate: React.FC<Props> = ({ validation, updatePatrimony, loadCat
       description
     }).then((patrimony) => setState(old => ({
       ...old,
-      successMessage: 'Patrimônio adicionado com sucesso',
+      successMessage: 'Patrimônio atualizado com sucesso',
       isLoading: false,
       mainError: ''
     }))).catch((error) => handleError(error))
@@ -121,7 +119,7 @@ const PatrimonyUpdate: React.FC<Props> = ({ validation, updatePatrimony, loadCat
               <Select name="category" placeholder="Categoria" options={state.categories} />
             </div>
             <Textarea name="description" placeholder="Observação" />
-            <SubmitButton text="Criar" />
+            <SubmitButton text="Atualizar" />
             <FormStatus />
           </form>
         </div>
