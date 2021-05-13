@@ -1,7 +1,9 @@
 const path = require('path')
+const glob = require('glob')
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const PurgecssPlugin = require('purgecss-webpack-plugin')
 
 module.exports = {
   entry: './src/main/index.tsx',
@@ -33,6 +35,9 @@ module.exports = {
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name]-[contenthash].css'
+    }),
+    new PurgecssPlugin({
+      paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`,  { nodir: true }),
     })
   ]
 }
