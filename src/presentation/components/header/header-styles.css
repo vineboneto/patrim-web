@@ -2,11 +2,15 @@
   height: 100px;
   background-color: var(--color-black);
   color: var(--color-white);
+  /* padding: 0 40px; */
+  margin-bottom: 30px;
+}
+
+.header-wrap .header {
+  height: 100px;
   display: flex;
   align-items: center;  
   justify-content: space-between;
-  padding: 0 40px;
-  margin-bottom: 30px;
 }
 
 .header-wrap h2 {
@@ -15,11 +19,7 @@
 }
 
 @media (max-width: 540px) {
-  .header-wrap {
-    padding: 0 10px;
-  }
-
   .header-wrap h2 {
-    font-size: 15px;
+    z-index: -1;
   }
 }

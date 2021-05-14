@@ -31,7 +31,6 @@ const OpenMenu: React.FC = () => {
         id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
-        className="menu"
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >

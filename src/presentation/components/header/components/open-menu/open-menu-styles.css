@@ -3,12 +3,9 @@
   align-items: center;
 }
 
-.menu-wrap .menu a  {
-
-}
-
-.menu-wrap button span h6 {
+.menu-wrap h6 {
   padding: 20px;
+  margin-right: 20px;
 }
 
 @media (max-width: 540px) {

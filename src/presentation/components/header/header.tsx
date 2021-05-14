@@ -10,9 +10,13 @@ type Props = {
 const Header: React.FC<Props> = ({ title }: Props) => {
   return (
     <div className="header-wrap">
-      <OpenMenu />
-      <h2>{title}</h2>
-      <User />
+      <div className="container">
+        <div className="header">
+          <OpenMenu />
+          <h2>{title}</h2>
+          <User />
+        </div>
+      </div>
     </div>
   )
 }
