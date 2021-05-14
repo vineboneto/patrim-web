@@ -17,7 +17,7 @@ const PatrimonyList: React.FC = () => {
         <div className="row gy-4">
           <div className="col-12">
             <Link to="/patrimonies/new">
-            <Button variant="contained" color="primary" style={{ width: '100%' }}>Novo</Button>
+              <Button variant="contained" color="primary" style={{ width: '100%' }}>Novo</Button>
             </Link>
           </div>
           <div className="col-12 col-md-6 col-lg-4">
