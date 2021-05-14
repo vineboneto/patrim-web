@@ -1,6 +1,6 @@
 import './patrimony-list-styles.css'
 
-import { Header, FormContext } from '@/presentation/components'
+import { Header, FormContext, Loading } from '@/presentation/components'
 import { Item, Form, ButtonNew } from '@/presentation/pages/patrimony-list/components'
 
 import React, { useState } from 'react'
@@ -8,11 +8,14 @@ import Pagination from '@material-ui/lab/Pagination'
 
 const PatrimonyList: React.FC = () => {
   const [state, setState] = useState({
-    isLoading: false,
+    isLoading: true,
     number: '',
     category: '',
     owner: ''
   })
+
+  console.log(state.category)
+  console.log(state.owner)
 
   return (
     <div className="patrimony-list-wrap">
@@ -25,6 +28,10 @@ const PatrimonyList: React.FC = () => {
           <div className="col-12">
             <ButtonNew />
           </div>
+          { state.isLoading &&
+          <div className="col-12 loading">
+            <Loading />
+          </div> }
           <div className="col-12 col-md-6 col-lg-4">
             <Item />
           </div>

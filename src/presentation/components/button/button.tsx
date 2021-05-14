@@ -14,7 +14,7 @@ const Button: React.FC<Props> = (props: Props) => {
       variant={props.variant}
       className="button-wrap"
       color={props.color}
-      style={{ width: '100%', height: '56px' }}
+      style={{ width: '100%', height: '56px', margin: '10px 0' }}
     >
       {props.text}
     </ButtonM>

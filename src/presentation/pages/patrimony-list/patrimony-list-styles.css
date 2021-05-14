@@ -7,8 +7,13 @@
   width: auto !important;
 }
 
+.patrimony-list-wrap .patrimony-list-content .loading {
+  display: flex;
+  justify-content: center;
+}
 
-.patrimony-list-content {
+
+.patrimony-list-wrap .patrimony-list-content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
