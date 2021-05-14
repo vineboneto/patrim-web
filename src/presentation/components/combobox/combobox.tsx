@@ -21,6 +21,7 @@ const Combobox: React.FC<Props> = (props: Props) => {
 
   return (
     <Autocomplete
+      data-testid={props.name}
       onChange={handleChange}
       style={{ margin: '10px 0' }}
       getOptionLabel={(option) => option.label}

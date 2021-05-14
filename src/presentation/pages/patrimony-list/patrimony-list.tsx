@@ -14,9 +14,6 @@ const PatrimonyList: React.FC = () => {
     owner: ''
   })
 
-  console.log(state.category)
-  console.log(state.owner)
-
   return (
     <div className="patrimony-list-wrap">
       <Header title="Patrimônios" />
