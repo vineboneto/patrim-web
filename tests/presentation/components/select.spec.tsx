@@ -3,7 +3,7 @@ import { FormContext, Select, ItemProps } from '@/presentation/components'
 import React from 'react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { populateFieldSelect } from '../mocks'
 
 const options: ItemProps[] = [
@@ -23,11 +23,10 @@ const makeSut = (): void => {
   )
 }
 
-describe.only('Header Component', () => {
+describe('Header Component', () => {
   test('Should change value to correct value', () => {
     makeSut()
     populateFieldSelect('any-select', 2)
-    fireEvent.click(screen.getByTestId('any-select'))
-    console.log(screen.getByTestId('any-select'))
+    expect(screen.getByRole('button').innerHTML).toBe('value-2')
   })
 })

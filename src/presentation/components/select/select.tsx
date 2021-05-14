@@ -45,7 +45,9 @@ const Select: React.FC<Props> = (props: Props) => {
         >
           <MenuItem value=""><em>None</em></MenuItem>
           {props.options.map(option => (
-            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+            <MenuItem key={option.value} value={option.value} data-testid={`${option.label}`}>
+              {option.label}
+            </MenuItem>
           ))}
         </SelectM>
       </FormControl>
