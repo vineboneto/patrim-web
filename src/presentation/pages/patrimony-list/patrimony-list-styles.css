@@ -3,12 +3,6 @@
   max-width: 100vw;
 }
 
-
-.patrimony-list-wrap form > :first-child {
-  display: flex;
-  align-items: center;
-}
-
 .patrimony-list-wrap .container {
   width: auto !important;
 }

@@ -1,10 +1,9 @@
 import './patrimony-list-styles.css'
 
-import { Header, Input, FormContext, Button } from '@/presentation/components'
-import { Item } from '@/presentation/pages/patrimony-list/components'
+import { Header, FormContext } from '@/presentation/components'
+import { Item, Form, ButtonNew } from '@/presentation/pages/patrimony-list/components'
 
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import Pagination from '@material-ui/lab/Pagination'
 
 const PatrimonyList: React.FC = () => {
@@ -21,27 +20,10 @@ const PatrimonyList: React.FC = () => {
       <div className="container patrimony-list-content">
         <div className="row gy-4">
           <FormContext.Provider value={{ state, setState }}>
-            <form className="form-content">
-              <div className="row">
-                <div className="col-12 col-lg-3">
-                  <Input type="text" name="owner" placeholder="Proprietário" />
-                </div>
-                <div className="col-12 col-lg-3">
-                  <Input type="text" name="number" placeholder="Número" />
-                </div>
-                <div className="col-12 col-lg-3">
-                  <Input name="category" placeholder="Categoria" />
-                </div>
-                <div className="col-12 col-lg-3">
-                  <Button variant="outlined" color="primary" text="Pesquisar" />
-                </div>
-              </div>
-            </form>
+            <Form />
           </FormContext.Provider>
           <div className="col-12">
-            <Link to="/patrimonies/new">
-              <Button variant="contained" color="primary" text="Novo" />
-            </Link>
+            <ButtonNew />
           </div>
           <div className="col-12 col-md-6 col-lg-4">
             <Item />

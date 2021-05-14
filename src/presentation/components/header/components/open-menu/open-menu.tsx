@@ -20,8 +20,8 @@ const OpenMenu: React.FC = () => {
   }
 
   return (
-    <div className="menu-wrap" data-testid="menu">
-      <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleClick}>
+    <div className="menu-wrap">
+      <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleClick} data-testid="menu">
         <MenuIcon />
         <Typography variant="h6" color="inherit">
           Patrim
@@ -34,17 +34,17 @@ const OpenMenu: React.FC = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} className="menu-item">
-          <Link to="/">Patrimônios</Link>
+        <MenuItem onClick={handleClose} >
+          <Link to="/" data-testid="patrimonies-menu">Patrimônios</Link>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link to="/owners">Proprietários</Link>
+        <MenuItem onClick={handleClose} >
+          <Link to="/owners" data-testid="owners-menu">Proprietários</Link>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link to="/categories">Categorias</Link>
+        <MenuItem onClick={handleClose} >
+          <Link to="/categories" data-testid="categories-menu">Categorias</Link>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link to="/sectors">Setores</Link>
+        <MenuItem onClick={handleClose} >
+          <Link to="/sectors" data-testid="sectors-menu">Setores</Link>
         </MenuItem>
       </Menu>
     </div>

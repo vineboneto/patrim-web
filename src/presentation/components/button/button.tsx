@@ -3,19 +3,20 @@ import ButtonM from '@material-ui/core/Button'
 
 type Props = {
   text: string
-  variant?: 'text' | 'outlined' | 'contained'
-  color?: 'primary' | 'secondary'
+  variant: 'text' | 'outlined' | 'contained'
+  color: 'primary' | 'secondary'
 }
 
-const Button: React.FC<Props> = ({ text, variant, color }: Props) => {
+const Button: React.FC<Props> = (props: Props) => {
   return (
     <ButtonM
-      variant={variant}
+      { ...props }
+      variant={props.variant}
       className="button-wrap"
-      color={color}
+      color={props.color}
       style={{ width: '100%', height: '56px' }}
     >
-      {text}
+      {props.text}
     </ButtonM>
   )
 }

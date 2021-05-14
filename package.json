@@ -12,6 +12,7 @@
     "husky": "node husky-config",
     "test": "jest --passWithNoTests --runInBand --no-cache --silent",
     "test:watch": "yarn test - --watch",
+    "test:verbose": "jest --passWithNoTests --runInBand --no-cache --watch",
     "test:staged": "yarn test - --findRelatedTests",
     "test:ci": "yarn test - --coverage",
     "test:coveralls": "yarn test:ci && coveralls < coverage/lcov.info"

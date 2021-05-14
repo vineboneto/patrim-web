@@ -1,5 +1,5 @@
 import { ApiContext } from '@/presentation/components'
-import { User } from '@/presentation/components/header/components'
+import { User, OpenMenu } from '@/presentation/components/header/components'
 import { AccountModel } from '@/domain/models'
 import { mockAccountModel } from '@/tests/domain/mocks'
 
@@ -19,6 +19,7 @@ const makeSut = (account = mockAccountModel()): SutTypes => {
   render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => account }}>
       <Router history={history}>
+        <OpenMenu />
         <User />
       </Router>
     </ApiContext.Provider>
@@ -41,5 +42,40 @@ describe('Header Component', () => {
     const account = mockAccountModel()
     makeSut(account)
     expect(screen.getByTestId('username')).toHaveTextContent(account.name)
+  })
+
+  test('Should show menu on click', () => {
+    makeSut()
+    const menu = screen.getByTestId('menu')
+    fireEvent.click(menu)
+    expect(menu).toBeInTheDocument()
+  })
+
+  test('Should go to / on click patrimonies menu', () => {
+    const { history } = makeSut()
+    fireEvent.click(screen.getByTestId('patrimonies-menu'))
+    expect(history.location.pathname).toBe('/')
+    expect(history.length).toBe(2)
+  })
+
+  test('Should go to /owners on click patrimonies menu', () => {
+    const { history } = makeSut()
+    fireEvent.click(screen.getByTestId('owners-menu'))
+    expect(history.location.pathname).toBe('/owners')
+    expect(history.length).toBe(2)
+  })
+
+  test('Should go to /sectors on click sectors menu', () => {
+    const { history } = makeSut()
+    fireEvent.click(screen.getByTestId('sectors-menu'))
+    expect(history.location.pathname).toBe('/sectors')
+    expect(history.length).toBe(2)
+  })
+
+  test('Should go to /categories on click categories menu', () => {
+    const { history } = makeSut()
+    fireEvent.click(screen.getByTestId('categories-menu'))
+    expect(history.location.pathname).toBe('/categories')
+    expect(history.length).toBe(2)
   })
 })
