@@ -2,6 +2,7 @@ import { PatrimonyList } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
 import { AccountModel } from '@/domain/models'
 import { AccessDeniedError } from '@/domain/errors'
+import { getValueInput } from '@/tests/presentation/mocks'
 import { LoadPatrimoniesSpy, mockAccountModel } from '@/tests/domain/mocks'
 
 import React from 'react'
@@ -36,10 +37,6 @@ const makeSut = ({
     loadPatrimoniesSpy,
     history
   }
-}
-
-const getValueInput = (fieldName: string): string => {
-  return screen.getByTestId(fieldName).children[1].children[0].getAttribute('value')
 }
 
 describe('PatrimonyList Component', () => {

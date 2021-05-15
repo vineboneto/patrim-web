@@ -24,3 +24,7 @@ export const populateFieldSelect = (fieldName: string, value: any = faker.dataty
   const select = field.children[1]
   fireEvent.input(select, { target: { value } })
 }
+
+export const getValueInput = (fieldName: string): string => {
+  return screen.getByTestId(fieldName).children[1].children[0].getAttribute('value')
+}

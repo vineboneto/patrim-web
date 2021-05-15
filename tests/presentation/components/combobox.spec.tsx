@@ -1,10 +1,10 @@
-import { FormContext, Select, ItemProps } from '@/presentation/components'
+import { FormContext, Combobox, ItemProps } from '@/presentation/components'
+import { getValueInput, populateField } from '@/tests/presentation/mocks'
 
 import React from 'react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
-import { populateFieldSelect } from '../mocks'
+import { render } from '@testing-library/react'
 
 const options: ItemProps[] = [
   { value: '1', label: 'value-1' },
@@ -17,16 +17,17 @@ const makeSut = (): void => {
   render(
     <FormContext.Provider value={{ state: {}, setState: jest.fn() }}>
       <Router history={history}>
-        <Select name="any-select" placeholder="any" options={options} />
+        <Combobox name="combobox" placeholder="any" options={options} />
       </Router>
     </FormContext.Provider>
   )
 }
 
-describe('Select Component', () => {
+describe('ComboBox Component', () => {
   test('Should change value to correct value', () => {
     makeSut()
-    populateFieldSelect('any-select', 2)
-    expect(screen.getByRole('button').innerHTML).toBe('value-2')
+    populateField('combobox', 'value-3')
+    const value = getValueInput('combobox')
+    expect(value).toBe('value-3')
   })
 })
