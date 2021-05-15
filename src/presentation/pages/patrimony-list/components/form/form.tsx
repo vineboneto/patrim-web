@@ -30,6 +30,8 @@ const Form: React.FC = () => {
         <div className="col-12 col-lg-3">
           <Button variant="outlined" color="primary" text="Pesquisar" />
         </div>
+        <div className="col-12 col-lg-3">
+        </div>
       </div>
     </form>
   )

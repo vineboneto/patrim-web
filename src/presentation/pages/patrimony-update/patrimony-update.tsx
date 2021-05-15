@@ -76,7 +76,6 @@ const PatrimonyUpdate: React.FC<Props> = ({
   }, [])
 
   useEffect(() => {
-    console.log(id)
     loadPatrimonyById.loadById({ id: Number(id) })
       .then((patrimony) => setState(old => ({
         ...old,

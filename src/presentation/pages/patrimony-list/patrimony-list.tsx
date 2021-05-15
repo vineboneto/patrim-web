@@ -1,6 +1,7 @@
 import './patrimony-list-styles.css'
-import { Header, FormContext, Loading } from '@/presentation/components'
+import { Header, FormContext, Loading, Button } from '@/presentation/components'
 import { Item, Form, ButtonNew, ItemProps } from '@/presentation/pages/patrimony-list/components'
+import { useErrorHandler } from '@/presentation/hooks'
 import { LoadPatrimonies } from '@/domain/usecases'
 
 import React, { useState, useEffect } from 'react'
@@ -11,8 +12,12 @@ type Props = {
 }
 
 const PatrimonyList: React.FC<Props> = ({ loadPatrimonies }: Props) => {
+  const handleError = useErrorHandler((error: Error) => {
+    setState(old => ({ ...old, mainError: error.message, isLoading: false }))
+  })
   const [state, setState] = useState({
     isLoading: true,
+    mainError: '',
     number: '',
     category: '',
     owner: '',
@@ -33,7 +38,7 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies }: Props) => {
           sector: p.owner.sector.name
         }))
       })))
-      .catch((error) => console.log(error))
+      .catch((error) => handleError(error))
   }, [])
 
   return (
@@ -51,7 +56,15 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies }: Props) => {
             <div className="col-12 loading">
               <Loading />
             </div>}
-          { state.patrimonies.map((patrimony) => (
+          {state.mainError &&
+            <div className="col-12">
+              <div className="error">
+                <span>{state.mainError}</span>
+                <Button color="secondary" variant="outlined" text="Recarregar" />
+              </div>
+            </div>}
+
+          {state.patrimonies.map((patrimony) => (
             <div className="col-12 col-md-6 col-lg-4" role="item" key={patrimony.id}>
               <Item patrimony={patrimony} />
             </div>
