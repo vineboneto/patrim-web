@@ -2,7 +2,7 @@ import { RemoteLoadPatrimoniesByNumber } from '@/data/usecases'
 import { HttpStatusCode } from '@/data/protocols'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
-import { mockLoadPatrimoniesByNumberParams } from '@/tests/domain/mocks'
+import { mockLoadPatrimoniesByNumberParams, mockPatrimonyModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -64,5 +64,16 @@ describe('RemoteLoadPatrimoniesByNumber', () => {
     }
     const promise = sut.loadByNumber(mockLoadPatrimoniesByNumberParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should return an patrimony if HttpClient returns 200', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    const body = mockPatrimonyModel()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body
+    }
+    const data = await sut.loadByNumber(mockLoadPatrimoniesByNumberParams())
+    expect(data).toEqual(body)
   })
 })
