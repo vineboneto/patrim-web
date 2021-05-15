@@ -55,6 +55,19 @@ describe('PatrimonyList Component', () => {
     expect(screen.queryAllByRole('item').length).toBe(3)
   })
 
+  test('Should render main error if LoadPatrimonies fails', async () => {
+    const loadPatrimoniesSpy = new LoadPatrimoniesSpy()
+    const error = new Error()
+    error.message = 'something error'
+    jest.spyOn(loadPatrimoniesSpy, 'load').mockRejectedValueOnce(error)
+    makeSut({ loadPatrimoniesSpy })
+    waitFor(() => screen.getByTestId('patrimonies'))
+      .then(() => {
+        expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
+      })
+      .catch((error) => console.log(error))
+  })
+
   test('Should go to /patrimonies/new on click new patrimony', () => {
     const { history } = makeSut()
     fireEvent.click(screen.getByTestId('link-new'))
