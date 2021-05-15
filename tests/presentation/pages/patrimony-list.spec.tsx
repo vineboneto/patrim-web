@@ -61,4 +61,13 @@ describe('PatrimonyList Component', () => {
     expect(history.location.pathname).toBe('/patrimonies/new')
     expect(history.length).toBe(2)
   })
+
+  test('Should go to /patrimonies/update/:id on click edit patrimony', async () => {
+    const { history, loadPatrimoniesSpy } = makeSut()
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    const updatedLink = screen.queryAllByRole('link-update')[0]
+    fireEvent.click(updatedLink)
+    expect(history.location.pathname).toBe(`/patrimonies/update/${loadPatrimoniesSpy.model[0].id}`)
+    expect(history.length).toBe(2)
+  })
 })
