@@ -1,5 +1,7 @@
 import { PatrimonyList } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
+import { AccountModel } from '@/domain/models'
+import { AccessDeniedError } from '@/domain/errors'
 import { LoadPatrimoniesSpy, mockAccountModel } from '@/tests/domain/mocks'
 
 import React from 'react'
@@ -13,6 +15,7 @@ type Params = {
 
 type SutTypes = {
   loadPatrimoniesSpy: LoadPatrimoniesSpy
+  setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
 }
 
@@ -29,6 +32,7 @@ const makeSut = ({
     </ApiContext.Provider>
   )
   return {
+    setCurrentAccountMock,
     loadPatrimoniesSpy,
     history
   }
@@ -66,6 +70,15 @@ describe('PatrimonyList Component', () => {
         expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
       })
       .catch((error) => console.log(error))
+  })
+
+  test('Should logout on AccessDeniedError by LoadPatrimonies', async () => {
+    const loadPatrimoniesSpy = new LoadPatrimoniesSpy()
+    jest.spyOn(loadPatrimoniesSpy, 'load').mockRejectedValueOnce(new AccessDeniedError())
+    const { history, setCurrentAccountMock } = makeSut({ loadPatrimoniesSpy })
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
+    expect(history.location.pathname).toBe('/login')
   })
 
   test('Should go to /patrimonies/new on click new patrimony', () => {
