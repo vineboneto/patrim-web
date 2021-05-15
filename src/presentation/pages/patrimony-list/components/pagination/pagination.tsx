@@ -1,20 +1,25 @@
 import './pagination-styles.css'
+import { LoadContext } from '@/presentation/components'
 
-import React from 'react'
+import React, { useContext } from 'react'
 import PaginationM from '@material-ui/lab/Pagination'
 
-type Props = {
-  handleChange: (e: any, page: number) => void
-  count: number
-}
+const Pagination: React.FC = () => {
+  const { state, setState } = useContext(LoadContext)
 
-const Pagination: React.FC<Props> = ({ handleChange, count }: Props) => {
+  const handleChangePagination = (e: any, page: number): void => {
+    setState(old => ({
+      ...old,
+      skip: (page - 1) * state.take
+    }))
+  }
+
   return (
     <div className="col-12 pagination-wrap">
       <PaginationM
         data-testid="pagination"
-        onChange={handleChange}
-        count={count}
+        onChange={handleChangePagination}
+        count={state.totalPage}
         size="large" color="primary"
       />
     </div>

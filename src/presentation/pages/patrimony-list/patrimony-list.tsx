@@ -1,6 +1,14 @@
 import './patrimony-list-styles.css'
-import { Header, FormContext, ComboOptions } from '@/presentation/components'
-import { Item, Form, ButtonNew, ItemProps, Error, Loading, Pagination } from '@/presentation/pages/patrimony-list/components'
+import { Header, FormContext, ComboOptions, LoadContext } from '@/presentation/components'
+import {
+  Item,
+  Form,
+  ButtonNew,
+  ItemProps,
+  Error,
+  Loading,
+  Pagination
+} from '@/presentation/pages/patrimony-list/components'
 import { useErrorHandler } from '@/presentation/hooks'
 import { LoadCategories, LoadOwners, LoadPatrimonies } from '@/domain/usecases'
 
@@ -19,6 +27,7 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies, loadOwners, loadCateg
   const [state, setState] = useState({
     isLoading: true,
     mainError: '',
+    reload: false,
     number: '',
     category: '',
     categories: [] as ComboOptions[],
@@ -35,11 +44,12 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies, loadOwners, loadCateg
       .then((patrimonies) => {
         setState(old => ({
           ...old,
+          isLoading: false,
           totalPage: Math.ceil(patrimonies.length / state.take)
         }))
       })
       .catch((error) => handleError(error))
-  }, [])
+  }, [state.reload])
 
   useEffect(() => {
     loadPatrimonies.load({ skip: state.skip, take: state.take })
@@ -58,49 +68,46 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies, loadOwners, loadCateg
         }))
       })
       .catch((error) => handleError(error))
-  }, [state.skip, state.take])
+  }, [state.skip, state.take, state.reload])
 
   useEffect(() => {
     loadOwners.load()
       .then(owners => setState(old => ({
         ...old,
+        isLoading: false,
         owners: owners.map(owner => ({ value: owner.id.toString(), label: owner.name }))
       })))
       .catch(error => handleError(error))
-  }, [])
+  }, [state.reload])
 
   useEffect(() => {
     loadCategories.load()
       .then(categories => setState(old => ({
         ...old,
+        isLoading: false,
         categories: categories.map(category => ({ value: category.id.toString(), label: category.name }))
       })))
       .catch(error => handleError(error))
-  }, [])
-
-  const handleChangePagination = (e: any, page: number): void => {
-    setState(old => ({
-      ...old,
-      skip: (page - 1) * state.take
-    }))
-  }
+  }, [state.reload])
 
   return (
     <div className="patrimony-list-wrap" data-testid="patrimonies">
       <Header title="Patrimônios" />
       <div className="container patrimony-list-content">
-        <div className="row gy-4">
-          <FormContext.Provider value={{ state, setState }}>
-            <Form />
-          </FormContext.Provider>
-          <ButtonNew />
-          {state.isLoading && <Loading />}
-          {state.mainError && <Error error={state.mainError} />}
-          {state.patrimonies.map((patrimony) => <Item patrimony={patrimony} key={patrimony.id} />)}
-        </div>
-        <div className="row">
-          <Pagination handleChange={handleChangePagination} count={state.totalPage} />
-        </div>
+        <LoadContext.Provider value={{ state, setState }}>
+          <div className="row gy-4">
+            <FormContext.Provider value={{ state, setState }}>
+              <Form />
+            </FormContext.Provider>
+            <ButtonNew />
+            {state.isLoading && <Loading />}
+            {state.mainError && <Error />}
+            {state.patrimonies.map((patrimony) => <Item patrimony={patrimony} key={patrimony.id} />)}
+          </div>
+          <div className="row">
+            <Pagination />
+          </div>
+        </LoadContext.Provider>
       </div>
     </div>
   )

@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { ButtonHTMLAttributes } from 'react'
 import ButtonM from '@material-ui/core/Button'
 
-type Props = {
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   text: string
   variant: 'text' | 'outlined' | 'contained'
   color: 'primary' | 'secondary'
