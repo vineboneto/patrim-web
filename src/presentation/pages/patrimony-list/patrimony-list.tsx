@@ -21,25 +21,48 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies }: Props) => {
     number: '',
     category: '',
     owner: '',
+    totalPage: 1,
+    skip: 0,
+    take: 12,
     patrimonies: [] as ItemProps[]
   })
 
   useEffect(() => {
-    loadPatrimonies.load({ skip: 0, take: 9 })
-      .then((patrimonies) => setState(old => ({
-        ...old,
-        isLoading: false,
-        patrimonies: patrimonies.map((p) => ({
-          id: p.id.toString(),
-          brand: p.brand,
-          number: p.number,
-          category: p.category.name,
-          owner: p.owner.name,
-          sector: p.owner.sector.name
+    loadPatrimonies.load({})
+      .then((patrimonies) => {
+        setState(old => ({
+          ...old,
+          totalPage: Math.ceil(patrimonies.length / state.take)
         }))
-      })))
+      })
       .catch((error) => handleError(error))
   }, [])
+
+  useEffect(() => {
+    loadPatrimonies.load({ skip: state.skip, take: state.take })
+      .then((patrimonies) => {
+        setState(old => ({
+          ...old,
+          isLoading: false,
+          patrimonies: patrimonies.map((p) => ({
+            id: p.id.toString(),
+            brand: p.brand,
+            number: p.number,
+            category: p.category.name,
+            owner: p.owner.name,
+            sector: p.owner.sector.name
+          }))
+        }))
+      })
+      .catch((error) => handleError(error))
+  }, [state.skip, state.take])
+
+  const handleChangePagination = (e: any, page: number): void => {
+    setState(old => ({
+      ...old,
+      skip: (page - 1) * state.take
+    }))
+  }
 
   return (
     <div className="patrimony-list-wrap" data-testid="patrimonies">
@@ -72,7 +95,12 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies }: Props) => {
         </div>
         <div className="row">
           <div className="col-12 pagination-wrap">
-            <Pagination count={1} size="large" color="primary" />
+            <Pagination
+              data-testid="pagination"
+              onChange={handleChangePagination}
+              count={state.totalPage}
+              size="large" color="primary"
+            />
           </div>
         </div>
       </div>
