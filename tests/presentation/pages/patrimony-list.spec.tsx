@@ -101,6 +101,15 @@ describe('PatrimonyList Component', () => {
       .catch((error) => console.log(error))
   })
 
+  test('Should logout on AccessDeniedError by LoadOwners', async () => {
+    const loadOwnersSpy = new LoadOwnersSpy()
+    jest.spyOn(loadOwnersSpy, 'load').mockRejectedValueOnce(new AccessDeniedError())
+    const { history, setCurrentAccountMock } = makeSut({ loadOwnersSpy })
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
+    expect(history.location.pathname).toBe('/login')
+  })
+
   test('Should go to /patrimonies/new on click new patrimony', () => {
     const { history } = makeSut()
     fireEvent.click(screen.getByTestId('link-new'))
