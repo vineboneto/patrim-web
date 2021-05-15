@@ -34,24 +34,30 @@ const makeSut = ({
   }
 }
 
+const getValueInput = (fieldName: string): string => {
+  return screen.getByTestId(fieldName).children[1].children[0].getAttribute('value')
+}
+
 describe('PatrimonyList Component', () => {
   test('Should start with initial state', () => {
     makeSut()
     expect(screen.getByTestId('spinner')).toBeInTheDocument()
-    expect(screen.getByTestId('owner').children[0].children[1].children[0].getAttribute('value')).toBe('')
-    expect(screen.getByTestId('category').children[0].children[1].children[0].getAttribute('value')).toBe('')
-    expect(screen.getByTestId('number').children[1].children[0].getAttribute('value')).toBe('')
+    expect(getValueInput('owner')).toBe('')
+    expect(getValueInput('category')).toBe('')
+    expect(getValueInput('number')).toBe('')
   })
 
   test('Should calls LoadPatrimonies', async () => {
     const { loadPatrimoniesSpy } = makeSut()
     await waitFor(() => screen.getByTestId('patrimonies'))
     expect(loadPatrimoniesSpy.callsCount).toBe(1)
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    expect(screen.queryAllByRole('item').length).toBe(3)
   })
 
   test('Should go to /patrimonies/new on click new patrimony', () => {
     const { history } = makeSut()
-    fireEvent.click(screen.getByTestId('patrimonies-new'))
+    fireEvent.click(screen.getByTestId('link-new'))
     expect(history.location.pathname).toBe('/patrimonies/new')
     expect(history.length).toBe(2)
   })
