@@ -3,11 +3,6 @@ import { Input, Button, Combobox, FormContext } from '@/presentation/components'
 
 import React, { useContext } from 'react'
 
-const categoryOptions = [
-  { value: '1', label: 'Computador' },
-  { value: '2', label: 'Impressora' }
-]
-
 const Form: React.FC = () => {
   const { state } = useContext(FormContext)
 
@@ -18,7 +13,7 @@ const Form: React.FC = () => {
           <Combobox name="owner" placeholder="Proprietário" options={state.owners} />
         </div>
         <div className="col-12 col-lg-3">
-          <Combobox name="category" placeholder="Categoria" options={categoryOptions} />
+          <Combobox name="category" placeholder="Categoria" options={state.categories} />
         </div>
         <div className="col-12 col-lg-3">
           <Input type="text" name="number" placeholder="Número" />

@@ -3,7 +3,7 @@ import { ApiContext } from '@/presentation/components'
 import { AccountModel } from '@/domain/models'
 import { AccessDeniedError } from '@/domain/errors'
 import { getValueInput } from '@/tests/presentation/mocks'
-import { LoadOwnersSpy, LoadPatrimoniesSpy, mockAccountModel } from '@/tests/domain/mocks'
+import { LoadCategoriesSpy, LoadOwnersSpy, LoadPatrimoniesSpy, mockAccountModel } from '@/tests/domain/mocks'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -13,25 +13,28 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 type Params = {
   loadPatrimoniesSpy?: LoadPatrimoniesSpy
   loadOwnersSpy?: LoadOwnersSpy
+  loadCategoriesSpy?: LoadCategoriesSpy
 }
 
 type SutTypes = {
   loadPatrimoniesSpy: LoadPatrimoniesSpy
   loadOwnersSpy: LoadOwnersSpy
+  loadCategoriesSpy: LoadCategoriesSpy
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
 }
 
 const makeSut = ({
   loadPatrimoniesSpy = new LoadPatrimoniesSpy(),
-  loadOwnersSpy = new LoadOwnersSpy()
+  loadOwnersSpy = new LoadOwnersSpy(),
+  loadCategoriesSpy = new LoadCategoriesSpy()
 }: Params = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/patrimonies/new'] })
   const setCurrentAccountMock = jest.fn()
   render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
-        <PatrimonyList loadPatrimonies={loadPatrimoniesSpy} loadOwners={loadOwnersSpy} />
+        <PatrimonyList loadPatrimonies={loadPatrimoniesSpy} loadOwners={loadOwnersSpy} loadCategories={loadCategoriesSpy} />
       </Router>
     </ApiContext.Provider>
   )
@@ -39,6 +42,7 @@ const makeSut = ({
     setCurrentAccountMock,
     loadPatrimoniesSpy,
     loadOwnersSpy,
+    loadCategoriesSpy,
     history
   }
 }
@@ -110,6 +114,34 @@ describe('PatrimonyList Component', () => {
     expect(history.location.pathname).toBe('/login')
   })
 
+  test('Should calls LoadCategories', async () => {
+    const { loadOwnersSpy } = makeSut()
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    expect(loadOwnersSpy.callsCount).toBe(1)
+  })
+
+  test('Should render main error if LoadCategories fails', async () => {
+    const loadCategoriesSpy = new LoadCategoriesSpy()
+    const error = new Error()
+    error.message = 'something error'
+    jest.spyOn(loadCategoriesSpy, 'load').mockRejectedValueOnce(error)
+    makeSut({ loadCategoriesSpy })
+    waitFor(() => screen.getByTestId('patrimonies'))
+      .then(() => {
+        expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
+      })
+      .catch((error) => console.log(error))
+  })
+
+  test('Should logout on AccessDeniedError by LoadCategories', async () => {
+    const loadCategoriesSpy = new LoadCategoriesSpy()
+    jest.spyOn(loadCategoriesSpy, 'load').mockRejectedValueOnce(new AccessDeniedError())
+    const { history, setCurrentAccountMock } = makeSut({ loadCategoriesSpy })
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
+    expect(history.location.pathname).toBe('/login')
+  })
+
   test('Should go to /patrimonies/new on click new patrimony', () => {
     const { history } = makeSut()
     fireEvent.click(screen.getByTestId('link-new'))
@@ -126,7 +158,7 @@ describe('PatrimonyList Component', () => {
     expect(history.length).toBe(2)
   })
 
-  test.only('Should present correct number of pages', async () => {
+  test('Should present correct number of pages', async () => {
     makeSut()
     await waitFor(() => screen.getByTestId('patrimonies'))
     const numberOfPages = screen.getByTestId('pagination').children[0].querySelectorAll('li').length - 2

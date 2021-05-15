@@ -2,7 +2,7 @@ import './patrimony-list-styles.css'
 import { Header, FormContext, Loading, Button, ComboOptions } from '@/presentation/components'
 import { Item, Form, ButtonNew, ItemProps } from '@/presentation/pages/patrimony-list/components'
 import { useErrorHandler } from '@/presentation/hooks'
-import { LoadOwners, LoadPatrimonies } from '@/domain/usecases'
+import { LoadCategories, LoadOwners, LoadPatrimonies } from '@/domain/usecases'
 
 import React, { useState, useEffect } from 'react'
 import Pagination from '@material-ui/lab/Pagination'
@@ -10,9 +10,10 @@ import Pagination from '@material-ui/lab/Pagination'
 type Props = {
   loadPatrimonies: LoadPatrimonies
   loadOwners: LoadOwners
+  loadCategories: LoadCategories
 }
 
-const PatrimonyList: React.FC<Props> = ({ loadPatrimonies, loadOwners }: Props) => {
+const PatrimonyList: React.FC<Props> = ({ loadPatrimonies, loadOwners, loadCategories }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({ ...old, mainError: error.message, isLoading: false }))
   })
@@ -21,6 +22,7 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies, loadOwners }: Props) 
     mainError: '',
     number: '',
     category: '',
+    categories: [] as ComboOptions[],
     owner: '',
     owners: [] as ComboOptions[],
     totalPage: 1,
@@ -64,6 +66,15 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies, loadOwners }: Props) 
       .then(owners => setState(old => ({
         ...old,
         owners: owners.map(owner => ({ value: owner.id.toString(), label: owner.name }))
+      })))
+      .catch(error => handleError(error))
+  }, [])
+
+  useEffect(() => {
+    loadCategories.load()
+      .then(categories => setState(old => ({
+        ...old,
+        categories: categories.map(category => ({ value: category.id.toString(), label: category.name }))
       })))
       .catch(error => handleError(error))
   }, [])
