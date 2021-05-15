@@ -2,7 +2,7 @@ import { RemoteLoadPatrimonies } from '@/data/usecases'
 import { HttpStatusCode } from '@/data/protocols'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
-import { mockPatrimoniesModel } from '@/tests/domain/mocks'
+import { mockLoadPatrimoniesParams, mockPatrimoniesModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -23,10 +23,11 @@ const makeSut = (url = faker.internet.url()): SutTypes => {
 describe('RemoteLoadPatrimonies', () => {
   test('Should call HttpClient Client with correct values', async () => {
     const url = faker.internet.url()
+    const params = mockLoadPatrimoniesParams()
     const { sut, httpClientSpy } = makeSut(url)
-    await sut.load()
+    await sut.load(params)
     expect(httpClientSpy.params.method).toBe('get')
-    expect(httpClientSpy.params.url).toBe(url)
+    expect(httpClientSpy.params.url).toBe(`${url}?take=${params.take}&skip=${params.skip}`)
   })
 
   test('Should throw AccessDeniedError if HttpGetClient returns 403', async () => {
@@ -34,7 +35,7 @@ describe('RemoteLoadPatrimonies', () => {
     httpClientSpy.response = {
       statusCode: HttpStatusCode.forbidden
     }
-    const promise = sut.load()
+    const promise = sut.load(mockLoadPatrimoniesParams())
     await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
 
@@ -43,7 +44,7 @@ describe('RemoteLoadPatrimonies', () => {
     httpClientSpy.response = {
       statusCode: HttpStatusCode.badRequest
     }
-    const promise = sut.load()
+    const promise = sut.load(mockLoadPatrimoniesParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
@@ -52,7 +53,7 @@ describe('RemoteLoadPatrimonies', () => {
     httpClientSpy.response = {
       statusCode: HttpStatusCode.serverError
     }
-    const promise = sut.load()
+    const promise = sut.load(mockLoadPatrimoniesParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
@@ -61,7 +62,7 @@ describe('RemoteLoadPatrimonies', () => {
     httpClientSpy.response = {
       statusCode: HttpStatusCode.badRequest
     }
-    const promise = sut.load()
+    const promise = sut.load(mockLoadPatrimoniesParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
@@ -72,7 +73,7 @@ describe('RemoteLoadPatrimonies', () => {
       statusCode: HttpStatusCode.ok,
       body
     }
-    const data = await sut.load()
+    const data = await sut.load(mockLoadPatrimoniesParams())
     expect(data).toEqual(body)
   })
 
@@ -83,7 +84,7 @@ describe('RemoteLoadPatrimonies', () => {
       statusCode: HttpStatusCode.noContent,
       body
     }
-    const data = await sut.load()
+    const data = await sut.load(mockLoadPatrimoniesParams())
     expect(data).toEqual(body)
   })
 })
