@@ -1,7 +1,7 @@
 import { PatrimonyList } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
 import { AccountModel } from '@/domain/models'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { getValueInput } from '@/tests/presentation/mocks'
 import { LoadCategoriesSpy, LoadOwnersSpy, LoadPatrimoniesSpy, mockAccountModel } from '@/tests/domain/mocks'
 
@@ -167,5 +167,15 @@ describe('PatrimonyList Component', () => {
     fireEvent.click(page2)
     await waitFor(() => screen.getByTestId('patrimonies'))
     expect(page2).toHaveTextContent('2')
+  })
+
+  test('Should call LoadPatrimonies on failure', async () => {
+    const loadPatrimoniesSpy = new LoadPatrimoniesSpy()
+    jest.spyOn(loadPatrimoniesSpy, 'load').mockRejectedValueOnce(new UnexpectedError())
+    makeSut({ loadPatrimoniesSpy })
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    fireEvent.click(screen.getByTestId('reload'))
+    expect(loadPatrimoniesSpy.callsCount).toBe(3)
+    await waitFor(() => screen.getByTestId('patrimonies'))
   })
 })
