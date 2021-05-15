@@ -228,4 +228,11 @@ describe('PatrimonyList Component', () => {
     await waitFor(() => screen.getByTestId('patrimonies'))
     expect(loadPatrimonyByNumberSpy.callsCount).toBe(0)
   })
+
+  test('Should disabled combo box if number is not undefined', async () => {
+    makeSut()
+    populateField('number', '666')
+    expect(screen.getByTestId('owner').children[1].children[0]).toBeDisabled()
+    expect(screen.getByTestId('category').children[1].children[0]).toBeDisabled()
+  })
 })
