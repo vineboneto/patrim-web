@@ -5,18 +5,31 @@ import { Link } from 'react-router-dom'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 
-const Item: React.FC = () => {
+export type ItemProps = {
+  id: string
+  number: string
+  brand: string
+  category: string
+  owner: string
+  sector: string
+}
+
+export type Props = {
+  patrimony: ItemProps
+}
+
+const Item: React.FC<Props> = ({ patrimony }: Props) => {
   return (
     <div className="patrimony-item">
       <div className="item-body">
-        <h5>Computador<span>86521</span></h5>
-        <p><span>Proprietário:</span> Vinicius</p>
-        <p><span>Marca:</span> Dell</p>
-        <p><span>Setor:</span> UPA</p>
+        <h5>{patrimony.category}<span>{patrimony.number}</span></h5>
+        <p><span>Proprietário:</span> {patrimony.owner}</p>
+        <p><span>Marca:</span> {patrimony.brand}</p>
+        <p><span>Setor:</span> {patrimony.sector}</p>
       </div>
       <footer>
         <div className="link-group">
-          <Link replace to="#">
+          <Link to={`patrimonies/update/${patrimony.id}`}>
             <EditIcon color="primary" />
           </Link>
           <Link replace to="#">

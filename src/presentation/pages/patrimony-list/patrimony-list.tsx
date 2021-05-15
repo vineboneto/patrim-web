@@ -1,21 +1,43 @@
 import './patrimony-list-styles.css'
-
 import { Header, FormContext, Loading } from '@/presentation/components'
-import { Item, Form, ButtonNew } from '@/presentation/pages/patrimony-list/components'
+import { Item, Form, ButtonNew, ItemProps } from '@/presentation/pages/patrimony-list/components'
+import { LoadPatrimonies } from '@/domain/usecases'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Pagination from '@material-ui/lab/Pagination'
 
-const PatrimonyList: React.FC = () => {
+type Props = {
+  loadPatrimonies: LoadPatrimonies
+}
+
+const PatrimonyList: React.FC<Props> = ({ loadPatrimonies }: Props) => {
   const [state, setState] = useState({
     isLoading: true,
     number: '',
     category: '',
-    owner: ''
+    owner: '',
+    patrimonies: [] as ItemProps[]
   })
 
+  useEffect(() => {
+    loadPatrimonies.load()
+      .then((patrimonies) => setState(old => ({
+        ...old,
+        isLoading: false,
+        patrimonies: patrimonies.map((p) => ({
+          id: p.id.toString(),
+          brand: p.brand,
+          number: p.number,
+          category: p.category.name,
+          owner: p.owner.name,
+          sector: p.owner.sector.name
+        }))
+      })))
+      .catch((error) => console.log(error))
+  }, [])
+
   return (
-    <div className="patrimony-list-wrap">
+    <div className="patrimony-list-wrap" data-testid="patrimonies">
       <Header title="Patrimônios" />
       <div className="container patrimony-list-content">
         <div className="row gy-4">
@@ -25,13 +47,15 @@ const PatrimonyList: React.FC = () => {
           <div className="col-12">
             <ButtonNew />
           </div>
-          { state.isLoading &&
-          <div className="col-12 loading">
-            <Loading />
-          </div> }
-          <div className="col-12 col-md-6 col-lg-4">
-            <Item />
-          </div>
+          {state.isLoading &&
+            <div className="col-12 loading">
+              <Loading />
+            </div>}
+          { state.patrimonies.map((patrimony) => (
+            <div className="col-12 col-md-6 col-lg-4" key={patrimony.id} >
+              <Item patrimony={patrimony} />
+            </div>
+          ))}
         </div>
         <div className="row">
           <div className="col-12 pagination-wrap">
