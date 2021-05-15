@@ -178,4 +178,14 @@ describe('PatrimonyList Component', () => {
     expect(loadPatrimoniesSpy.callsCount).toBe(3)
     await waitFor(() => screen.getByTestId('patrimonies'))
   })
+
+  test('Should call LoadOwners on failure', async () => {
+    const loadOwnersSpy = new LoadOwnersSpy()
+    jest.spyOn(loadOwnersSpy, 'load').mockRejectedValueOnce(new UnexpectedError())
+    makeSut({ loadOwnersSpy })
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    fireEvent.click(screen.getByTestId('reload'))
+    expect(loadOwnersSpy.callsCount).toBe(1)
+    await waitFor(() => screen.getByTestId('patrimonies'))
+  })
 })
