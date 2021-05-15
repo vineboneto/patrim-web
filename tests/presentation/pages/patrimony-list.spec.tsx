@@ -2,8 +2,14 @@ import { PatrimonyList } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
 import { AccountModel } from '@/domain/models'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
-import { getValueInput } from '@/tests/presentation/mocks'
-import { LoadCategoriesSpy, LoadOwnersSpy, LoadPatrimoniesSpy, mockAccountModel } from '@/tests/domain/mocks'
+import { getValueInput, populateField } from '@/tests/presentation/mocks'
+import {
+  LoadCategoriesSpy,
+  LoadOwnersSpy,
+  LoadPatrimoniesSpy,
+  LoadPatrimonyByNumberSpy,
+  mockAccountModel
+} from '@/tests/domain/mocks'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -14,12 +20,14 @@ type Params = {
   loadPatrimoniesSpy?: LoadPatrimoniesSpy
   loadOwnersSpy?: LoadOwnersSpy
   loadCategoriesSpy?: LoadCategoriesSpy
+  loadPatrimonyByNumberSpy?: LoadPatrimonyByNumberSpy
 }
 
 type SutTypes = {
   loadPatrimoniesSpy: LoadPatrimoniesSpy
   loadOwnersSpy: LoadOwnersSpy
   loadCategoriesSpy: LoadCategoriesSpy
+  loadPatrimonyByNumberSpy: LoadPatrimonyByNumberSpy
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
 }
@@ -27,14 +35,20 @@ type SutTypes = {
 const makeSut = ({
   loadPatrimoniesSpy = new LoadPatrimoniesSpy(),
   loadOwnersSpy = new LoadOwnersSpy(),
-  loadCategoriesSpy = new LoadCategoriesSpy()
+  loadCategoriesSpy = new LoadCategoriesSpy(),
+  loadPatrimonyByNumberSpy = new LoadPatrimonyByNumberSpy()
 }: Params = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/patrimonies/new'] })
   const setCurrentAccountMock = jest.fn()
   render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
-        <PatrimonyList loadPatrimonies={loadPatrimoniesSpy} loadOwners={loadOwnersSpy} loadCategories={loadCategoriesSpy} />
+        <PatrimonyList
+          loadPatrimonies={loadPatrimoniesSpy}
+          loadOwners={loadOwnersSpy}
+          loadCategories={loadCategoriesSpy}
+          loadPatrimonyByNumber={loadPatrimonyByNumberSpy}
+        />
       </Router>
     </ApiContext.Provider>
   )
@@ -43,6 +57,7 @@ const makeSut = ({
     loadPatrimoniesSpy,
     loadOwnersSpy,
     loadCategoriesSpy,
+    loadPatrimonyByNumberSpy,
     history
   }
 }
@@ -197,5 +212,13 @@ describe('PatrimonyList Component', () => {
     fireEvent.click(screen.getByTestId('reload'))
     expect(loadCategoriesSpy.callsCount).toBe(1)
     await waitFor(() => screen.getByTestId('patrimonies'))
+  })
+
+  test('Should call LoadPatrimonyByNumber on submit', async () => {
+    const { loadPatrimonyByNumberSpy } = makeSut()
+    populateField('number', '666')
+    fireEvent.click(screen.getByTestId('submit-button'))
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    expect(loadPatrimonyByNumberSpy.callsCount).toBe(1)
   })
 })
