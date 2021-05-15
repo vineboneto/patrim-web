@@ -1,3 +1,6 @@
 export { default as Item, ItemProps } from './item/item'
 export { default as Form } from './form/form'
 export { default as ButtonNew } from './button-new/button-new'
+export { default as Error } from './error/error'
+export { default as Loading } from './loading/loading'
+export { default as Pagination } from './pagination/pagination'

@@ -5,9 +5,11 @@ import { Link } from 'react-router-dom'
 
 const ButtonNew: React.FC = () => {
   return (
-    <Link to="/patrimonies/new" data-testid="link-new">
-      <Button variant="contained" color="primary" text="Novo" />
-    </Link>
+    <div className="col-12">
+      <Link to="/patrimonies/new" data-testid="link-new">
+        <Button variant="contained" color="primary" text="Novo" />
+      </Link>
+    </div>
   )
 }
 

@@ -1,0 +1,15 @@
+.patrimony-list-wrap .patrimony-list-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 160px);
+}
+
+.patrimony-list-wrap .pagination-wrap {
+  width: 100%;
+  align-self: flex-end;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0;
+}

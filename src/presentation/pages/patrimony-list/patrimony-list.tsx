@@ -1,11 +1,10 @@
 import './patrimony-list-styles.css'
-import { Header, FormContext, Loading, Button, ComboOptions } from '@/presentation/components'
-import { Item, Form, ButtonNew, ItemProps } from '@/presentation/pages/patrimony-list/components'
+import { Header, FormContext, ComboOptions } from '@/presentation/components'
+import { Item, Form, ButtonNew, ItemProps, Error, Loading, Pagination } from '@/presentation/pages/patrimony-list/components'
 import { useErrorHandler } from '@/presentation/hooks'
 import { LoadCategories, LoadOwners, LoadPatrimonies } from '@/domain/usecases'
 
 import React, { useState, useEffect } from 'react'
-import Pagination from '@material-ui/lab/Pagination'
 
 type Props = {
   loadPatrimonies: LoadPatrimonies
@@ -94,36 +93,13 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies, loadOwners, loadCateg
           <FormContext.Provider value={{ state, setState }}>
             <Form />
           </FormContext.Provider>
-          <div className="col-12">
-            <ButtonNew />
-          </div>
-          {state.isLoading &&
-            <div className="col-12 loading">
-              <Loading />
-            </div>}
-          {state.mainError &&
-            <div className="col-12">
-              <div className="error">
-                <span>{state.mainError}</span>
-                <Button color="secondary" variant="outlined" text="Recarregar" />
-              </div>
-            </div>}
-
-          {state.patrimonies.map((patrimony) => (
-            <div className="col-12 col-md-6 col-lg-4" role="item" key={patrimony.id}>
-              <Item patrimony={patrimony} />
-            </div>
-          ))}
+          <ButtonNew />
+          {state.isLoading && <Loading />}
+          {state.mainError && <Error error={state.mainError} />}
+          {state.patrimonies.map((patrimony) => <Item patrimony={patrimony} key={patrimony.id} />)}
         </div>
         <div className="row">
-          <div className="col-12 pagination-wrap">
-            <Pagination
-              data-testid="pagination"
-              onChange={handleChangePagination}
-              count={state.totalPage}
-              size="large" color="primary"
-            />
-          </div>
+          <Pagination handleChange={handleChangePagination} count={state.totalPage} />
         </div>
       </div>
     </div>
