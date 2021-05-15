@@ -4,8 +4,8 @@ import { LoadPatrimoniesSpy, mockAccountModel } from '@/tests/domain/mocks'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
-import { render, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory, MemoryHistory } from 'history'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 type Params = {
   loadPatrimoniesSpy?: LoadPatrimoniesSpy
@@ -13,6 +13,7 @@ type Params = {
 
 type SutTypes = {
   loadPatrimoniesSpy: LoadPatrimoniesSpy
+  history: MemoryHistory
 }
 
 const makeSut = ({
@@ -28,7 +29,8 @@ const makeSut = ({
     </ApiContext.Provider>
   )
   return {
-    loadPatrimoniesSpy
+    loadPatrimoniesSpy,
+    history
   }
 }
 
@@ -45,5 +47,12 @@ describe('PatrimonyList Component', () => {
     const { loadPatrimoniesSpy } = makeSut()
     await waitFor(() => screen.getByTestId('patrimonies'))
     expect(loadPatrimoniesSpy.callsCount).toBe(1)
+  })
+
+  test('Should go to /patrimonies/new on click new patrimony', () => {
+    const { history } = makeSut()
+    fireEvent.click(screen.getByTestId('patrimonies-new'))
+    expect(history.location.pathname).toBe('/patrimonies/new')
+    expect(history.length).toBe(2)
   })
 })
