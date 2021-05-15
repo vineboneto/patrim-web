@@ -3,7 +3,7 @@ import { ApiContext } from '@/presentation/components'
 import { AccountModel } from '@/domain/models'
 import { AccessDeniedError } from '@/domain/errors'
 import { getValueInput } from '@/tests/presentation/mocks'
-import { LoadPatrimoniesSpy, mockAccountModel } from '@/tests/domain/mocks'
+import { LoadOwnersSpy, LoadPatrimoniesSpy, mockAccountModel } from '@/tests/domain/mocks'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -12,29 +12,33 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 type Params = {
   loadPatrimoniesSpy?: LoadPatrimoniesSpy
+  loadOwnersSpy?: LoadOwnersSpy
 }
 
 type SutTypes = {
   loadPatrimoniesSpy: LoadPatrimoniesSpy
+  loadOwnersSpy: LoadOwnersSpy
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
 }
 
 const makeSut = ({
-  loadPatrimoniesSpy = new LoadPatrimoniesSpy()
+  loadPatrimoniesSpy = new LoadPatrimoniesSpy(),
+  loadOwnersSpy = new LoadOwnersSpy()
 }: Params = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/patrimonies/new'] })
   const setCurrentAccountMock = jest.fn()
   render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
-        <PatrimonyList loadPatrimonies={loadPatrimoniesSpy} />
+        <PatrimonyList loadPatrimonies={loadPatrimoniesSpy} loadOwners={loadOwnersSpy} />
       </Router>
     </ApiContext.Provider>
   )
   return {
     setCurrentAccountMock,
     loadPatrimoniesSpy,
+    loadOwnersSpy,
     history
   }
 }
@@ -76,6 +80,12 @@ describe('PatrimonyList Component', () => {
     await waitFor(() => screen.getByTestId('patrimonies'))
     expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
     expect(history.location.pathname).toBe('/login')
+  })
+
+  test('Should calls LoadOwners', async () => {
+    const { loadOwnersSpy } = makeSut()
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    expect(loadOwnersSpy.callsCount).toBe(1)
   })
 
   test('Should go to /patrimonies/new on click new patrimony', () => {
