@@ -4,13 +4,13 @@ import React, { InputHTMLAttributes, useContext } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 
-type Options = {
+export type ComboOptions = {
   value: string
   label: string
 }
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
-  options: Options[]
+  options: ComboOptions[]
 }
 
 const Combobox: React.FC<Props> = (props: Props) => {

@@ -1,13 +1,7 @@
 import './form-styles.css'
-import { Input, Button, Combobox } from '@/presentation/components'
+import { Input, Button, Combobox, FormContext } from '@/presentation/components'
 
-import React from 'react'
-
-const ownerOptions = [
-  { value: '1', label: 'Vinicius' },
-  { value: '2', label: 'Weusley' },
-  { value: '3', label: 'Camila' }
-]
+import React, { useContext } from 'react'
 
 const categoryOptions = [
   { value: '1', label: 'Computador' },
@@ -15,11 +9,13 @@ const categoryOptions = [
 ]
 
 const Form: React.FC = () => {
+  const { state } = useContext(FormContext)
+
   return (
     <form className="form-wrap">
       <div className="row">
         <div className="col-12 col-lg-3">
-          <Combobox name="owner" placeholder="Proprietário" options={ownerOptions} />
+          <Combobox name="owner" placeholder="Proprietário" options={state.owners} />
         </div>
         <div className="col-12 col-lg-3">
           <Combobox name="category" placeholder="Categoria" options={categoryOptions} />
