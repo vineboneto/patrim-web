@@ -14,10 +14,10 @@ const Form: React.FC<Props> = ({ handleSubmit }: Props) => {
     <form className="form-wrap" onSubmit={handleSubmit}>
       <div className="row">
         <div className="col-12 col-lg-3">
-          <Combobox name="owner" placeholder="Proprietário" options={state.owners} />
+          <Combobox name="owner" placeholder="Proprietário" options={state.owners} disabled={state.number !== ''} />
         </div>
         <div className="col-12 col-lg-3">
-          <Combobox name="category" placeholder="Categoria" options={state.categories} />
+          <Combobox name="category" placeholder="Categoria" options={state.categories} disabled={state.number !== ''} />
         </div>
         <div className="col-12 col-lg-3">
           <Input type="text" name="number" placeholder="Número" />

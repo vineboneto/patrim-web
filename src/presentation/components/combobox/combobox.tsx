@@ -25,6 +25,7 @@ const Combobox: React.FC<Props> = (props: Props) => {
       style={{ margin: '10px 0' }}
       getOptionLabel={(option) => option.label}
       id="controllable-states-demo"
+      disabled={props.disabled}
       options={props.options}
       renderInput={(params) =>
         <TextField
