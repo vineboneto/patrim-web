@@ -20,7 +20,7 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies }: Props) => {
   })
 
   useEffect(() => {
-    loadPatrimonies.load()
+    loadPatrimonies.load({ skip: 0, take: 9 })
       .then((patrimonies) => setState(old => ({
         ...old,
         isLoading: false,
