@@ -21,13 +21,18 @@ const Combobox: React.FC<Props> = (props: Props) => {
 
   return (
     <Autocomplete
-      data-testid={props.name}
       onChange={handleChange}
       style={{ margin: '10px 0' }}
       getOptionLabel={(option) => option.label}
       id="controllable-states-demo"
       options={props.options}
-      renderInput={(params) => <TextField {...params} label={props.placeholder} variant="outlined" />}
+      renderInput={(params) =>
+        <TextField
+          {...params}
+          data-testid={props.name}
+          label={props.placeholder}
+          variant="outlined"
+        />}
     />
   )
 }

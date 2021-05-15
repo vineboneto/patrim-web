@@ -29,7 +29,7 @@ const Item: React.FC<Props> = ({ patrimony }: Props) => {
       </div>
       <footer>
         <div className="link-group">
-          <Link to={`patrimonies/update/${patrimony.id}`}>
+          <Link to={`patrimonies/update/${patrimony.id}`} data-testid="link-update">
             <EditIcon color="primary" />
           </Link>
           <Link replace to="#">

@@ -52,7 +52,7 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies }: Props) => {
               <Loading />
             </div>}
           { state.patrimonies.map((patrimony) => (
-            <div className="col-12 col-md-6 col-lg-4" key={patrimony.id} >
+            <div className="col-12 col-md-6 col-lg-4" role="item" key={patrimony.id}>
               <Item patrimony={patrimony} />
             </div>
           ))}
