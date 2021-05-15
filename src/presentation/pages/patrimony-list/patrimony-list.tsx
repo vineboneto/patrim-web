@@ -23,7 +23,7 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies }: Props) => {
     owner: '',
     totalPage: 1,
     skip: 0,
-    take: 12,
+    take: 9,
     patrimonies: [] as ItemProps[]
   })
 

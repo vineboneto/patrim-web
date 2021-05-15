@@ -51,9 +51,9 @@ describe('PatrimonyList Component', () => {
   test('Should calls LoadPatrimonies', async () => {
     const { loadPatrimoniesSpy } = makeSut()
     await waitFor(() => screen.getByTestId('patrimonies'))
-    expect(loadPatrimoniesSpy.callsCount).toBe(1)
+    expect(loadPatrimoniesSpy.callsCount).toBe(2)
     await waitFor(() => screen.getByTestId('patrimonies'))
-    expect(screen.queryAllByRole('item').length).toBe(3)
+    expect(screen.queryAllByRole('item').length).toBe(10)
   })
 
   test('Should render main error if LoadPatrimonies fails', async () => {
@@ -92,5 +92,16 @@ describe('PatrimonyList Component', () => {
     fireEvent.click(updatedLink)
     expect(history.location.pathname).toBe(`/patrimonies/update/${loadPatrimoniesSpy.model[0].id}`)
     expect(history.length).toBe(2)
+  })
+
+  test.only('Should present correct number of pages', async () => {
+    makeSut()
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    const numberOfPages = screen.getByTestId('pagination').children[0].querySelectorAll('li').length - 2
+    expect(numberOfPages).toBe(2)
+    const page2 = screen.getByTestId('pagination').children[0].children[2]
+    fireEvent.click(page2)
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    expect(page2).toHaveTextContent('2')
   })
 })

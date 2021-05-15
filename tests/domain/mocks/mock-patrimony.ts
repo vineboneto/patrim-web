@@ -24,5 +24,12 @@ export const mockPatrimonyModel = (): PatrimonyModel => ({
 export const mockPatrimoniesModel = (): PatrimonyModel[] => ([
   mockPatrimonyModel(),
   mockPatrimonyModel(),
+  mockPatrimonyModel(),
+  mockPatrimonyModel(),
+  mockPatrimonyModel(),
+  mockPatrimonyModel(),
+  mockPatrimonyModel(),
+  mockPatrimonyModel(),
+  mockPatrimonyModel(),
   mockPatrimonyModel()
 ])
