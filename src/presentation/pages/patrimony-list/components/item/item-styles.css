@@ -30,7 +30,7 @@
   align-self: flex-end;
 }
 
- .patrimony-item footer .link-group > :nth-child(1) {
+ .patrimony-item footer > :nth-child(1) {
   margin-right: 10px;
 }
 

@@ -28,14 +28,12 @@ const Item: React.FC<Props> = ({ patrimony }: Props) => {
         <p><span>Setor:</span> {patrimony.sector}</p>
       </div>
       <footer>
-        <div className="link-group">
-          <Link to={`patrimonies/update/${patrimony.id}`} data-testid="link-update">
-            <EditIcon color="primary" />
-          </Link>
-          <Link replace to="#">
-            <DeleteIcon color="error" />
-          </Link>
-        </div>
+        <Link to={`/patrimonies/update/${patrimony.id}`} role="link-update">
+          <EditIcon color="primary" />
+        </Link>
+        <Link replace to="#">
+          <DeleteIcon color="error" />
+        </Link>
       </footer>
     </div>
   )
