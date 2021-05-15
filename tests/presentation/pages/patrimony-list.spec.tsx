@@ -221,4 +221,11 @@ describe('PatrimonyList Component', () => {
     await waitFor(() => screen.getByTestId('patrimonies'))
     expect(loadPatrimonyByNumberSpy.callsCount).toBe(1)
   })
+
+  test('Should not call LoadPatrimonyByNumber if field number is empty', async () => {
+    const { loadPatrimonyByNumberSpy } = makeSut()
+    fireEvent.click(screen.getByTestId('submit-button'))
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    expect(loadPatrimonyByNumberSpy.callsCount).toBe(0)
+  })
 })
