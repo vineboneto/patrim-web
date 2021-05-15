@@ -1,4 +1,6 @@
 import { RemoteLoadPatrimoniesByNumber } from '@/data/usecases'
+import { HttpStatusCode } from '@/data/protocols'
+import { AccessDeniedError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
 import { mockLoadPatrimoniesByNumberParams } from '@/tests/domain/mocks'
 
@@ -26,5 +28,14 @@ describe('RemoteLoadPatrimonies', () => {
     await sut.loadByNumber(params)
     expect(httpClientSpy.params.method).toBe('get')
     expect(httpClientSpy.params.url).toBe(`${url}/${params.number}/number`)
+  })
+
+  test('Should throw AccessDeniedError if HttpGetClient returns 403', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.forbidden
+    }
+    const promise = sut.loadByNumber(mockLoadPatrimoniesByNumberParams())
+    await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
 })
