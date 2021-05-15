@@ -8,14 +8,14 @@ export class RemoteLoadPatrimoniesByNumber implements LoadPatrimoniesByNumber {
     private readonly url: string
   ) {}
 
-  async loadByNumber (params: LoadPatrimoniesByNumber.Params): Promise<LoadPatrimoniesByNumber.Model[]> {
+  async loadByNumber (params: LoadPatrimoniesByNumber.Params): Promise<LoadPatrimoniesByNumber.Model> {
     const httpResponse = await this.httpClient.request({
       method: 'get',
       url: `${this.url}/${params.number}/number`
     })
     switch (httpResponse.statusCode) {
       case HttpStatusCode.noContent:
-      case HttpStatusCode.ok: return null
+      case HttpStatusCode.ok: return httpResponse.body
       case HttpStatusCode.forbidden: throw new AccessDeniedError()
       default: throw new UnexpectedError()
     }

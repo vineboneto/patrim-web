@@ -1,7 +1,7 @@
 import { PatrimonyModel } from '@/domain/models'
 
 export interface LoadPatrimoniesByNumber {
-  loadByNumber(params: LoadPatrimoniesByNumber.Params): Promise<LoadPatrimoniesByNumber.Model[]>
+  loadByNumber(params: LoadPatrimoniesByNumber.Params): Promise<LoadPatrimoniesByNumber.Model>
 }
 
 export namespace LoadPatrimoniesByNumber {
