@@ -1,29 +1,29 @@
-import { RemoteLoadPatrimoniesByNumber } from '@/data/usecases'
+import { RemoteLoadPatrimonyByNumber } from '@/data/usecases'
 import { HttpStatusCode } from '@/data/protocols'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
-import { mockLoadPatrimoniesByNumberParams, mockPatrimonyModel } from '@/tests/domain/mocks'
+import { mockLoadPatrimonyByNumberParams, mockPatrimonyModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
 type SutTypes = {
-  sut: RemoteLoadPatrimoniesByNumber
+  sut: RemoteLoadPatrimonyByNumber
   httpClientSpy: HttpClientSpy
 }
 
 const makeSut = (url = faker.internet.url()): SutTypes => {
   const httpClientSpy = new HttpClientSpy()
-  const sut = new RemoteLoadPatrimoniesByNumber(httpClientSpy, url)
+  const sut = new RemoteLoadPatrimonyByNumber(httpClientSpy, url)
   return {
     sut,
     httpClientSpy
   }
 }
 
-describe('RemoteLoadPatrimoniesByNumber', () => {
+describe('RemoteLoadPatrimonyByNumber', () => {
   test('Should call HttpClient Client with correct values', async () => {
     const url = faker.internet.url()
-    const params = mockLoadPatrimoniesByNumberParams()
+    const params = mockLoadPatrimonyByNumberParams()
     const { sut, httpClientSpy } = makeSut(url)
     await sut.loadByNumber(params)
     expect(httpClientSpy.params.method).toBe('get')
@@ -35,7 +35,7 @@ describe('RemoteLoadPatrimoniesByNumber', () => {
     httpClientSpy.response = {
       statusCode: HttpStatusCode.forbidden
     }
-    const promise = sut.loadByNumber(mockLoadPatrimoniesByNumberParams())
+    const promise = sut.loadByNumber(mockLoadPatrimonyByNumberParams())
     await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
 
@@ -44,7 +44,7 @@ describe('RemoteLoadPatrimoniesByNumber', () => {
     httpClientSpy.response = {
       statusCode: HttpStatusCode.badRequest
     }
-    const promise = sut.loadByNumber(mockLoadPatrimoniesByNumberParams())
+    const promise = sut.loadByNumber(mockLoadPatrimonyByNumberParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
@@ -53,7 +53,7 @@ describe('RemoteLoadPatrimoniesByNumber', () => {
     httpClientSpy.response = {
       statusCode: HttpStatusCode.serverError
     }
-    const promise = sut.loadByNumber(mockLoadPatrimoniesByNumberParams())
+    const promise = sut.loadByNumber(mockLoadPatrimonyByNumberParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
@@ -62,7 +62,7 @@ describe('RemoteLoadPatrimoniesByNumber', () => {
     httpClientSpy.response = {
       statusCode: HttpStatusCode.badRequest
     }
-    const promise = sut.loadByNumber(mockLoadPatrimoniesByNumberParams())
+    const promise = sut.loadByNumber(mockLoadPatrimonyByNumberParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
@@ -73,7 +73,7 @@ describe('RemoteLoadPatrimoniesByNumber', () => {
       statusCode: HttpStatusCode.ok,
       body
     }
-    const data = await sut.loadByNumber(mockLoadPatrimoniesByNumberParams())
+    const data = await sut.loadByNumber(mockLoadPatrimonyByNumberParams())
     expect(data).toEqual(body)
   })
 
@@ -84,7 +84,7 @@ describe('RemoteLoadPatrimoniesByNumber', () => {
       statusCode: HttpStatusCode.noContent,
       body
     }
-    const data = await sut.loadByNumber(mockLoadPatrimoniesByNumberParams())
+    const data = await sut.loadByNumber(mockLoadPatrimonyByNumberParams())
     expect(data).toEqual(body)
   })
 })
