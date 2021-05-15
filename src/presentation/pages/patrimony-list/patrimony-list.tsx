@@ -10,17 +10,18 @@ import {
   Pagination
 } from '@/presentation/pages/patrimony-list/components'
 import { useErrorHandler } from '@/presentation/hooks'
-import { LoadCategories, LoadOwners, LoadPatrimonies } from '@/domain/usecases'
+import { LoadCategories, LoadOwners, LoadPatrimonies, LoadPatrimonyByNumber } from '@/domain/usecases'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FormEvent } from 'react'
 
 type Props = {
   loadPatrimonies: LoadPatrimonies
   loadOwners: LoadOwners
   loadCategories: LoadCategories
+  loadPatrimonyByNumber: LoadPatrimonyByNumber
 }
 
-const PatrimonyList: React.FC<Props> = ({ loadPatrimonies, loadOwners, loadCategories }: Props) => {
+const PatrimonyList: React.FC<Props> = ({ loadPatrimonies, loadOwners, loadCategories, loadPatrimonyByNumber }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({ ...old, mainError: error.message, isLoading: false }))
   })
@@ -90,6 +91,29 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies, loadOwners, loadCateg
       .catch(error => handleError(error))
   }, [state.reload])
 
+  const handleSearch = async (e: FormEvent): Promise<void> => {
+    e.preventDefault()
+    if (!state.number) {
+      setState(old => ({ ...old, reload: !state.reload }))
+      return
+    }
+    const patrimony = await loadPatrimonyByNumber.loadByNumber({ number: state.number })
+    if (patrimony) {
+      setState(old => ({
+        ...old,
+        totalPage: 1,
+        patrimonies: [{
+          id: patrimony.id.toString(),
+          number: patrimony.number,
+          brand: patrimony.brand,
+          category: patrimony.category.name,
+          owner: patrimony.owner.name,
+          sector: patrimony.owner.sector.name
+        }]
+      }))
+    }
+  }
+
   return (
     <div className="patrimony-list-wrap" data-testid="patrimonies">
       <Header title="Patrimônios" />
@@ -97,7 +121,7 @@ const PatrimonyList: React.FC<Props> = ({ loadPatrimonies, loadOwners, loadCateg
         <LoadContext.Provider value={{ state, setState }}>
           <div className="row gy-4">
             <FormContext.Provider value={{ state, setState }}>
-              <Form />
+              <Form handleSubmit={handleSearch} />
             </FormContext.Provider>
             <ButtonNew />
             {state.isLoading && <Loading />}

@@ -1,13 +1,17 @@
 import './form-styles.css'
 import { Input, Button, Combobox, FormContext } from '@/presentation/components'
 
-import React, { useContext } from 'react'
+import React, { useContext, FormEvent } from 'react'
 
-const Form: React.FC = () => {
+type Props = {
+  handleSubmit: (e: FormEvent) => Promise<void>
+}
+
+const Form: React.FC<Props> = ({ handleSubmit }: Props) => {
   const { state } = useContext(FormContext)
 
   return (
-    <form className="form-wrap">
+    <form className="form-wrap" onSubmit={handleSubmit}>
       <div className="row">
         <div className="col-12 col-lg-3">
           <Combobox name="owner" placeholder="Proprietário" options={state.owners} />
@@ -19,7 +23,7 @@ const Form: React.FC = () => {
           <Input type="text" name="number" placeholder="Número" />
         </div>
         <div className="col-12 col-lg-3">
-          <Button variant="outlined" color="primary" text="Pesquisar" />
+          <Button variant="outlined" color="primary" text="Pesquisar" type="submit" data-testid="submit-button" />
         </div>
         <div className="col-12 col-lg-3">
         </div>
