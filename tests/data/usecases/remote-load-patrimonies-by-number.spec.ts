@@ -1,6 +1,6 @@
 import { RemoteLoadPatrimoniesByNumber } from '@/data/usecases'
 import { HttpStatusCode } from '@/data/protocols'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
 import { mockLoadPatrimoniesByNumberParams } from '@/tests/domain/mocks'
 
@@ -20,7 +20,7 @@ const makeSut = (url = faker.internet.url()): SutTypes => {
   }
 }
 
-describe('RemoteLoadPatrimonies', () => {
+describe('RemoteLoadPatrimoniesByNumber', () => {
   test('Should call HttpClient Client with correct values', async () => {
     const url = faker.internet.url()
     const params = mockLoadPatrimoniesByNumberParams()
@@ -37,5 +37,14 @@ describe('RemoteLoadPatrimonies', () => {
     }
     const promise = sut.loadByNumber(mockLoadPatrimoniesByNumberParams())
     await expect(promise).rejects.toThrow(new AccessDeniedError())
+  })
+
+  test('Should throw UnexpectedError if HttpClient returns 400', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest
+    }
+    const promise = sut.loadByNumber(mockLoadPatrimoniesByNumberParams())
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
