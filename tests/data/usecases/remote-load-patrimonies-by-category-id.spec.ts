@@ -1,10 +1,10 @@
 import { RemoteLoadPatrimoniesByCategoryId } from '@/data/usecases'
 import { HttpStatusCode } from '@/data/protocols'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
 import { mockLoadPatrimoniesByCategoryIdParams } from '@/tests/domain/mocks'
 
 import faker from 'faker'
-import { AccessDeniedError } from '@/domain/errors'
 
 type SutTypes = {
   sut: RemoteLoadPatrimoniesByCategoryId
@@ -37,5 +37,23 @@ describe('RemoteLoadPatrimoniesByCategoryId', () => {
     }
     const promise = sut.loadByCategoryId(mockLoadPatrimoniesByCategoryIdParams())
     await expect(promise).rejects.toThrow(new AccessDeniedError())
+  })
+
+  test('Should throw UnexpectedError if HttpClient returns 400', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest
+    }
+    const promise = sut.loadByCategoryId(mockLoadPatrimoniesByCategoryIdParams())
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should throw UnexpectedError if HttpClient returns 500', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.serverError
+    }
+    const promise = sut.loadByCategoryId(mockLoadPatrimoniesByCategoryIdParams())
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
