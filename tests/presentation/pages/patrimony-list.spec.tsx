@@ -251,7 +251,7 @@ describe('PatrimonyList Component', () => {
     expect(loadPatrimonyByNumberSpy.callsCount).toBe(0)
   })
 
-  test('Should disabled combo box if number is not undefined', async () => {
+  test('Should disabled other field if number is not undefined', async () => {
     makeSut()
     populateField('number', '666')
     expect(screen.getByTestId('owner').children[1].children[0]).toBeDisabled()
@@ -281,5 +281,16 @@ describe('PatrimonyList Component', () => {
       .then(() => {
         expect(loadPatrimoniesByCategoryId.callsCount).toBe(1)
       }).catch((error) => console.log(error))
+  })
+
+  test('Should disabled other field if category is not undefined', async () => {
+    makeSut()
+    populateField('category', 'Impressora')
+    fireEvent.click(screen.getAllByRole('combobox')[1])
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    const list = screen.getByRole('presentation').querySelector('ul')
+    fireEvent.click(list.children[0])
+    expect(screen.getByTestId('number').children[1].children[0]).toBeDisabled()
+    expect(screen.getByTestId('owner').children[1].children[0]).toBeDisabled()
   })
 })
