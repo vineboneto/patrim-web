@@ -13,7 +13,6 @@ export class RemoteLoadPatrimonyByNumber implements LoadPatrimonyByNumber {
       method: 'get',
       url: `${this.url}/${params.number}/number`
     })
-    console.log(httpResponse)
     switch (httpResponse.statusCode) {
       case HttpStatusCode.noContent:
       case HttpStatusCode.ok: return httpResponse.body

@@ -23,7 +23,8 @@ const Combobox: React.FC<Props> = (props: Props) => {
     <Autocomplete
       onChange={handleChange}
       style={{ margin: '10px 0' }}
-      getOptionLabel={(option) => option.label}
+      getOptionLabel={(option) => option.label }
+      getOptionSelected={(option, value) => option.value === value.value }
       id="controllable-states-demo"
       disabled={props.disabled}
       options={props.options}

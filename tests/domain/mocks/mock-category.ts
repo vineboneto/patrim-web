@@ -10,12 +10,12 @@ export const mockCategoryModel = (): CategoryModel => ({
 export const mockCategoriesModel = (): CategoryModel[] => ([
   {
     id: 1,
-    name: faker.name.findName()
+    name: 'Impressora'
   }, {
     id: 2,
-    name: faker.name.findName()
+    name: 'Computador'
   }, {
     id: 3,
-    name: faker.name.findName()
+    name: 'Telefone'
   }
 ])
