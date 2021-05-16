@@ -14,9 +14,9 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
 }
 
 const Combobox: React.FC<Props> = (props: Props) => {
-  const { setState } = useContext(FormContext)
+  const { state, setState } = useContext(FormContext)
   const handleChange = (e: any, option: any): void => {
-    setState(old => ({ ...old, [props.name]: option?.value }))
+    setState({ ...state, [props.name]: option?.value })
   }
 
   return (
