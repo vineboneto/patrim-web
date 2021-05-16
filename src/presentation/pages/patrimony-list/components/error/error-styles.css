@@ -9,6 +9,7 @@
   color: var(--color-danger);
   font-size: 25px;
   font-family: 'Poppins';
+  text-align: center;
 }
 
 .patrimony-list-wrap .error > :last-child {
