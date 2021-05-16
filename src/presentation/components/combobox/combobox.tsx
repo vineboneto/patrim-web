@@ -20,8 +20,14 @@ const Combobox: React.FC<Props> = (props: Props) => {
     setState({ ...state, [props.name]: option?.value })
   }
 
+  const handleInputChange = (e: any, value: any): void => {
+    setState({ ...state, [`${props.name}Input`]: value })
+  }
+
   return (
     <Autocomplete
+      inputValue={state[`${props.name}Input`]}
+      onInputChange={handleInputChange}
       onChange={handleChange}
       className="combobox-wrap"
       aria-disabled={props.disabled}

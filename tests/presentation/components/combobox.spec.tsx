@@ -21,7 +21,8 @@ const makeSut = (): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/'] })
   const setState = jest.fn()
   const state = {
-    combobox: ''
+    combobox: '',
+    comboboxInput: ''
   }
   render(
     <FormContext.Provider value={{ state, setState }}>
@@ -44,20 +45,26 @@ describe('ComboBox Component', () => {
     expect(value).toBe('value-3')
   })
 
-  test('Should call setState with correct value', async () => {
-    const { state, setState } = makeSut()
+  test.only('Should call setState with correct value', async () => {
+    const { setState } = makeSut()
     populateField('combobox', 'value-3')
     fireEvent.click(screen.getByRole('combobox'))
-    fireEvent.click(screen.getByRole('option'))
-    expect(setState).toHaveBeenCalledWith({ ...state, combobox: '3' })
+    fireEvent.click(screen.getAllByRole('option')[0])
+    expect(setState).toHaveBeenCalledWith({ comboboxInput: 'value-3', combobox: '' })
   })
 
   test('Should call setState with correct with option is null', async () => {
     const { state, setState } = makeSut()
     populateField('combobox', 'value-3')
     fireEvent.click(screen.getByRole('combobox'))
-    fireEvent.click(screen.getByRole('option'))
+    fireEvent.click(screen.getAllByRole('option')[0])
     populateField('combobox', '')
     expect(setState).toHaveBeenCalledWith({ ...state, combobox: undefined })
+  })
+
+  test('Should call input change setState with correct value', async () => {
+    const { state, setState } = makeSut()
+    populateField('combobox', 'value-3')
+    expect(setState).toHaveBeenCalledWith({ ...state, comboboxInput: 'value-3' })
   })
 })

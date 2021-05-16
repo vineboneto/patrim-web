@@ -50,6 +50,7 @@ const PatrimonyList: React.FC<Props> = ({
     number: '',
     category: '',
     categories: [] as ComboOptions[],
+    categoryInput: '',
     owner: '',
     owners: [] as ComboOptions[],
     totalPage: 1,
@@ -90,7 +91,12 @@ const PatrimonyList: React.FC<Props> = ({
   }
 
   const setReload = (): void => {
-    setState(old => ({ ...old, reload: !state.reload, mainError: '' }))
+    setState(old => ({
+      ...old,
+      reload: !state.reload,
+      mainError: '',
+      categoryInput: ''
+    }))
   }
 
   const setNotFound = (): void => {
