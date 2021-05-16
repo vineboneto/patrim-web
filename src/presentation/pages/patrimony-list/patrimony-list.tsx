@@ -18,9 +18,9 @@ import {
   LoadPatrimoniesByCategoryId,
   LoadPatrimonyByNumber
 } from '@/domain/usecases'
+import { PatrimonyModel } from '@/domain/models'
 
 import React, { useState, useEffect } from 'react'
-import { PatrimonyModel } from '@/domain/models'
 
 type Props = {
   loadPatrimonies: LoadPatrimonies
@@ -44,6 +44,7 @@ const PatrimonyList: React.FC<Props> = ({
   })
   const [state, setState] = useState({
     isLoading: true,
+    openDialog: false,
     mainError: '',
     reload: false,
     number: '',
@@ -61,6 +62,7 @@ const PatrimonyList: React.FC<Props> = ({
     setState(old => ({
       ...old,
       isLoading: false,
+      mainError: '',
       patrimonies: patrimonies.map((p) => ({
         id: p.id.toString(),
         brand: p.brand,
@@ -85,6 +87,10 @@ const PatrimonyList: React.FC<Props> = ({
         sector: patrimony.owner.sector.name
       }]
     }))
+  }
+
+  const setReload = (): void => {
+    setState(old => ({ ...old, reload: !state.reload, mainError: '' }))
   }
 
   const setNotFound = (): void => {
@@ -157,10 +163,15 @@ const PatrimonyList: React.FC<Props> = ({
   }, [state.number])
 
   useEffect(() => {
-    if (!state.number && !state.category) {
-      setState(old => ({ ...old, reload: !state.reload, mainError: '' }))
-    }
+    if (!state.number && !state.category) setReload()
   }, [state.category, state.number])
+
+  const handleDelete = (id: number): void => {
+    deletePatrimony.delete({ id: id })
+      .then(() => {
+        setReload()
+      })
+  }
 
   return (
     <div className="patrimony-list-wrap" data-testid="patrimonies">
@@ -174,7 +185,12 @@ const PatrimonyList: React.FC<Props> = ({
             <ButtonNew />
             {state.isLoading && <Loading />}
             {state.mainError && <Error />}
-            {state.patrimonies.map((patrimony) => <Item patrimony={patrimony} key={patrimony.id} />)}
+            {state.patrimonies.map((patrimony) => (
+              <Item
+                handleDelete={handleDelete}
+                patrimony={patrimony}
+                key={patrimony.id}
+              />))}
           </div>
           <div className="row">
             <Pagination />
