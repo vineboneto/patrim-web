@@ -81,7 +81,7 @@ describe('PatrimonyList Component', () => {
   test('Should calls LoadPatrimonies', async () => {
     const { loadPatrimoniesSpy } = makeSut()
     await waitFor(() => screen.getByTestId('patrimonies'))
-    expect(loadPatrimoniesSpy.callsCount).toBe(2)
+    expect(loadPatrimoniesSpy.callsCount).toBe(4)
     await waitFor(() => screen.getByTestId('patrimonies'))
     expect(screen.queryAllByRole('item').length).toBe(10)
   })
@@ -128,7 +128,7 @@ describe('PatrimonyList Component', () => {
   test('Should calls LoadOwners', async () => {
     const { loadOwnersSpy } = makeSut()
     await waitFor(() => screen.getByTestId('patrimonies'))
-    expect(loadOwnersSpy.callsCount).toBe(1)
+    expect(loadOwnersSpy.callsCount).toBe(2)
   })
 
   test('Should render main error if LoadOwners fails', async () => {
@@ -156,7 +156,7 @@ describe('PatrimonyList Component', () => {
   test('Should calls LoadCategories', async () => {
     const { loadOwnersSpy } = makeSut()
     await waitFor(() => screen.getByTestId('patrimonies'))
-    expect(loadOwnersSpy.callsCount).toBe(1)
+    expect(loadOwnersSpy.callsCount).toBe(2)
   })
 
   test('Should render main error if LoadCategories fails', async () => {
@@ -238,17 +238,15 @@ describe('PatrimonyList Component', () => {
     await waitFor(() => screen.getByTestId('patrimonies'))
   })
 
-  test('Should call LoadPatrimonyByNumber on submit', async () => {
+  test('Should call LoadPatrimonyByNumber', async () => {
     const { loadPatrimonyByNumberSpy } = makeSut()
     populateField('number', '666')
-    fireEvent.click(screen.getByTestId('submit-button'))
     await waitFor(() => screen.getByTestId('patrimonies'))
     expect(loadPatrimonyByNumberSpy.callsCount).toBe(1)
   })
 
   test('Should not call LoadPatrimonyByNumber if field number is empty', async () => {
     const { loadPatrimonyByNumberSpy } = makeSut()
-    fireEvent.click(screen.getByTestId('submit-button'))
     await waitFor(() => screen.getByTestId('patrimonies'))
     expect(loadPatrimonyByNumberSpy.callsCount).toBe(0)
   })
@@ -264,11 +262,24 @@ describe('PatrimonyList Component', () => {
     const { loadPatrimonyByNumberSpy } = makeSut()
     loadPatrimonyByNumberSpy.model = null
     populateField('number', '666')
-    fireEvent.click(screen.getByTestId('submit-button'))
     await waitFor(() => screen.getByTestId('patrimonies'))
     const numberOfPages = screen.getByTestId('pagination').children[0].querySelectorAll('li').length - 2
     expect(numberOfPages).toBe(2)
     await waitFor(() => screen.getByTestId('patrimonies'))
     expect(screen.queryAllByRole('item').length).toBe(10)
+  })
+
+  test('Should call LoadPatrimonyByCategoryId', async () => {
+    const { loadPatrimoniesByCategoryId } = makeSut()
+    await waitFor(() => screen.getByTestId('category'))
+    populateField('category', 'Impressora')
+    fireEvent.click(screen.getAllByRole('combobox')[1])
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    const list = screen.getByRole('presentation').querySelector('ul')
+    fireEvent.click(list.children[0])
+    waitFor(() => screen.getByTestId('patrimonies'))
+      .then(() => {
+        expect(loadPatrimoniesByCategoryId.callsCount).toBe(1)
+      }).catch((error) => console.log(error))
   })
 })
