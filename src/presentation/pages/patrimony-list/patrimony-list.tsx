@@ -128,7 +128,7 @@ const PatrimonyList: React.FC<Props> = ({
 
   useEffect(() => {
     if (!state.number && !state.category) {
-      setState(old => ({ ...old, reload: !state.reload }))
+      setState(old => ({ ...old, reload: !state.reload, mainError: '' }))
     }
   }, [state.category, state.number])
 
