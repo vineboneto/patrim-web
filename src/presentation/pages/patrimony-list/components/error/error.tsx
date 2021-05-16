@@ -10,7 +10,9 @@ const Error: React.FC = () => {
     setState(old => ({
       ...old,
       reload: !state.reload,
-      isLoading: true
+      isLoading: true,
+      mainError: '',
+      category: ''
     }))
   }
 

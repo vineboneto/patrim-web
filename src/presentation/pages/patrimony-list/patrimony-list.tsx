@@ -18,7 +18,7 @@ import {
   LoadPatrimonyByNumber
 } from '@/domain/usecases'
 
-import React, { useState, useEffect, FormEvent } from 'react'
+import React, { useState, useEffect } from 'react'
 
 type Props = {
   loadPatrimonies: LoadPatrimonies
@@ -54,6 +54,26 @@ const PatrimonyList: React.FC<Props> = ({
   })
 
   useEffect(() => {
+    loadOwners.load()
+      .then(owners => setState(old => ({
+        ...old,
+        isLoading: false,
+        owners: owners.map(owner => ({ value: owner.id.toString(), label: owner.name }))
+      })))
+      .catch(error => handleError(error))
+  }, [state.reload])
+
+  useEffect(() => {
+    loadCategories.load()
+      .then(categories => setState(old => ({
+        ...old,
+        isLoading: false,
+        categories: categories.map(category => ({ value: category.id.toString(), label: category.name }))
+      })))
+      .catch(error => handleError(error))
+  }, [state.reload])
+
+  useEffect(() => {
     loadPatrimonies.load({})
       .then((patrimonies) => {
         setState(old => ({
@@ -85,47 +105,64 @@ const PatrimonyList: React.FC<Props> = ({
   }, [state.skip, state.take, state.reload])
 
   useEffect(() => {
-    loadOwners.load()
-      .then(owners => setState(old => ({
-        ...old,
-        isLoading: false,
-        owners: owners.map(owner => ({ value: owner.id.toString(), label: owner.name }))
-      })))
-      .catch(error => handleError(error))
-  }, [state.reload])
+    if (state.number) {
+      loadPatrimonyByNumber.loadByNumber({ number: state.number })
+        .then((patrimony) => {
+          if (patrimony) {
+            setState(old => ({
+              ...old,
+              totalPage: 1,
+              patrimonies: [{
+                id: patrimony.id.toString(),
+                number: patrimony.number,
+                brand: patrimony.brand,
+                category: patrimony.category.name,
+                owner: patrimony.owner.name,
+                sector: patrimony.owner.sector.name
+              }]
+            }))
+          }
+        })
+    }
+  }, [state.number])
 
   useEffect(() => {
-    loadCategories.load()
-      .then(categories => setState(old => ({
-        ...old,
-        isLoading: false,
-        categories: categories.map(category => ({ value: category.id.toString(), label: category.name }))
-      })))
-      .catch(error => handleError(error))
-  }, [state.reload])
-
-  const handleSearch = async (e: FormEvent): Promise<void> => {
-    e.preventDefault()
-    if (!state.number) {
+    if (!state.number && !state.category) {
       setState(old => ({ ...old, reload: !state.reload }))
-      return
     }
-    const patrimony = await loadPatrimonyByNumber.loadByNumber({ number: state.number })
-    if (patrimony) {
-      setState(old => ({
-        ...old,
-        totalPage: 1,
-        patrimonies: [{
-          id: patrimony.id.toString(),
-          number: patrimony.number,
-          brand: patrimony.brand,
-          category: patrimony.category.name,
-          owner: patrimony.owner.name,
-          sector: patrimony.owner.sector.name
-        }]
-      }))
+  }, [state.category, state.number])
+
+  useEffect(() => {
+    if (state.category) {
+      loadPatrimoniesByCategoryId.loadByCategoryId({
+        id: Number(state.category),
+        skip: state.skip,
+        take: state.take
+      }).then((patrimonies) => {
+        if (patrimonies) {
+          setState(old => ({
+            ...old,
+            isLoading: false,
+            patrimonies: patrimonies.map((p) => ({
+              id: p.id.toString(),
+              brand: p.brand,
+              number: p.number,
+              category: p.category.name,
+              owner: p.owner.name,
+              sector: p.owner.sector.name
+            }))
+          }))
+        } else {
+          setState(old => ({
+            ...old,
+            isLoading: false,
+            patrimonies: [],
+            mainError: 'Nada foi encontrado'
+          }))
+        }
+      })
     }
-  }
+  }, [state.take, state.skip, state.category])
 
   return (
     <div className="patrimony-list-wrap" data-testid="patrimonies">
@@ -134,7 +171,7 @@ const PatrimonyList: React.FC<Props> = ({
         <LoadContext.Provider value={{ state, setState }}>
           <div className="row gy-4">
             <FormContext.Provider value={{ state, setState }}>
-              <Form handleSubmit={handleSearch} />
+              <Form />
             </FormContext.Provider>
             <ButtonNew />
             {state.isLoading && <Loading />}

@@ -1,30 +1,36 @@
 import './form-styles.css'
-import { Input, Button, Combobox, FormContext } from '@/presentation/components'
+import { Input, Combobox, FormContext } from '@/presentation/components'
 
-import React, { useContext, FormEvent } from 'react'
+import React, { useContext } from 'react'
 
-type Props = {
-  handleSubmit: (e: FormEvent) => Promise<void>
-}
-
-const Form: React.FC<Props> = ({ handleSubmit }: Props) => {
+const Form: React.FC = () => {
   const { state } = useContext(FormContext)
 
   return (
-    <form className="form-wrap" onSubmit={handleSubmit}>
+    <form className="form-wrap">
       <div className="row">
-        <div className="col-12 col-lg-3">
-          <Combobox name="owner" placeholder="Proprietário" options={state.owners} disabled={state.number !== ''} />
+        <div className="col-12 col-lg-4">
+          <Combobox
+            name="owner"
+            placeholder="Proprietário"
+            options={state.owners}
+            disabled={state.number !== ''}
+          />
         </div>
-        <div className="col-12 col-lg-3">
-          <Combobox name="category" placeholder="Categoria" options={state.categories} disabled={state.number !== ''} />
+        <div className="col-12 col-lg-4">
+          <Combobox
+            name="category"
+            placeholder="Categoria"
+            options={state.categories}
+            disabled={state.number !== ''}
+          />
         </div>
-        <div className="col-12 col-lg-3">
+        <div className="col-12 col-lg-4">
           <Input type="text" name="number" placeholder="Número" />
         </div>
-        <div className="col-12 col-lg-3">
+        {/* <div className="col-12 col-lg-3">
           <Button variant="outlined" color="primary" text="Pesquisar" type="submit" data-testid="submit-button" />
-        </div>
+        </div> */}
         <div className="col-12 col-lg-3">
         </div>
       </div>
