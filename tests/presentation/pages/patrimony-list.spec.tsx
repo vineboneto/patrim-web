@@ -4,6 +4,7 @@ import { AccountModel } from '@/domain/models'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { getValueInput, populateField } from '@/tests/presentation/mocks'
 import {
+  DeletePatrimonySpy,
   LoadCategoriesSpy,
   LoadOwnersSpy,
   LoadPatrimoniesByCategoryIdSpy,
@@ -24,6 +25,7 @@ type Params = {
   loadCategoriesSpy?: LoadCategoriesSpy
   loadPatrimoniesByCategoryId?: LoadPatrimoniesByCategoryIdSpy
   loadPatrimonyByNumberSpy?: LoadPatrimonyByNumberSpy
+  deletePatrimonySpy?: DeletePatrimonySpy
 }
 
 type SutTypes = {
@@ -34,6 +36,7 @@ type SutTypes = {
   loadPatrimonyByNumberSpy: LoadPatrimonyByNumberSpy
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
+  deletePatrimonySpy: DeletePatrimonySpy
 }
 
 const makeSut = ({
@@ -41,7 +44,8 @@ const makeSut = ({
   loadOwnersSpy = new LoadOwnersSpy(),
   loadCategoriesSpy = new LoadCategoriesSpy(),
   loadPatrimoniesByCategoryId = new LoadPatrimoniesByCategoryIdSpy(),
-  loadPatrimonyByNumberSpy = new LoadPatrimonyByNumberSpy()
+  loadPatrimonyByNumberSpy = new LoadPatrimonyByNumberSpy(),
+  deletePatrimonySpy = new DeletePatrimonySpy()
 }: Params = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/patrimonies/new'] })
   const setCurrentAccountMock = jest.fn()
@@ -49,6 +53,7 @@ const makeSut = ({
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
         <PatrimonyList
+          deletePatrimony={deletePatrimonySpy}
           loadPatrimonies={loadPatrimoniesSpy}
           loadOwners={loadOwnersSpy}
           loadCategories={loadCategoriesSpy}
@@ -60,6 +65,7 @@ const makeSut = ({
   )
   return {
     setCurrentAccountMock,
+    deletePatrimonySpy,
     loadPatrimoniesSpy,
     loadOwnersSpy,
     loadCategoriesSpy,

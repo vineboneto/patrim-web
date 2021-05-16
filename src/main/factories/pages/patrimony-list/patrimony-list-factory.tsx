@@ -1,5 +1,6 @@
 import {
   makeLoadPatrimonyByNumber,
+  makeRemoteDeletePatrimony,
   makeRemoteLoadCategories,
   makeRemoteLoadOwners,
   makeRemoteLoadPatrimonies,
@@ -17,6 +18,7 @@ export const makePatrimonyList: React.FC = () => {
       loadCategories={makeRemoteLoadCategories()}
       loadPatrimoniesByCategoryId={makeRemoteLoadPatrimoniesByCategoryId()}
       loadPatrimonyByNumber={makeLoadPatrimonyByNumber()}
+      deletePatrimony={makeRemoteDeletePatrimony()}
     />
   )
 }

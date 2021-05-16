@@ -13,12 +13,12 @@ export const mockUpdatePatrimonyParams = (): UpdatePatrimony.Params => ({
 
 export class UpdatePatrimonySpy implements UpdatePatrimony {
   params: UpdatePatrimony.Params
-  account = mockPatrimonyModel()
+  model = mockPatrimonyModel()
   callsCount = 0
 
   async update (params: UpdatePatrimony.Params): Promise<UpdatePatrimony.Model> {
     this.callsCount++
     this.params = params
-    return this.account
+    return this.model
   }
 }

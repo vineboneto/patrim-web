@@ -11,6 +11,7 @@ import {
 } from '@/presentation/pages/patrimony-list/components'
 import { useErrorHandler } from '@/presentation/hooks'
 import {
+  DeletePatrimony,
   LoadCategories,
   LoadOwners,
   LoadPatrimonies,
@@ -27,6 +28,7 @@ type Props = {
   loadCategories: LoadCategories
   loadPatrimoniesByCategoryId: LoadPatrimoniesByCategoryId
   loadPatrimonyByNumber: LoadPatrimonyByNumber
+  deletePatrimony: DeletePatrimony
 }
 
 const PatrimonyList: React.FC<Props> = ({
@@ -34,7 +36,8 @@ const PatrimonyList: React.FC<Props> = ({
   loadOwners,
   loadCategories,
   loadPatrimoniesByCategoryId,
-  loadPatrimonyByNumber
+  loadPatrimonyByNumber,
+  deletePatrimony
 }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({ ...old, mainError: error.message, isLoading: false }))
