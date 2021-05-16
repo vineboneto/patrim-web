@@ -10,12 +10,12 @@ import {
   LoadPatrimonyByNumberSpy,
   mockAccountModel
 } from '@/tests/domain/mocks'
+import { LoadPatrimonies } from '@/domain/usecases'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { LoadPatrimonies } from '@/domain/usecases'
 
 type Params = {
   loadPatrimoniesSpy?: LoadPatrimoniesSpy
@@ -252,5 +252,17 @@ describe('PatrimonyList Component', () => {
     populateField('number', '666')
     expect(screen.getByTestId('owner').children[1].children[0]).toBeDisabled()
     expect(screen.getByTestId('category').children[1].children[0]).toBeDisabled()
+  })
+
+  test('Should not setData patrimonies if patrimony not found by LoadPatrimonyByNumber', async () => {
+    const { loadPatrimonyByNumberSpy } = makeSut()
+    loadPatrimonyByNumberSpy.model = null
+    populateField('number', '666')
+    fireEvent.click(screen.getByTestId('submit-button'))
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    const numberOfPages = screen.getByTestId('pagination').children[0].querySelectorAll('li').length - 2
+    expect(numberOfPages).toBe(2)
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    expect(screen.queryAllByRole('item').length).toBe(10)
   })
 })
