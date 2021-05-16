@@ -19,7 +19,7 @@ const Error: React.FC = () => {
   return (
     <div className="col-12">
       <div className="error">
-        <span>{state.mainError}</span>
+        <span data-testid="main-error">{state.mainError}</span>
         <Button color="secondary" variant="outlined" text="Recarregar" onClick={handleReload} data-testid="reload" />
       </div>
     </div>
