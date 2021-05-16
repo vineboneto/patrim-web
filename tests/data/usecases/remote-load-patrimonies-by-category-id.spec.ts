@@ -2,7 +2,7 @@ import { RemoteLoadPatrimoniesByCategoryId } from '@/data/usecases'
 import { HttpStatusCode } from '@/data/protocols'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
-import { mockLoadPatrimoniesByCategoryIdParams } from '@/tests/domain/mocks'
+import { mockLoadPatrimoniesByCategoryIdParams, mockPatrimoniesModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -64,5 +64,16 @@ describe('RemoteLoadPatrimoniesByCategoryId', () => {
     }
     const promise = sut.loadByCategoryId(mockLoadPatrimoniesByCategoryIdParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should return an patrimonies if HttpClient returns 200', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    const body = mockPatrimoniesModel()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body
+    }
+    const data = await sut.loadByCategoryId(mockLoadPatrimoniesByCategoryIdParams())
+    expect(data).toEqual(body)
   })
 })
