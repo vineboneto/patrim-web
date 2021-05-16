@@ -8,10 +8,10 @@ const Pagination: React.FC = () => {
   const { state, setState } = useContext(LoadContext)
 
   const handleChangePagination = (e: any, page: number): void => {
-    setState(old => ({
-      ...old,
+    setState({
+      ...state,
       skip: (page - 1) * state.take
-    }))
+    })
   }
 
   return (
