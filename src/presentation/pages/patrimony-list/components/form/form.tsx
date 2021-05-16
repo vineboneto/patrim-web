@@ -14,7 +14,7 @@ const Form: React.FC = () => {
             name="owner"
             placeholder="Proprietário"
             options={state.owners}
-            disabled={state.number !== ''}
+            disabled={!!state.number || !!state.category}
           />
         </div>
         <div className="col-12 col-lg-4">
@@ -22,11 +22,15 @@ const Form: React.FC = () => {
             name="category"
             placeholder="Categoria"
             options={state.categories}
-            disabled={state.number !== ''}
+            disabled={!!state.number}
           />
         </div>
         <div className="col-12 col-lg-4">
-          <Input type="text" name="number" placeholder="Número" />
+          <Input
+            type="text" name="number"
+            placeholder="Número"
+            disabled={!!state.category}
+          />
         </div>
         {/* <div className="col-12 col-lg-3">
           <Button variant="outlined" color="primary" text="Pesquisar" type="submit" data-testid="submit-button" />

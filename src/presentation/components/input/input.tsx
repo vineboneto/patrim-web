@@ -25,6 +25,7 @@ const Input: React.FC<Props> = (props: Props) => {
         variant="outlined"
         label={props.placeholder}
         autoComplete="off"
+        disabled={props.disabled}
       />
     </div>
   )
