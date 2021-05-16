@@ -10,7 +10,13 @@ import {
   Pagination
 } from '@/presentation/pages/patrimony-list/components'
 import { useErrorHandler } from '@/presentation/hooks'
-import { LoadCategories, LoadOwners, LoadPatrimonies, LoadPatrimonyByNumber } from '@/domain/usecases'
+import {
+  LoadCategories,
+  LoadOwners,
+  LoadPatrimonies,
+  LoadPatrimoniesByCategoryId,
+  LoadPatrimonyByNumber
+} from '@/domain/usecases'
 
 import React, { useState, useEffect, FormEvent } from 'react'
 
@@ -18,10 +24,17 @@ type Props = {
   loadPatrimonies: LoadPatrimonies
   loadOwners: LoadOwners
   loadCategories: LoadCategories
+  loadPatrimoniesByCategoryId: LoadPatrimoniesByCategoryId
   loadPatrimonyByNumber: LoadPatrimonyByNumber
 }
 
-const PatrimonyList: React.FC<Props> = ({ loadPatrimonies, loadOwners, loadCategories, loadPatrimonyByNumber }: Props) => {
+const PatrimonyList: React.FC<Props> = ({
+  loadPatrimonies,
+  loadOwners,
+  loadCategories,
+  loadPatrimoniesByCategoryId,
+  loadPatrimonyByNumber
+}: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({ ...old, mainError: error.message, isLoading: false }))
   })

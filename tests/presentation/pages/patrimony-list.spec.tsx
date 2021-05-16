@@ -6,6 +6,7 @@ import { getValueInput, populateField } from '@/tests/presentation/mocks'
 import {
   LoadCategoriesSpy,
   LoadOwnersSpy,
+  LoadPatrimoniesByCategoryIdSpy,
   LoadPatrimoniesSpy,
   LoadPatrimonyByNumberSpy,
   mockAccountModel
@@ -21,6 +22,7 @@ type Params = {
   loadPatrimoniesSpy?: LoadPatrimoniesSpy
   loadOwnersSpy?: LoadOwnersSpy
   loadCategoriesSpy?: LoadCategoriesSpy
+  loadPatrimoniesByCategoryId?: LoadPatrimoniesByCategoryIdSpy
   loadPatrimonyByNumberSpy?: LoadPatrimonyByNumberSpy
 }
 
@@ -28,6 +30,7 @@ type SutTypes = {
   loadPatrimoniesSpy: LoadPatrimoniesSpy
   loadOwnersSpy: LoadOwnersSpy
   loadCategoriesSpy: LoadCategoriesSpy
+  loadPatrimoniesByCategoryId: LoadPatrimoniesByCategoryIdSpy
   loadPatrimonyByNumberSpy: LoadPatrimonyByNumberSpy
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
@@ -37,6 +40,7 @@ const makeSut = ({
   loadPatrimoniesSpy = new LoadPatrimoniesSpy(),
   loadOwnersSpy = new LoadOwnersSpy(),
   loadCategoriesSpy = new LoadCategoriesSpy(),
+  loadPatrimoniesByCategoryId = new LoadPatrimoniesByCategoryIdSpy(),
   loadPatrimonyByNumberSpy = new LoadPatrimonyByNumberSpy()
 }: Params = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/patrimonies/new'] })
@@ -49,6 +53,7 @@ const makeSut = ({
           loadOwners={loadOwnersSpy}
           loadCategories={loadCategoriesSpy}
           loadPatrimonyByNumber={loadPatrimonyByNumberSpy}
+          loadPatrimoniesByCategoryId={loadPatrimoniesByCategoryId}
         />
       </Router>
     </ApiContext.Provider>
@@ -59,6 +64,7 @@ const makeSut = ({
     loadOwnersSpy,
     loadCategoriesSpy,
     loadPatrimonyByNumberSpy,
+    loadPatrimoniesByCategoryId,
     history
   }
 }

@@ -1,4 +1,5 @@
 import { LoadPatrimoniesByCategoryId } from '@/domain/usecases'
+import { mockPatrimoniesModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -7,3 +8,15 @@ export const mockLoadPatrimoniesByCategoryIdParams = (): LoadPatrimoniesByCatego
   skip: 0,
   take: 9
 })
+
+export class LoadPatrimoniesByCategoryIdSpy implements LoadPatrimoniesByCategoryId {
+  model = mockPatrimoniesModel()
+  callsCount = 0
+  params: LoadPatrimoniesByCategoryId.Params
+
+  async loadByCategoryId (params: LoadPatrimoniesByCategoryId.Params): Promise<LoadPatrimoniesByCategoryId.Model[]> {
+    this.params = params
+    this.callsCount++
+    return this.model
+  }
+}
