@@ -15,6 +15,7 @@ import React from 'react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { LoadPatrimonies } from '@/domain/usecases'
 
 type Params = {
   loadPatrimoniesSpy?: LoadPatrimoniesSpy
@@ -96,6 +97,23 @@ describe('PatrimonyList Component', () => {
     const loadPatrimoniesSpy = new LoadPatrimoniesSpy()
     jest.spyOn(loadPatrimoniesSpy, 'load').mockRejectedValueOnce(new AccessDeniedError())
     const { history, setCurrentAccountMock } = makeSut({ loadPatrimoniesSpy })
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
+    expect(history.location.pathname).toBe('/login')
+  })
+  test('Should logout on AccessDeniedError by LoadPatrimonies 2', async () => {
+    class LoadPatrimoniesSpy2 implements LoadPatrimonies {
+      model = []
+      params: LoadPatrimonies.Params
+      callsCount = 0
+      async load (params: LoadPatrimonies.Params): Promise<LoadPatrimonies.Model[]> {
+        this.callsCount++
+        if (this.callsCount === 2) throw new AccessDeniedError()
+        return this.model
+      }
+    }
+    const loadPatrimoniesSpy2 = new LoadPatrimoniesSpy2()
+    const { history, setCurrentAccountMock } = makeSut({ loadPatrimoniesSpy: loadPatrimoniesSpy2 })
     await waitFor(() => screen.getByTestId('patrimonies'))
     expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
     expect(history.location.pathname).toBe('/login')
