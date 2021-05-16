@@ -1,0 +1,7 @@
+.combobox-wrap[aria-disabled="false"] {
+  background-color: var(--color-white);
+}
+
+.combobox-wrap[aria-disabled="true"]  {
+  background-color: var(--color-background)
+}

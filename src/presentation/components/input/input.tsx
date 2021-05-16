@@ -16,7 +16,7 @@ const Input: React.FC<Props> = (props: Props) => {
       <TextField
         data-testid={`${props.name}`}
         type={props.type}
-        style={{ width: '100%', margin: '10px 0' }}
+        style={{ width: '100%', margin: '10px 0', backgroundColor: 'var(--color-white)' }}
         name={props.name}
         value={state[`${props.name}`]}
         onChange={handleChange}

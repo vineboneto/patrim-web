@@ -1,3 +1,4 @@
+import './combobox-styles.css'
 import { FormContext } from '@/presentation/components'
 
 import React, { InputHTMLAttributes, useContext } from 'react'
@@ -22,6 +23,8 @@ const Combobox: React.FC<Props> = (props: Props) => {
   return (
     <Autocomplete
       onChange={handleChange}
+      className="combobox-wrap"
+      aria-disabled={props.disabled}
       style={{ margin: '10px 0' }}
       getOptionLabel={(option) => option.label }
       getOptionSelected={(option, value) => option.value === value.value }
