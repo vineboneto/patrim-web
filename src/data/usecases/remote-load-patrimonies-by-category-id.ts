@@ -1,6 +1,6 @@
 import { LoadPatrimoniesByCategoryId } from '@/domain/usecases'
 import { HttpClient, HttpStatusCode } from '@/data/protocols'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 
 export class RemoteLoadPatrimoniesByCategoryId implements LoadPatrimoniesByCategoryId {
   constructor (
@@ -14,8 +14,10 @@ export class RemoteLoadPatrimoniesByCategoryId implements LoadPatrimoniesByCateg
       method: 'get'
     })
     switch (httpResponse.statusCode) {
+      case HttpStatusCode.noContent:
+      case HttpStatusCode.ok: return null
       case HttpStatusCode.forbidden: throw new AccessDeniedError()
+      default: throw new UnexpectedError()
     }
-    return null
   }
 }
