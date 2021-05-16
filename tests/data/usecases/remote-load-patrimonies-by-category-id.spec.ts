@@ -56,4 +56,13 @@ describe('RemoteLoadPatrimoniesByCategoryId', () => {
     const promise = sut.loadByCategoryId(mockLoadPatrimoniesByCategoryIdParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
+
+  test('Should throw UnexpectedError if HttpClient returns 404', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest
+    }
+    const promise = sut.loadByCategoryId(mockLoadPatrimoniesByCategoryIdParams())
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
 })
