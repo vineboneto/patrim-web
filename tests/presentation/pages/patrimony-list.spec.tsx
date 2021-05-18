@@ -113,6 +113,16 @@ describe('PatrimonyList Component', () => {
     expect(history.location.pathname).toBe('/login')
   })
 
+  test('Should logout on AccessDeniedError by LoadPatrimonyByNumber', async () => {
+    const loadPatrimonyByNumberSpy = new LoadPatrimonyByNumberSpy()
+    jest.spyOn(loadPatrimonyByNumberSpy, 'loadByNumber').mockRejectedValueOnce(new AccessDeniedError())
+    const { history, setCurrentAccountMock } = makeSut({ loadPatrimonyByNumberSpy })
+    populateField('number', 'any_value')
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
+    expect(history.location.pathname).toBe('/login')
+  })
+
   test('Should calls LoadOwners', async () => {
     const { loadOwnersSpy } = makeSut()
     await waitFor(() => screen.getByTestId('patrimonies'))
