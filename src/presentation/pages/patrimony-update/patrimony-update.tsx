@@ -118,7 +118,6 @@ const PatrimonyUpdate: React.FC<Props> = ({
     event.preventDefault()
     if (state.isFormInvalid || state.isLoading) return
     setState(old => ({ ...old, isLoading: true }))
-    console.log(id)
     const { brand, category, owner, number, description } = state
     updatePatrimony.update({
       id: Number(id),

@@ -29,8 +29,3 @@
 .patrimony-item footer {
   align-self: flex-end;
 }
-
- .patrimony-item footer > :nth-child(1) {
-  margin-right: 10px;
-}
-

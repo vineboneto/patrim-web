@@ -13,7 +13,6 @@ export class RemoteLoadOwners implements LoadOwners {
       method: 'get',
       url: this.url
     })
-    console.log(httpResponse.body)
     switch (httpResponse.statusCode) {
       case HttpStatusCode.noContent:
       case HttpStatusCode.ok: return httpResponse.body

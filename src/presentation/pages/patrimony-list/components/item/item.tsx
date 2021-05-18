@@ -48,6 +48,7 @@ const Item: React.FC<Props> = ({ patrimony, handleDelete }: Props) => {
           <Dialog
             open={open}
             onClose={() => setOpen(false)}
+            role="dialog"
           >
             <DialogTitle>{`Tem certeza que deseja excluir esse patrimônio: ${patrimony.number} ?`}</DialogTitle>
             <DialogActions>
@@ -55,14 +56,15 @@ const Item: React.FC<Props> = ({ patrimony, handleDelete }: Props) => {
                 onClick={() => setOpen(false)}
                 color="primary"
                 text="Fechar"
-                variant="text"
+                variant="outlined"
+                style={{ marginRight: '15px' }}
               />
               <Button
                 onClick={() => handleDelete(Number(patrimony.id))}
                 data-testid="delete-patrimony"
-                color="primary"
+                color="secondary"
                 text="Excluir"
-                variant="text"
+                variant="outlined"
               />
             </DialogActions>
           </Dialog>
