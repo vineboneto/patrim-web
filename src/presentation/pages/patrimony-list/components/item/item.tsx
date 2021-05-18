@@ -42,7 +42,7 @@ const Item: React.FC<Props> = ({ patrimony, handleDelete }: Props) => {
               <EditIcon color="primary" />
             </Link>
           </IconButton>
-          <IconButton onClick={() => setOpen(true)}>
+          <IconButton onClick={() => setOpen(true)} role="open-dialog">
             <DeleteIcon color="error" />
           </IconButton>
           <Dialog
@@ -59,6 +59,7 @@ const Item: React.FC<Props> = ({ patrimony, handleDelete }: Props) => {
               />
               <Button
                 onClick={() => handleDelete(Number(patrimony.id))}
+                data-testid="delete-patrimony"
                 color="primary"
                 text="Excluir"
                 variant="text"

@@ -32,9 +32,6 @@ const Form: React.FC = () => {
             disabled={!!state.category}
           />
         </div>
-        {/* <div className="col-12 col-lg-3">
-          <Button variant="outlined" color="primary" text="Pesquisar" type="submit" data-testid="submit-button" />
-        </div> */}
         <div className="col-12 col-lg-3">
         </div>
       </div>
