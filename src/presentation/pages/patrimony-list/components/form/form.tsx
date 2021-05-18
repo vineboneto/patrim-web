@@ -22,14 +22,14 @@ const Form: React.FC = () => {
             name="category"
             placeholder="Categoria"
             options={state.categories}
-            disabled={!!state.number}
+            disabled={!!state.number || !!state.owner}
           />
         </div>
         <div className="col-12 col-lg-4">
           <Input
             type="text" name="number"
             placeholder="Número"
-            disabled={!!state.category}
+            disabled={!!state.category || !!state.owner}
           />
         </div>
         <div className="col-12 col-lg-3">

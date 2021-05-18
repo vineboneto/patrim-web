@@ -16,6 +16,7 @@ import {
   LoadOwners,
   LoadPatrimonies,
   LoadPatrimoniesByCategoryId,
+  LoadPatrimoniesByOwnerId,
   LoadPatrimonyByNumber
 } from '@/domain/usecases'
 import { PatrimonyModel } from '@/domain/models'
@@ -27,6 +28,7 @@ type Props = {
   loadOwners: LoadOwners
   loadCategories: LoadCategories
   loadPatrimoniesByCategoryId: LoadPatrimoniesByCategoryId
+  loadPatrimoniesByOwnerId: LoadPatrimoniesByOwnerId
   loadPatrimonyByNumber: LoadPatrimonyByNumber
   deletePatrimony: DeletePatrimony
 }
@@ -36,6 +38,7 @@ const PatrimonyList: React.FC<Props> = ({
   loadOwners,
   loadCategories,
   loadPatrimoniesByCategoryId,
+  loadPatrimoniesByOwnerId,
   loadPatrimonyByNumber,
   deletePatrimony
 }: Props) => {
@@ -191,6 +194,19 @@ const PatrimonyList: React.FC<Props> = ({
 
   useEffect(() => {
     setLoading()
+    if (state.owner) {
+      loadPatrimoniesByOwnerId.loadByOwnerId({
+        id: Number(state.owner),
+        skip: state.skip,
+        take: state.take
+      })
+        .then((data) => handlePatrimonies(data))
+        .catch((error) => handleError(error))
+    }
+  }, [state.owner, state.take, state.skip])
+
+  useEffect(() => {
+    setLoading()
     if (state.number) {
       loadPatrimonyByNumber.loadByNumber({ number: state.number })
         .then((patrimony) => { if (patrimony) setPatrimony(patrimony) })
@@ -199,8 +215,8 @@ const PatrimonyList: React.FC<Props> = ({
   }, [state.number])
 
   useEffect(() => {
-    if (!state.number && !state.category) setReload()
-  }, [state.category, state.number])
+    if (!state.number && !state.category && !state.owner) setReload()
+  }, [state.category, state.number, state.owner])
 
   const handleDelete = (id: number): void => {
     deletePatrimony.delete({ id: id })

@@ -8,6 +8,7 @@ import {
   LoadCategoriesSpy,
   LoadOwnersSpy,
   LoadPatrimoniesByCategoryIdSpy,
+  LoadPatrimoniesByOwnerIdSpy,
   LoadPatrimoniesSpy,
   LoadPatrimonyByNumberSpy,
   mockAccountModel
@@ -23,6 +24,7 @@ type Params = {
   loadOwnersSpy?: LoadOwnersSpy
   loadCategoriesSpy?: LoadCategoriesSpy
   loadPatrimoniesByCategoryIdSpy?: LoadPatrimoniesByCategoryIdSpy
+  loadPatrimoniesByOwnerIdSpy?: LoadPatrimoniesByOwnerIdSpy
   loadPatrimonyByNumberSpy?: LoadPatrimonyByNumberSpy
   deletePatrimonySpy?: DeletePatrimonySpy
 }
@@ -36,6 +38,7 @@ type SutTypes = {
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
   deletePatrimonySpy: DeletePatrimonySpy
+  loadPatrimoniesByOwnerIdSpy: LoadPatrimoniesByOwnerIdSpy
 }
 
 const makeSut = ({
@@ -44,7 +47,8 @@ const makeSut = ({
   loadCategoriesSpy = new LoadCategoriesSpy(),
   loadPatrimoniesByCategoryIdSpy = new LoadPatrimoniesByCategoryIdSpy(),
   loadPatrimonyByNumberSpy = new LoadPatrimonyByNumberSpy(),
-  deletePatrimonySpy = new DeletePatrimonySpy()
+  deletePatrimonySpy = new DeletePatrimonySpy(),
+  loadPatrimoniesByOwnerIdSpy = new LoadPatrimoniesByOwnerIdSpy()
 }: Params = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/patrimonies/new'] })
   const setCurrentAccountMock = jest.fn()
@@ -58,6 +62,7 @@ const makeSut = ({
           loadCategories={loadCategoriesSpy}
           loadPatrimonyByNumber={loadPatrimonyByNumberSpy}
           loadPatrimoniesByCategoryId={loadPatrimoniesByCategoryIdSpy}
+          loadPatrimoniesByOwnerId={loadPatrimoniesByOwnerIdSpy}
         />
       </Router>
     </ApiContext.Provider>
@@ -70,6 +75,7 @@ const makeSut = ({
     loadCategoriesSpy,
     loadPatrimonyByNumberSpy,
     loadPatrimoniesByCategoryIdSpy,
+    loadPatrimoniesByOwnerIdSpy,
     history
   }
 }
