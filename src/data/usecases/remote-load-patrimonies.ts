@@ -8,7 +8,7 @@ export class RemoteLoadPatrimonies implements LoadPatrimonies {
     private readonly url: string
   ) {}
 
-  async load (params: LoadPatrimonies.Params): Promise<LoadPatrimonies.Model[]> {
+  async load (params: LoadPatrimonies.Params): Promise<LoadPatrimonies.Model> {
     const httpResponse = await this.httpClient.request({
       url: `${this.url}?take=${params.take}&skip=${params.skip}`,
       method: 'get'

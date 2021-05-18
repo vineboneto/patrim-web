@@ -8,7 +8,7 @@ export class RemoteLoadPatrimoniesByOwnerId implements LoadPatrimoniesByOwnerId 
     private readonly url: string
   ) {}
 
-  async loadByOwnerId (params: LoadPatrimoniesByOwnerId.Params): Promise<LoadPatrimoniesByOwnerId.Model[]> {
+  async loadByOwnerId (params: LoadPatrimoniesByOwnerId.Params): Promise<LoadPatrimoniesByOwnerId.Model> {
     const httpResponse = await this.httpClient.request({
       url: `${this.url}/${params.id}/patrimonies?take=${params.take}&skip=${params.skip}`,
       method: 'get'

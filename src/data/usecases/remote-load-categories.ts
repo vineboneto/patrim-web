@@ -8,7 +8,7 @@ export class RemoteLoadCategories implements LoadCategories {
     private readonly url: string
   ) {}
 
-  async load (): Promise<LoadCategories.Model[]> {
+  async load (): Promise<LoadCategories.Model> {
     const httpResponse = await this.httpClient.request({
       method: 'get',
       url: this.url

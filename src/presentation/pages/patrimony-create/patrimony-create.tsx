@@ -46,19 +46,27 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCatego
 
   useEffect(() => {
     loadCategories.load()
-      .then(categories => setState(old => ({
-        ...old,
-        categories: categories.map(category => ({ value: category.id.toString(), label: category.name }))
-      })))
+      .then(data => {
+        if (data) {
+          setState(old => ({
+            ...old,
+            categories: data.model.map(category => ({ value: category.id.toString(), label: category.name }))
+          }))
+        }
+      })
       .catch(error => handleError(error))
   }, [])
 
   useEffect(() => {
     loadOwners.load()
-      .then(owners => setState(old => ({
-        ...old,
-        owners: owners.map(owner => ({ value: owner.id.toString(), label: owner.name }))
-      })))
+      .then(data => {
+        if (data) {
+          setState(old => ({
+            ...old,
+            owners: data.model.map(owner => ({ value: owner.id.toString(), label: owner.name }))
+          }))
+        }
+      })
       .catch(error => handleError(error))
   }, [])
 

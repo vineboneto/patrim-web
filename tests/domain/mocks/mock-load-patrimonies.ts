@@ -7,13 +7,16 @@ export const mockLoadPatrimoniesParams = (): LoadPatrimonies.Params => ({
 })
 
 export class LoadPatrimoniesSpy implements LoadPatrimonies {
-  model = mockPatrimoniesModel()
   callsCount = 0
   params: LoadPatrimonies.Params
+  data = {
+    model: mockPatrimoniesModel(),
+    count: mockPatrimoniesModel().length
+  }
 
-  async load (params: LoadPatrimonies.Params): Promise<LoadPatrimonies.Model[]> {
+  async load (params: LoadPatrimonies.Params): Promise<LoadPatrimonies.Model> {
     this.params = params
     this.callsCount++
-    return this.model
+    return this.data
   }
 }

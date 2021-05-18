@@ -12,7 +12,6 @@ import {
   LoadPatrimonyByNumberSpy,
   mockAccountModel
 } from '@/tests/domain/mocks'
-import { LoadPatrimonies } from '@/domain/usecases'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -87,7 +86,7 @@ describe('PatrimonyList Component', () => {
   test('Should calls LoadPatrimonies', async () => {
     const { loadPatrimoniesSpy } = makeSut()
     await waitFor(() => screen.getByTestId('patrimonies'))
-    expect(loadPatrimoniesSpy.callsCount).toBe(4)
+    expect(loadPatrimoniesSpy.callsCount).toBe(2)
     await waitFor(() => screen.getByTestId('patrimonies'))
     expect(screen.queryAllByRole('item').length).toBe(10)
   })
@@ -109,23 +108,6 @@ describe('PatrimonyList Component', () => {
     const loadPatrimoniesSpy = new LoadPatrimoniesSpy()
     jest.spyOn(loadPatrimoniesSpy, 'load').mockRejectedValueOnce(new AccessDeniedError())
     const { history, setCurrentAccountMock } = makeSut({ loadPatrimoniesSpy })
-    await waitFor(() => screen.getByTestId('patrimonies'))
-    expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
-    expect(history.location.pathname).toBe('/login')
-  })
-  test('Should logout on AccessDeniedError by LoadPatrimonies 2', async () => {
-    class LoadPatrimoniesSpy2 implements LoadPatrimonies {
-      model = []
-      params: LoadPatrimonies.Params
-      callsCount = 0
-      async load (params: LoadPatrimonies.Params): Promise<LoadPatrimonies.Model[]> {
-        this.callsCount++
-        if (this.callsCount === 2) throw new AccessDeniedError()
-        return this.model
-      }
-    }
-    const loadPatrimoniesSpy2 = new LoadPatrimoniesSpy2()
-    const { history, setCurrentAccountMock } = makeSut({ loadPatrimoniesSpy: loadPatrimoniesSpy2 })
     await waitFor(() => screen.getByTestId('patrimonies'))
     expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
     expect(history.location.pathname).toBe('/login')
@@ -199,7 +181,7 @@ describe('PatrimonyList Component', () => {
     await waitFor(() => screen.getByTestId('patrimonies'))
     const updatedLink = screen.queryAllByRole('link-update')[0]
     fireEvent.click(updatedLink)
-    expect(history.location.pathname).toBe(`/patrimonies/update/${loadPatrimoniesSpy.model[0].id}`)
+    expect(history.location.pathname).toBe(`/patrimonies/update/${loadPatrimoniesSpy.data.model[0].id}`)
     expect(history.length).toBe(2)
   })
 
@@ -214,17 +196,17 @@ describe('PatrimonyList Component', () => {
     expect(page2).toHaveTextContent('2')
   })
 
-  test('Should call LoadPatrimonies on failure', async () => {
+  test('Should call LoadPatrimonies on click in reload', async () => {
     const loadPatrimoniesSpy = new LoadPatrimoniesSpy()
     jest.spyOn(loadPatrimoniesSpy, 'load').mockRejectedValueOnce(new UnexpectedError())
     makeSut({ loadPatrimoniesSpy })
     await waitFor(() => screen.getByTestId('patrimonies'))
     fireEvent.click(screen.getByTestId('reload'))
-    expect(loadPatrimoniesSpy.callsCount).toBe(3)
+    expect(loadPatrimoniesSpy.callsCount).toBe(1)
     await waitFor(() => screen.getByTestId('patrimonies'))
   })
 
-  test('Should call LoadOwners on failure', async () => {
+  test('Should call LoadOwners on click in reload', async () => {
     const loadOwnersSpy = new LoadOwnersSpy()
     jest.spyOn(loadOwnersSpy, 'load').mockRejectedValueOnce(new UnexpectedError())
     makeSut({ loadOwnersSpy })
@@ -234,7 +216,7 @@ describe('PatrimonyList Component', () => {
     await waitFor(() => screen.getByTestId('patrimonies'))
   })
 
-  test('Should call LoadCategories on failure', async () => {
+  test('Should call LoadCategories on click in reload', async () => {
     const loadCategoriesSpy = new LoadCategoriesSpy()
     jest.spyOn(loadCategoriesSpy, 'load').mockRejectedValueOnce(new UnexpectedError())
     makeSut({ loadCategoriesSpy })
@@ -244,7 +226,7 @@ describe('PatrimonyList Component', () => {
     await waitFor(() => screen.getByTestId('patrimonies'))
   })
 
-  test('Should call LoadPatrimonyByNumber', async () => {
+  test('Should call LoadPatrimonyByNumber on click in reload', async () => {
     const { loadPatrimonyByNumberSpy } = makeSut()
     populateField('number', '666')
     await waitFor(() => screen.getByTestId('patrimonies'))

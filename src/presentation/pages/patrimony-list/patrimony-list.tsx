@@ -104,7 +104,7 @@ const PatrimonyList: React.FC<Props> = ({
       ...old,
       isLoading: false,
       patrimonies: [],
-      mainError: 'Nada foi encontrado'
+      mainError: 'Dados não encontrados'
     }))
   }
 
@@ -118,33 +118,46 @@ const PatrimonyList: React.FC<Props> = ({
 
   useEffect(() => {
     loadOwners.load()
-      .then(owners => setState(old => ({
-        ...old,
-        isLoading: false,
-        owners: owners.map(owner => ({ value: owner.id.toString(), label: owner.name }))
-      })))
+      .then(data => {
+        if (data) {
+          setState(old => ({
+            ...old,
+            isLoading: false,
+            owners: data.model.map(owner => ({ value: owner.id.toString(), label: owner.name }))
+          }))
+        } else {
+          setNotFound()
+        }
+      })
       .catch(error => handleError(error))
   }, [state.reload])
 
   useEffect(() => {
     loadCategories.load()
-      .then(categories => setState(old => ({
-        ...old,
-        isLoading: false,
-        categories: categories.map(category => ({ value: category.id.toString(), label: category.name }))
-      })))
+      .then(data => {
+        if (data) {
+          setState(old => ({
+            ...old,
+            isLoading: false,
+            categories: data.model.map(category => ({ value: category.id.toString(), label: category.name }))
+          }))
+        } else {
+          setNotFound()
+        }
+      })
       .catch(error => handleError(error))
   }, [state.reload])
 
   useEffect(() => {
-    loadPatrimonies.load({})
-      .then((patrimonies) => setPagination(patrimonies.length))
-      .catch((error) => handleError(error))
-  }, [state.reload])
-
-  useEffect(() => {
     loadPatrimonies.load({ skip: state.skip, take: state.take })
-      .then((patrimonies) => setPatrimonies(patrimonies))
+      .then((data) => {
+        if (data) {
+          setPatrimonies(data.model)
+          setPagination(data.count)
+        } else {
+          setNotFound()
+        }
+      })
       .catch((error) => handleError(error))
   }, [state.skip, state.take, state.reload])
 
@@ -155,7 +168,7 @@ const PatrimonyList: React.FC<Props> = ({
         skip: state.skip,
         take: state.take
       })
-        .then((patrimonies) => patrimonies ? setPatrimonies(patrimonies) : setNotFound())
+        .then((data) => data.model ? setPatrimonies(data.model) : setNotFound())
         .catch((error) => handleError(error))
     }
   }, [state.take, state.skip, state.category])

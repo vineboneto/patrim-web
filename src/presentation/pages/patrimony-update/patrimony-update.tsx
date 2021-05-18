@@ -59,32 +59,44 @@ const PatrimonyUpdate: React.FC<Props> = ({
 
   useEffect(() => {
     loadCategories.load()
-      .then(categories => setState(old => ({
-        ...old,
-        categories: categories.map(category => ({ value: category.id.toString(), label: category.name }))
-      })))
+      .then(data => {
+        if (data) {
+          setState(old => ({
+            ...old,
+            categories: data.model.map(category => ({ value: category.id.toString(), label: category.name }))
+          }))
+        }
+      })
       .catch(error => handleError(error))
   }, [])
 
   useEffect(() => {
     loadOwners.load()
-      .then(owners => setState(old => ({
-        ...old,
-        owners: owners.map(owner => ({ value: owner.id.toString(), label: owner.name }))
-      })))
+      .then(data => {
+        if (data) {
+          setState(old => ({
+            ...old,
+            owners: data.model.map(owner => ({ value: owner.id.toString(), label: owner.name }))
+          }))
+        }
+      })
       .catch(error => handleError(error))
   }, [])
 
   useEffect(() => {
     loadPatrimonyById.loadById({ id: Number(id) })
-      .then((patrimony) => setState(old => ({
-        ...old,
-        brand: patrimony.brand,
-        number: patrimony.number,
-        owner: patrimony.owner.id.toString(),
-        category: patrimony.category.id.toString(),
-        description: patrimony.description
-      })))
+      .then((patrimony) => {
+        if (patrimony) {
+          setState(old => ({
+            ...old,
+            brand: patrimony.brand,
+            number: patrimony.number,
+            owner: patrimony.owner.id.toString(),
+            category: patrimony.category.id.toString(),
+            description: patrimony.description
+          }))
+        }
+      })
       .catch(error => handleError(error))
   }, [])
 

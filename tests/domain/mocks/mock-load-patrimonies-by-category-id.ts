@@ -10,13 +10,16 @@ export const mockLoadPatrimoniesByCategoryIdParams = (): LoadPatrimoniesByCatego
 })
 
 export class LoadPatrimoniesByCategoryIdSpy implements LoadPatrimoniesByCategoryId {
-  model = mockPatrimoniesModel()
   callsCount = 0
   params: LoadPatrimoniesByCategoryId.Params
+  data = {
+    model: mockPatrimoniesModel(),
+    count: mockPatrimoniesModel().length
+  }
 
-  async loadByCategoryId (params: LoadPatrimoniesByCategoryId.Params): Promise<LoadPatrimoniesByCategoryId.Model[]> {
+  async loadByCategoryId (params: LoadPatrimoniesByCategoryId.Params): Promise<LoadPatrimoniesByCategoryId.Model> {
     this.params = params
     this.callsCount++
-    return this.model
+    return this.data
   }
 }

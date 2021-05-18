@@ -8,7 +8,7 @@ export class RemoteLoadPatrimoniesByCategoryId implements LoadPatrimoniesByCateg
     private readonly url: string
   ) {}
 
-  async loadByCategoryId (params: LoadPatrimoniesByCategoryId.Params): Promise<LoadPatrimoniesByCategoryId.Model[]> {
+  async loadByCategoryId (params: LoadPatrimoniesByCategoryId.Params): Promise<LoadPatrimoniesByCategoryId.Model> {
     const httpResponse = await this.httpClient.request({
       url: `${this.url}/${params.id}/patrimonies?take=${params.take}&skip=${params.skip}`,
       method: 'get'
