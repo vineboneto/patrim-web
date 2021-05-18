@@ -49,6 +49,7 @@ const PatrimonyList: React.FC<Props> = ({
     reload: false,
     number: '',
     category: '',
+    oldCategory: '0',
     categories: [] as ComboOptions[],
     categoryInput: '',
     owner: '',
@@ -79,6 +80,8 @@ const PatrimonyList: React.FC<Props> = ({
     setState(old => ({
       ...old,
       totalPage: 1,
+      mainError: '',
+      isLoading: false,
       patrimonies: [{
         id: patrimony.id.toString(),
         number: patrimony.number,
@@ -88,6 +91,15 @@ const PatrimonyList: React.FC<Props> = ({
         sector: patrimony.owner.sector.name
       }]
     }))
+  }
+
+  const handlePatrimonies = (data: any): void => {
+    if (data) {
+      setPatrimonies(data.model)
+      setPagination(data.count)
+    } else {
+      setNotFound()
+    }
   }
 
   const setReload = (): void => {
@@ -116,7 +128,15 @@ const PatrimonyList: React.FC<Props> = ({
     }))
   }
 
+  const setLoading = (): void => {
+    setState((old) => ({
+      ...old,
+      isLoading: true
+    }))
+  }
+
   useEffect(() => {
+    setLoading()
     loadOwners.load()
       .then(data => {
         if (data) {
@@ -133,6 +153,7 @@ const PatrimonyList: React.FC<Props> = ({
   }, [state.reload])
 
   useEffect(() => {
+    setLoading()
     loadCategories.load()
       .then(data => {
         if (data) {
@@ -149,31 +170,27 @@ const PatrimonyList: React.FC<Props> = ({
   }, [state.reload])
 
   useEffect(() => {
+    setLoading()
     loadPatrimonies.load({ skip: state.skip, take: state.take })
-      .then((data) => {
-        if (data) {
-          setPatrimonies(data.model)
-          setPagination(data.count)
-        } else {
-          setNotFound()
-        }
-      })
+      .then((data) => handlePatrimonies(data))
       .catch((error) => handleError(error))
   }, [state.skip, state.take, state.reload])
 
   useEffect(() => {
+    setLoading()
     if (state.category) {
       loadPatrimoniesByCategoryId.loadByCategoryId({
         id: Number(state.category),
         skip: state.skip,
         take: state.take
       })
-        .then((data) => data.model ? setPatrimonies(data.model) : setNotFound())
+        .then((data) => handlePatrimonies(data))
         .catch((error) => handleError(error))
     }
-  }, [state.take, state.skip, state.category])
+  }, [state.category, state.take, state.skip])
 
   useEffect(() => {
+    setLoading()
     if (state.number) {
       loadPatrimonyByNumber.loadByNumber({ number: state.number })
         .then((patrimony) => { if (patrimony) setPatrimony(patrimony) })

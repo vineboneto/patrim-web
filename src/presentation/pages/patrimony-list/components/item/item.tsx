@@ -45,30 +45,32 @@ const Item: React.FC<Props> = ({ patrimony, handleDelete }: Props) => {
           <IconButton onClick={() => setOpen(true)} role="open-dialog">
             <DeleteIcon color="error" />
           </IconButton>
-          <Dialog
-            open={open}
-            onClose={() => setOpen(false)}
-            role="dialog"
-          >
-            <DialogTitle>{`Tem certeza que deseja excluir esse patrimônio: ${patrimony.number} ?`}</DialogTitle>
-            <DialogActions>
-              <Button
-                onClick={() => setOpen(false)}
-                color="primary"
-                text="Fechar"
-                variant="outlined"
-                style={{ marginRight: '15px' }}
-              />
-              <Button
-                onClick={() => handleDelete(Number(patrimony.id))}
-                data-testid="delete-patrimony"
-                color="secondary"
-                text="Excluir"
-                variant="outlined"
-              />
-            </DialogActions>
-          </Dialog>
         </footer>
+        <Dialog
+          open={open}
+          onClose={() => setOpen(false)}
+          role="dialog"
+        >
+          <DialogTitle>{`Tem certeza que deseja excluir esse patrimônio: ${patrimony.number} ?`}</DialogTitle>
+          <DialogActions className="dialog-actions" >
+            <Button
+              style={{ width: 'auto', height: 'auto' }}
+              onClick={() => setOpen(false)}
+              data-testid="close-dialog"
+              color="primary"
+              text="Fechar"
+              variant="outlined"
+            />
+            <Button
+              style={{ width: 'auto', height: 'auto' }}
+              onClick={() => handleDelete(Number(patrimony.id))}
+              data-testid="delete-patrimony"
+              color="secondary"
+              text="Excluir"
+              variant="outlined"
+            />
+          </DialogActions>
+        </Dialog>
       </div>
     </div >
   )

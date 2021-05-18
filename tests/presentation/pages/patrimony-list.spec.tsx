@@ -300,4 +300,12 @@ describe('PatrimonyList Component', () => {
     expect(screen.getByTestId('number').children[1].children[0]).toBeDisabled()
     expect(screen.getByTestId('owner').children[1].children[0]).toBeDisabled()
   })
+
+  test('Should open dialog on click delete button', async () => {
+    makeSut()
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    fireEvent.click(screen.getAllByRole('open-dialog')[0])
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    expect(screen.getAllByRole('dialog')[0]).toBeVisible()
+  })
 })
