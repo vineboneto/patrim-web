@@ -22,7 +22,7 @@ type Params = {
   loadPatrimoniesSpy?: LoadPatrimoniesSpy
   loadOwnersSpy?: LoadOwnersSpy
   loadCategoriesSpy?: LoadCategoriesSpy
-  loadPatrimoniesByCategoryId?: LoadPatrimoniesByCategoryIdSpy
+  loadPatrimoniesByCategoryIdSpy?: LoadPatrimoniesByCategoryIdSpy
   loadPatrimonyByNumberSpy?: LoadPatrimonyByNumberSpy
   deletePatrimonySpy?: DeletePatrimonySpy
 }
@@ -31,7 +31,7 @@ type SutTypes = {
   loadPatrimoniesSpy: LoadPatrimoniesSpy
   loadOwnersSpy: LoadOwnersSpy
   loadCategoriesSpy: LoadCategoriesSpy
-  loadPatrimoniesByCategoryId: LoadPatrimoniesByCategoryIdSpy
+  loadPatrimoniesByCategoryIdSpy: LoadPatrimoniesByCategoryIdSpy
   loadPatrimonyByNumberSpy: LoadPatrimonyByNumberSpy
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
@@ -42,7 +42,7 @@ const makeSut = ({
   loadPatrimoniesSpy = new LoadPatrimoniesSpy(),
   loadOwnersSpy = new LoadOwnersSpy(),
   loadCategoriesSpy = new LoadCategoriesSpy(),
-  loadPatrimoniesByCategoryId = new LoadPatrimoniesByCategoryIdSpy(),
+  loadPatrimoniesByCategoryIdSpy = new LoadPatrimoniesByCategoryIdSpy(),
   loadPatrimonyByNumberSpy = new LoadPatrimonyByNumberSpy(),
   deletePatrimonySpy = new DeletePatrimonySpy()
 }: Params = {}): SutTypes => {
@@ -57,7 +57,7 @@ const makeSut = ({
           loadOwners={loadOwnersSpy}
           loadCategories={loadCategoriesSpy}
           loadPatrimonyByNumber={loadPatrimonyByNumberSpy}
-          loadPatrimoniesByCategoryId={loadPatrimoniesByCategoryId}
+          loadPatrimoniesByCategoryId={loadPatrimoniesByCategoryIdSpy}
         />
       </Router>
     </ApiContext.Provider>
@@ -69,7 +69,7 @@ const makeSut = ({
     loadOwnersSpy,
     loadCategoriesSpy,
     loadPatrimonyByNumberSpy,
-    loadPatrimoniesByCategoryId,
+    loadPatrimoniesByCategoryIdSpy,
     history
   }
 }
@@ -258,7 +258,7 @@ describe('PatrimonyList Component', () => {
   })
 
   test('Should call LoadPatrimonyByCategoryId', async () => {
-    const { loadPatrimoniesByCategoryId } = makeSut()
+    const { loadPatrimoniesByCategoryIdSpy } = makeSut()
     await waitFor(() => screen.getByTestId('category'))
     populateField('category', 'Impressora')
     fireEvent.click(screen.getAllByRole('combobox')[1])
@@ -267,8 +267,17 @@ describe('PatrimonyList Component', () => {
     fireEvent.click(list.children[0])
     waitFor(() => screen.getByTestId('patrimonies'))
       .then(() => {
-        expect(loadPatrimoniesByCategoryId.callsCount).toBe(1)
+        expect(loadPatrimoniesByCategoryIdSpy.callsCount).toBe(1)
       }).catch((error) => console.log(error))
+  })
+
+  test('Should call DeletePatrimony onClick', async () => {
+    const { deletePatrimonySpy } = makeSut()
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    fireEvent.click(screen.getAllByRole('open-dialog')[0])
+    await waitFor(() => screen.getByTestId('patrimonies'))
+    fireEvent.click(screen.getByTestId('delete-patrimony'))
+    expect(deletePatrimonySpy.callsCount).toBe(1)
   })
 
   test('Should disabled other field if category is not undefined', async () => {
