@@ -193,7 +193,7 @@ const PatrimonyList: React.FC<Props> = ({
 
   useEffect(() => {
     setLoading()
-    loadCategories.load()
+    loadCategories.load({})
       .then(data => {
         if (data) {
           setState(old => ({

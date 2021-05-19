@@ -58,7 +58,7 @@ const PatrimonyUpdate: React.FC<Props> = ({
   })
 
   useEffect(() => {
-    loadCategories.load()
+    loadCategories.load({})
       .then(data => {
         if (data) {
           setState(old => ({

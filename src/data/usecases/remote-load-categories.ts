@@ -8,10 +8,10 @@ export class RemoteLoadCategories implements LoadCategories {
     private readonly url: string
   ) {}
 
-  async load (): Promise<LoadCategories.Model> {
+  async load (params: LoadCategories.Params): Promise<LoadCategories.Model> {
     const httpResponse = await this.httpClient.request({
       method: 'get',
-      url: this.url
+      url: `${this.url}?take=${params.take}&skip=${params.skip}`
     })
     switch (httpResponse.statusCode) {
       case HttpStatusCode.noContent:
