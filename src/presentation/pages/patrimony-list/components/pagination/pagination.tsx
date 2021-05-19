@@ -10,6 +10,7 @@ const Pagination: React.FC = () => {
   const handleChangePagination = (e: any, page: number): void => {
     setState({
       ...state,
+      currentPage: page,
       skip: (page - 1) * state.take
     })
   }
@@ -20,6 +21,7 @@ const Pagination: React.FC = () => {
         data-testid="pagination"
         onChange={handleChangePagination}
         count={state.totalPage}
+        page={state.currentPage}
         size="large" color="primary"
       />
     </div>

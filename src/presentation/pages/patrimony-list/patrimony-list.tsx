@@ -52,7 +52,6 @@ const PatrimonyList: React.FC<Props> = ({
     reload: false,
     number: '',
     category: '',
-    oldCategory: '0',
     categories: [] as ComboOptions[],
     categoryInput: '',
     owner: '',
@@ -60,6 +59,8 @@ const PatrimonyList: React.FC<Props> = ({
     totalPage: 1,
     skip: 0,
     take: 9,
+    oldPage: 0,
+    currentPage: 1,
     patrimonies: [] as ItemProps[]
   })
 
@@ -110,7 +111,11 @@ const PatrimonyList: React.FC<Props> = ({
       ...old,
       reload: !state.reload,
       mainError: '',
-      categoryInput: ''
+      categoryInput: '',
+      number: '',
+      currentPage: 1,
+      skip: 0,
+      oldSkip: 0
     }))
   }
 
@@ -137,6 +142,20 @@ const PatrimonyList: React.FC<Props> = ({
       isLoading: true
     }))
   }
+
+  const getPatrimoniesByCategoryId = async (skip: number): Promise<LoadPatrimoniesByCategoryId.Model> => {
+    return loadPatrimoniesByCategoryId.loadByCategoryId({
+      id: Number(state.category),
+      skip: skip,
+      take: state.take
+    })
+  }
+
+  const setOldPage = (): void => setState(old => ({ ...old, oldPage: state.currentPage }))
+
+  const setResetPage = (): void => setState(old => ({ ...old, currentPage: 1, skip: 0 }))
+
+  const isChangeCurrentPage = (): boolean => state.currentPage !== state.oldPage
 
   useEffect(() => {
     setLoading()
@@ -174,23 +193,31 @@ const PatrimonyList: React.FC<Props> = ({
 
   useEffect(() => {
     setLoading()
+    setOldPage()
     loadPatrimonies.load({ skip: state.skip, take: state.take })
       .then((data) => handlePatrimonies(data))
       .catch((error) => handleError(error))
-  }, [state.skip, state.take, state.reload])
+  }, [state.skip, state.reload])
 
   useEffect(() => {
     setLoading()
     if (state.category) {
-      loadPatrimoniesByCategoryId.loadByCategoryId({
-        id: Number(state.category),
-        skip: state.skip,
-        take: state.take
-      })
-        .then((data) => handlePatrimonies(data))
-        .catch((error) => handleError(error))
+      // Caso oldPage não mudar quer dizer que somente a categoria mudou
+      // Logo a pagina atual não sofreu alteração
+      // Então é carregado a nova categoria partindo da primeira pagina
+      if (isChangeCurrentPage()) {
+        setOldPage()
+        getPatrimoniesByCategoryId(state.skip)
+          .then((data) => handlePatrimonies(data))
+          .catch((error) => handleError(error))
+      } else {
+        setResetPage()
+        getPatrimoniesByCategoryId(0)
+          .then((data) => handlePatrimonies(data))
+          .catch((error) => handleError(error))
+      }
     }
-  }, [state.category, state.take, state.skip])
+  }, [state.category, state.currentPage])
 
   useEffect(() => {
     setLoading()
@@ -203,7 +230,7 @@ const PatrimonyList: React.FC<Props> = ({
         .then((data) => handlePatrimonies(data))
         .catch((error) => handleError(error))
     }
-  }, [state.owner, state.take, state.skip])
+  }, [state.owner, state.skip])
 
   useEffect(() => {
     setLoading()

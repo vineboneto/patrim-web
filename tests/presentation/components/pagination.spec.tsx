@@ -17,7 +17,8 @@ const makeSut = (): SutTypes => {
   const state = {
     skip: 0,
     take: 9,
-    totalPage: 2
+    totalPage: 2,
+    currentPage: 1
   }
   render(
     <LoadContext.Provider value={{ state, setState }}>
@@ -37,6 +38,6 @@ describe('Pagination Component', () => {
     const { state, setState } = makeSut()
     const button = screen.getByTestId('pagination').querySelectorAll('button')[2]
     fireEvent.click(button)
-    expect(setState).toHaveBeenCalledWith({ ...state, skip: 9 })
+    expect(setState).toHaveBeenCalledWith({ ...state, skip: 9, currentPage: 2 })
   })
 })
