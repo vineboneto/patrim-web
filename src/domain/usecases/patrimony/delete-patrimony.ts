@@ -1,4 +1,4 @@
-import { PatrimonyModel } from '../models'
+import { PatrimonyModel } from '@/domain/models'
 
 export interface DeletePatrimony {
   delete (params: DeletePatrimony.Params): Promise<DeletePatrimony.Model>

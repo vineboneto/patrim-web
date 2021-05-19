@@ -1,7 +1,7 @@
 import { LoadPatrimoniesByOwnerId } from '@/domain/usecases'
+import { mockPatrimoniesModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
-import { mockPatrimoniesModel } from './mock-patrimony'
 
 export const mockLoadPatrimoniesByOwnerIdParams = (): LoadPatrimoniesByOwnerId.Params => ({
   id: faker.datatype.number(),

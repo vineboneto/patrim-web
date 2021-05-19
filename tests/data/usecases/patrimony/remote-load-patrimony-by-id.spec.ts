@@ -2,9 +2,9 @@ import { RemoteLoadPatrimonyById } from '@/data/usecases'
 import { HttpStatusCode } from '@/data/protocols'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { HttpClientSpy } from '@/tests/data/mocks'
+import { mockPatrimonyModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
-import { mockPatrimonyModel } from '../../domain/mocks'
 
 type SutTypes = {
   sut: RemoteLoadPatrimonyById
