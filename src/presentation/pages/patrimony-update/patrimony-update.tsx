@@ -14,7 +14,7 @@ import { useErrorHandler } from '@/presentation/hooks'
 import { UpdatePatrimony, LoadCategories, LoadOwners, LoadPatrimonyById } from '@/domain/usecases'
 
 import React, { FormEvent, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 type Props = {
   validation: Validation
@@ -36,13 +36,13 @@ const PatrimonyUpdate: React.FC<Props> = ({
   loadOwners
 }: Props) => {
   const { id } = useParams<Params>()
+  const history = useHistory()
   const handleError = useErrorHandler((error: Error) => {
-    setState(old => ({ ...old, mainError: error.message, successMessage: '', isLoading: false }))
+    setState(old => ({ ...old, mainError: error.message, isLoading: false }))
   })
   const [state, setState] = useState({
     isLoading: false,
     isFormInvalid: true,
-    successMessage: '',
     mainError: '',
     number: '',
     numberError: '',
@@ -126,12 +126,16 @@ const PatrimonyUpdate: React.FC<Props> = ({
       categoryId: Number(category),
       ownerId: Number(owner),
       description
-    }).then((patrimony) => setState(old => ({
-      ...old,
-      successMessage: 'Patrimônio atualizado com sucesso',
-      isLoading: false,
-      mainError: ''
-    }))).catch((error) => handleError(error))
+    })
+      .then((patrimony) => {
+        setState(old => ({
+          ...old,
+          isLoading: false,
+          mainError: ''
+        }))
+        history.replace('/')
+      })
+      .catch((error) => handleError(error))
   }
 
   return (
