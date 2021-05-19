@@ -1,4 +1,4 @@
-import { AddSector } from '../usecases'
+import { AddSector } from '@/domain/usecases'
 
 import faker from 'faker'
 

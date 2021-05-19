@@ -77,7 +77,7 @@ describe('RemoteAddSector', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  test('Should return an patrimony if HttpClient returns 200', async () => {
+  test('Should return an sector if HttpClient returns 200', async () => {
     const { sut, httpClientSpy } = makeSut()
     const body = mockSectorModel()
     httpClientSpy.response = {
