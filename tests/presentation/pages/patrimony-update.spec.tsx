@@ -163,6 +163,13 @@ describe('PatrimonyUpdate Component', () => {
     expect(screen.getByTestId('submit')).toBeEnabled()
   })
 
+  test('Should go to / on submit success', async () => {
+    const { history } = makeSut()
+    await simulateValidSubmit()
+    expect(history.location.pathname).toBe('/')
+    expect(history.length).toBe(1)
+  })
+
   test('Should call UpdatePatrimony with correct values', async () => {
     const { updatePatrimonySpy } = makeSut()
     const number = faker.datatype.number().toString()
@@ -200,19 +207,19 @@ describe('PatrimonyUpdate Component', () => {
     expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
   })
 
-  test('Should present success message if update success', async () => {
-    makeSut()
-    await simulateValidSubmit()
-    expect(screen.getByTestId('success-message')).toHaveTextContent('Patrimônio atualizado com sucesso')
-  })
+  // test('Should present success message if update success', async () => {
+  //   makeSut()
+  //   await simulateValidSubmit()
+  //   expect(screen.getByTestId('success-message')).toHaveTextContent('Patrimônio atualizado com sucesso')
+  // })
 
-  test('Should close alert success on click button close', async () => {
-    makeSut()
-    await simulateValidSubmit()
-    const alertButtonClose = screen.getByTestId('success-message').children[2].children[0]
-    fireEvent.click(alertButtonClose)
-    expect(screen.getByTestId('status-wrap').children).toHaveLength(0)
-  })
+  // test('Should close alert success on click button close', async () => {
+  //   makeSut()
+  //   await simulateValidSubmit()
+  //   const alertButtonClose = screen.getByTestId('success-message').children[2].children[0]
+  //   fireEvent.click(alertButtonClose)
+  //   expect(screen.getByTestId('status-wrap').children).toHaveLength(0)
+  // })
 
   test('Should close alert error on click button close', async () => {
     const { updatePatrimonySpy } = makeSut()
