@@ -59,7 +59,7 @@ const PatrimonyList: React.FC<Props> = ({
     totalPage: 1,
     skip: 0,
     take: 9,
-    oldPage: 0,
+    oldPage: 1,
     currentPage: 1,
     patrimonies: [] as ItemProps[]
   })
@@ -114,8 +114,8 @@ const PatrimonyList: React.FC<Props> = ({
       categoryInput: '',
       number: '',
       currentPage: 1,
-      skip: 0,
-      oldSkip: 0
+      oldPage: 1,
+      skip: 0
     }))
   }
 
@@ -143,19 +143,23 @@ const PatrimonyList: React.FC<Props> = ({
     }))
   }
 
-  const getPatrimoniesByCategoryId = async (skip: number): Promise<LoadPatrimoniesByCategoryId.Model> => {
-    return loadPatrimoniesByCategoryId.loadByCategoryId({
+  const getPatrimoniesByCategoryId = async (skip: number): Promise<void> => {
+    loadPatrimoniesByCategoryId.loadByCategoryId({
       id: Number(state.category),
       skip: skip,
       take: state.take
     })
+      .then((data) => handlePatrimonies(data))
+      .catch((error) => handleError(error))
   }
-  const getPatrimoniesByOwnerId = async (skip: number): Promise<LoadPatrimoniesByCategoryId.Model> => {
-    return loadPatrimoniesByOwnerId.loadByOwnerId({
+  const getPatrimoniesByOwnerId = async (skip: number): Promise<void> => {
+    loadPatrimoniesByOwnerId.loadByOwnerId({
       id: Number(state.owner),
       skip: skip,
       take: state.take
     })
+      .then((data) => handlePatrimonies(data))
+      .catch((error) => handleError(error))
   }
 
   const setOldPage = (): void => setState(old => ({ ...old, oldPage: state.currentPage }))
@@ -163,6 +167,12 @@ const PatrimonyList: React.FC<Props> = ({
   const setResetPage = (): void => setState(old => ({ ...old, currentPage: 1, skip: 0 }))
 
   const isChangeCurrentPage = (): boolean => state.currentPage !== state.oldPage
+
+  const fieldsIsEmpty = (): boolean => {
+    if (!state.category && !state.owner && !state.number) {
+      return true
+    }
+  }
 
   useEffect(() => {
     setLoading()
@@ -201,10 +211,12 @@ const PatrimonyList: React.FC<Props> = ({
   useEffect(() => {
     setLoading()
     setOldPage()
-    loadPatrimonies.load({ skip: state.skip, take: state.take })
-      .then((data) => handlePatrimonies(data))
-      .catch((error) => handleError(error))
-  }, [state.skip, state.reload])
+    if (fieldsIsEmpty()) {
+      loadPatrimonies.load({ skip: state.skip, take: state.take })
+        .then((data) => handlePatrimonies(data))
+        .catch((error) => handleError(error))
+    }
+  }, [state.currentPage, state.reload])
 
   useEffect(() => {
     setLoading()
@@ -215,13 +227,9 @@ const PatrimonyList: React.FC<Props> = ({
       if (isChangeCurrentPage()) {
         setOldPage()
         getPatrimoniesByCategoryId(state.skip)
-          .then((data) => handlePatrimonies(data))
-          .catch((error) => handleError(error))
       } else {
-        setResetPage()
         getPatrimoniesByCategoryId(0)
-          .then((data) => handlePatrimonies(data))
-          .catch((error) => handleError(error))
+        setResetPage()
       }
     }
   }, [state.category, state.currentPage])
@@ -232,13 +240,9 @@ const PatrimonyList: React.FC<Props> = ({
       if (isChangeCurrentPage()) {
         setOldPage()
         getPatrimoniesByOwnerId(state.skip)
-          .then((data) => handlePatrimonies(data))
-          .catch((error) => handleError(error))
       } else {
         setResetPage()
         getPatrimoniesByOwnerId(0)
-          .then((data) => handlePatrimonies(data))
-          .catch((error) => handleError(error))
       }
     }
   }, [state.owner, state.currentPage])
@@ -253,7 +257,7 @@ const PatrimonyList: React.FC<Props> = ({
   }, [state.number])
 
   useEffect(() => {
-    if (!state.number && !state.category && !state.owner) setReload()
+    if (fieldsIsEmpty()) setReload()
   }, [state.category, state.number, state.owner])
 
   const handleDelete = (id: number): void => {
@@ -261,6 +265,7 @@ const PatrimonyList: React.FC<Props> = ({
       .then(() => {
         setReload()
       })
+      .catch(error => handleError(error))
   }
 
   return (
