@@ -150,6 +150,13 @@ const PatrimonyList: React.FC<Props> = ({
       take: state.take
     })
   }
+  const getPatrimoniesByOwnerId = async (skip: number): Promise<LoadPatrimoniesByCategoryId.Model> => {
+    return loadPatrimoniesByOwnerId.loadByOwnerId({
+      id: Number(state.owner),
+      skip: skip,
+      take: state.take
+    })
+  }
 
   const setOldPage = (): void => setState(old => ({ ...old, oldPage: state.currentPage }))
 
@@ -222,15 +229,19 @@ const PatrimonyList: React.FC<Props> = ({
   useEffect(() => {
     setLoading()
     if (state.owner) {
-      loadPatrimoniesByOwnerId.loadByOwnerId({
-        id: Number(state.owner),
-        skip: state.skip,
-        take: state.take
-      })
-        .then((data) => handlePatrimonies(data))
-        .catch((error) => handleError(error))
+      if (isChangeCurrentPage()) {
+        setOldPage()
+        getPatrimoniesByOwnerId(state.skip)
+          .then((data) => handlePatrimonies(data))
+          .catch((error) => handleError(error))
+      } else {
+        setResetPage()
+        getPatrimoniesByOwnerId(0)
+          .then((data) => handlePatrimonies(data))
+          .catch((error) => handleError(error))
+      }
     }
-  }, [state.owner, state.skip])
+  }, [state.owner, state.currentPage])
 
   useEffect(() => {
     setLoading()
