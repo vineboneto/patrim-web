@@ -8,10 +8,10 @@ export class RemoteLoadOwners implements LoadOwners {
     private readonly url: string
   ) {}
 
-  async load (): Promise<LoadOwners.Model> {
+  async load (params: LoadOwners.Params): Promise<LoadOwners.Model> {
     const httpResponse = await this.httpClient.request({
       method: 'get',
-      url: this.url
+      url: `${this.url}?take=${params.take}&skip=${params.skip}`
     })
     switch (httpResponse.statusCode) {
       case HttpStatusCode.noContent:

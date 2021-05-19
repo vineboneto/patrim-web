@@ -71,7 +71,7 @@ const PatrimonyUpdate: React.FC<Props> = ({
   }, [])
 
   useEffect(() => {
-    loadOwners.load()
+    loadOwners.load({})
       .then(data => {
         if (data) {
           setState(old => ({

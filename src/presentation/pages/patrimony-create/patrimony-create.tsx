@@ -58,7 +58,7 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCatego
   }, [])
 
   useEffect(() => {
-    loadOwners.load()
+    loadOwners.load({})
       .then(data => {
         if (data) {
           setState(old => ({

@@ -1,10 +1,14 @@
 import { OwnerModel } from '@/domain/models'
 
 export interface LoadOwners {
-  load (): Promise<LoadOwners.Model>
+  load (params: LoadOwners.Params): Promise<LoadOwners.Model>
 }
 
 export namespace LoadOwners {
+  export type Params = {
+    skip?: number
+    take?: number
+  }
   export type Model = {
     model: OwnerModel[]
     count: number

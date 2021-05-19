@@ -176,7 +176,7 @@ const PatrimonyList: React.FC<Props> = ({
 
   useEffect(() => {
     setLoading()
-    loadOwners.load()
+    loadOwners.load({})
       .then(data => {
         if (data) {
           setState(old => ({
