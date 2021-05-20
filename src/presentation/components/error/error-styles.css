@@ -1,17 +1,17 @@
-.patrimony-list-wrap .error {
+.error {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.patrimony-list-wrap .error > span {
+.error > span {
   color: var(--color-danger);
   font-size: 25px;
   font-family: 'Poppins';
   text-align: center;
 }
 
-.patrimony-list-wrap .error > :last-child {
+.error > :last-child {
   max-width: 250px;
 }

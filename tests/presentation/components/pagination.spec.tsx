@@ -1,5 +1,4 @@
-import { LoadContext } from '@/presentation/components'
-import { Pagination } from '@/presentation/pages/patrimony-list/components'
+import { LoadContext, Pagination } from '@/presentation/components'
 
 import React from 'react'
 import { createMemoryHistory } from 'history'

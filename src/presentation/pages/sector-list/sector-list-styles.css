@@ -1,15 +1,17 @@
-.patrimony-list-wrap {
+.sector-list-wrap {
   min-height: 100vh;
   max-width: 100vw;
 }
 
-.patrimony-list-wrap .container {
+.sector-list-wrap .container {
   width: auto !important;
 }
 
-.patrimony-list-wrap .patrimony-list-content {
+
+.sector-list-wrap .sector-list-content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: calc(100vh - 160px);
 }
+

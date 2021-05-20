@@ -1,13 +1,18 @@
 import './patrimony-list-styles.css'
-import { Header, FormContext, ComboOptions, LoadContext } from '@/presentation/components'
+import {
+  Header,
+  FormContext,
+  ComboOptions,
+  LoadContext,
+  Pagination,
+  Loading,
+  ButtonNew,
+  Error
+} from '@/presentation/components'
 import {
   Item,
   Form,
-  ButtonNew,
-  ItemProps,
-  Error,
-  Loading,
-  Pagination
+  ItemProps
 } from '@/presentation/pages/patrimony-list/components'
 import { useErrorHandler } from '@/presentation/hooks'
 import {
@@ -277,7 +282,7 @@ const PatrimonyList: React.FC<Props> = ({
             <FormContext.Provider value={{ state, setState }}>
               <Form />
             </FormContext.Provider>
-            <ButtonNew />
+            <ButtonNew to="/patrimonies/new" />
             {state.isLoading && <Loading />}
             {state.mainError && <Error />}
             {state.patrimonies.map((patrimony) => (
