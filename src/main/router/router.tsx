@@ -8,7 +8,8 @@ import {
   makeSectorCreate,
   makeSectorUpdate,
   makeCategoryList,
-  makeCategoryCreate
+  makeCategoryCreate,
+  makeCategoryUpdate
 } from '@/main/factories/pages'
 import { getCurrentAccountAdapter, setCurrentAccountAdapter } from '@/main/adapters'
 import { ApiContext, PrivateRoute } from '@/presentation/components'
@@ -34,6 +35,7 @@ const Router: React.FC = () => {
           <PrivateRoute path="/sectors/update/:id" exact component={makeSectorUpdate} />
           <PrivateRoute path="/categories" exact component={makeCategoryList} />
           <PrivateRoute path="/categories/new" exact component={makeCategoryCreate} />
+          <PrivateRoute path="/categories/update/:id" exact component={makeCategoryUpdate} />
         </Switch>
       </BrowserRouter>
     </ApiContext.Provider>

@@ -1,4 +1,4 @@
-import { CategoryCreate } from '@/presentation/pages'
+import { CategoryUpdate } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
 import { AccountModel } from '@/domain/models'
 import {
@@ -6,7 +6,7 @@ import {
   testStatusForField,
   ValidationStub
 } from '@/tests/presentation/mocks'
-import { AddCategorySpy, mockAccountModel } from '@/tests/domain/mocks'
+import { UpdateCategorySpy, mockAccountModel } from '@/tests/domain/mocks'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -16,29 +16,29 @@ import faker from 'faker'
 
 type Params = {
   validationError?: string
-  addCategorySpy?: AddCategorySpy
+  updateCategorySpy?: UpdateCategorySpy
 }
 
 type SutTypes = {
   validationStub: ValidationStub
-  addCategorySpy: AddCategorySpy
+  updateCategorySpy: UpdateCategorySpy
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
 }
 
 const makeSut = ({
-  addCategorySpy = new AddCategorySpy(),
+  updateCategorySpy = new UpdateCategorySpy(),
   validationError = undefined
 }: Params = {}): SutTypes => {
-  const history = createMemoryHistory({ initialEntries: ['/categories/new'] })
+  const history = createMemoryHistory({ initialEntries: ['/categories/update/1'] })
   const setCurrentAccountMock = jest.fn()
   const validationStub = new ValidationStub()
   validationStub.errorMessage = validationError
   render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
-        <CategoryCreate
-          addCategory={addCategorySpy}
+        <CategoryUpdate
+          updateCategory={updateCategorySpy}
           validation={validationStub}
         />
       </Router>
@@ -46,7 +46,7 @@ const makeSut = ({
   )
   return {
     validationStub,
-    addCategorySpy,
+    updateCategorySpy,
     setCurrentAccountMock,
     history
   }
@@ -60,7 +60,7 @@ const simulateValidSubmit = async (name = faker.name.findName()): Promise<void> 
   await waitFor(() => screen.getByTestId('form'))
 }
 
-describe('CategoryCreate Component', () => {
+describe('CategoryUpdate Component', () => {
   test('Should start with initial state', () => {
     const validationError = faker.random.words()
     makeSut({ validationError })
@@ -88,53 +88,40 @@ describe('CategoryCreate Component', () => {
     expect(screen.getByTestId('submit')).toBeEnabled()
   })
 
-  test('Should call AddCategory with correct values', async () => {
-    const { addCategorySpy } = makeSut()
+  test('Should call UpdateCategory with correct values', async () => {
+    const { updateCategorySpy } = makeSut()
     const name = faker.name.findName()
     simulateValidSubmit(name)
       .then(() => {
-        expect(addCategorySpy.params).toEqual({
+        expect(updateCategorySpy.params).toEqual({
+          id: 1,
           name
         })
       })
       .catch(error => console.log(error))
   })
 
-  test('Should not call AddCategory if form is invalid', async () => {
+  test('Should not call UpdateCategory if form is invalid', async () => {
     const validationError = faker.random.words()
-    const { addCategorySpy } = makeSut({ validationError })
+    const { updateCategorySpy } = makeSut({ validationError })
     await simulateValidSubmit()
-    expect(addCategorySpy.callsCount).toBe(0)
+    expect(updateCategorySpy.callsCount).toBe(0)
   })
 
-  test('Should present error if add fails', async () => {
-    const { addCategorySpy } = makeSut()
+  test('Should present error if update fails', async () => {
+    const { updateCategorySpy } = makeSut()
     const error = new Error()
     error.message = 'something error'
-    jest.spyOn(addCategorySpy, 'add').mockRejectedValueOnce(error)
+    jest.spyOn(updateCategorySpy, 'update').mockRejectedValueOnce(error)
     await simulateValidSubmit()
     expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
   })
 
-  test('Should present success message if add success', async () => {
-    makeSut()
-    await simulateValidSubmit()
-    expect(screen.getByTestId('success-message')).toHaveTextContent('Categoria adicionado com sucesso')
-  })
-
-  test('Should close alert success on click button close', async () => {
-    makeSut()
-    await simulateValidSubmit()
-    const alertButtonClose = screen.getByTestId('success-message').children[2].children[0]
-    fireEvent.click(alertButtonClose)
-    expect(screen.getByTestId('status-wrap').children).toHaveLength(0)
-  })
-
   test('Should close alert error on click button close', async () => {
-    const { addCategorySpy } = makeSut()
+    const { updateCategorySpy } = makeSut()
     const error = new Error()
     error.message = 'something error'
-    jest.spyOn(addCategorySpy, 'add').mockRejectedValueOnce(error)
+    jest.spyOn(updateCategorySpy, 'update').mockRejectedValueOnce(error)
     await simulateValidSubmit()
     const alertButtonClose = screen.getByTestId('main-error').children[2].children[0]
     fireEvent.click(alertButtonClose)

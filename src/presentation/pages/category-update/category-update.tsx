@@ -1,4 +1,4 @@
-import './sector-update-styles.css'
+import './category-update-styles.css'
 import {
   Header,
   FormContext,
@@ -8,21 +8,21 @@ import {
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
-import { UpdateSector } from '@/domain/usecases'
+import { UpdateCategory } from '@/domain/usecases'
 
 import React, { FormEvent, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 
 type Props = {
   validation: Validation
-  updateSector: UpdateSector
+  updateCategory: UpdateCategory
 }
 
 type Params = {
   id: string
 }
 
-const SectorUpdate: React.FC<Props> = ({ updateSector, validation }: Props) => {
+const CategoryUpdate: React.FC<Props> = ({ updateCategory, validation }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({ ...old, mainError: error.message, isLoading: false }))
   })
@@ -54,26 +54,26 @@ const SectorUpdate: React.FC<Props> = ({ updateSector, validation }: Props) => {
     setState(old => ({ ...old, isLoading: true }))
     const { name } = state
 
-    updateSector.update({
+    updateCategory.update({
       id: Number(id),
       name
-    }).then((sector) => {
+    }).then((category) => {
       setState(old => ({
         ...old,
         isLoading: false,
         mainError: ''
       }))
-      history.replace('/sectors')
+      history.replace('/categories')
     }).catch((error) => handleError(error))
   }
 
   return (
-    <div className="sector-update-wrap">
-      <Header title="Novo Setor" />
+    <div className="category-update-wrap">
+      <Header title="Atualizar Categoria" />
       <FormContext.Provider value={{ state, setState }} >
         <div className="form-wrap" data-testid="form-wrap">
           <form data-testid="form" onSubmit={handleSubmit}>
-            <h2>Novo Setor</h2>
+            <h2>Atualizar Categoria</h2>
             <Input type="text" name="name" placeholder="Nome" />
             <SubmitButton text="Atualizar" />
             <FormStatus />
@@ -84,4 +84,4 @@ const SectorUpdate: React.FC<Props> = ({ updateSector, validation }: Props) => {
   )
 }
 
-export default SectorUpdate
+export default CategoryUpdate
