@@ -47,8 +47,10 @@ describe('SectorList Component', () => {
     expect(history.length).toBe(2)
   })
 
-  test('Should call LoadSectors', () => {
+  test('Should call LoadSectors', async () => {
     const { loadSectorsSpy } = makeSut()
+    await waitFor(() => screen.getByTestId('sectors'))
+    expect(screen.queryAllByRole('item').length).toBe(10)
     expect(loadSectorsSpy.callsCount).toBe(1)
   })
 
@@ -59,5 +61,13 @@ describe('SectorList Component', () => {
     await waitFor(() => screen.getByTestId('sectors'))
     expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
     expect(history.location.pathname).toBe('/login')
+  })
+
+  test('Should set not found if data is empty', async () => {
+    const loadSectorsSpy = new LoadSectorsSpy()
+    loadSectorsSpy.data = null
+    makeSut({ loadSectorsSpy })
+    await waitFor(() => screen.getByTestId('sectors'))
+    expect(screen.getByTestId('main-error')).toHaveTextContent('Dados não encontrados')
   })
 })
