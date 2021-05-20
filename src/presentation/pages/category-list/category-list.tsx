@@ -104,7 +104,7 @@ const CategoryList: React.FC<Props> = ({ loadCategories, deleteCategory }: Props
 
   return (
     <div className="category-list-wrap" data-testid="categories">
-      <Header title="Setores" />
+      <Header title="Categorias" />
       <div className="container category-list-content">
         <LoadContext.Provider value={{ state, setState }}>
           <div className="row gy-4">

@@ -1,0 +1,34 @@
+.sector-create-wrap {
+  min-height: 100vh;
+}
+
+.sector-create-wrap .form-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.sector-create-wrap .form-wrap form {
+  display: flex;
+  flex-direction: column;
+  
+  width: 500px;
+  padding: 20px;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 0px 1px 3px -1px var(--color-black);
+}
+
+.sector-create-wrap .form-wrap form h2 {
+  font-family: 'Poppins';
+  font-weight: 400;
+}
+
+.sector-create-wrap .form-wrap .status-wrap {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
