@@ -2,13 +2,7 @@ import { PatrimonyCreate } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
 import { AccountModel } from '@/domain/models'
 import { AccessDeniedError } from '@/domain/errors'
-import {
-  populateField,
-  populateFieldSelect,
-  testStatusForField,
-  testStatusForFieldSelect,
-  ValidationStub
-} from '@/tests/presentation/mocks'
+import { populateField, testStatusForField, ValidationStub } from '@/tests/presentation/mocks'
 import { AddPatrimonySpy, LoadCategoriesSpy, LoadOwnersSpy, mockAccountModel } from '@/tests/domain/mocks'
 
 import React from 'react'
@@ -72,8 +66,8 @@ const simulateValidSubmit = async (number = faker.datatype.number().toString(), 
   populateField('number', number)
   populateField('brand', brand)
   populateField('description', description)
-  populateFieldSelect('owner', owner)
-  populateFieldSelect('category', category)
+  populateField('owner', owner)
+  populateField('category', category)
   const form = screen.getByTestId('form')
   fireEvent.submit(form)
   await waitFor(() => screen.getByTestId('form'))
@@ -87,8 +81,8 @@ describe('PatrimonyCreate Component', () => {
     expect(screen.getByTestId('submit')).toBeDisabled()
     testStatusForField('number', validationError)
     testStatusForField('brand', validationError)
-    testStatusForFieldSelect('owner', validationError)
-    testStatusForFieldSelect('category', validationError)
+    testStatusForField('owner', validationError)
+    testStatusForField('category', validationError)
   })
 
   test('Should show number error if Validation fails', () => {
@@ -108,15 +102,15 @@ describe('PatrimonyCreate Component', () => {
   test('Should show owner error if Validation fails', () => {
     const validationError = faker.random.words()
     makeSut({ validationError })
-    populateFieldSelect('owner')
-    testStatusForFieldSelect('owner', validationError)
+    populateField('owner')
+    testStatusForField('owner', validationError)
   })
 
   test('Should show category error if Validation fails', () => {
     const validationError = faker.random.words()
     makeSut({ validationError })
-    populateFieldSelect('category')
-    testStatusForFieldSelect('category', validationError)
+    populateField('category')
+    testStatusForField('category', validationError)
   })
 
   test('Should show valid number state if Validation succeeds', () => {
@@ -133,22 +127,22 @@ describe('PatrimonyCreate Component', () => {
 
   test('Should show valid owner state if Validation succeeds', () => {
     makeSut()
-    populateFieldSelect('owner')
-    testStatusForFieldSelect('owner')
+    populateField('owner')
+    testStatusForField('owner')
   })
 
   test('Should show valid category state if Validation succeeds', () => {
     makeSut()
-    populateFieldSelect('category')
-    testStatusForFieldSelect('category')
+    populateField('category')
+    testStatusForField('category')
   })
 
   test('Should enable submit button if form is valid', () => {
     makeSut()
     populateField('number')
     populateField('brand')
-    populateFieldSelect('owner')
-    populateFieldSelect('category')
+    populateField('owner')
+    populateField('category')
     expect(screen.getByTestId('submit')).toBeEnabled()
   })
 

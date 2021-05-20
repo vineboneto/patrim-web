@@ -16,6 +16,7 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
 
 const Combobox: React.FC<Props> = (props: Props) => {
   const { state, setState } = useContext(FormContext)
+  const error = state[`${props.name}Error`]
   const handleChange = (e: any, option: any): void => {
     setState({ ...state, [props.name]: option?.value })
   }
@@ -40,8 +41,10 @@ const Combobox: React.FC<Props> = (props: Props) => {
       renderInput={(params) =>
         <TextField
           {...params}
+          error={error !== undefined}
           data-testid={props.name}
           label={props.placeholder}
+          title={error}
           variant="outlined"
         />}
     />
