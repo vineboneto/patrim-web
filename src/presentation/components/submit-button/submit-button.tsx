@@ -11,6 +11,7 @@ const SubmitButton: React.FC<Props> = ({ text }: Props) => {
   const { state } = useContext(FormContext)
   return (
     <Button
+      style={{ height: '56px', marginTop: '30px' }}
       type="submit"
       data-testid="submit"
       variant="contained"

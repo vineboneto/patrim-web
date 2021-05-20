@@ -4,7 +4,8 @@ import {
   makePatrimonyCreate,
   makePatrimonyUpdate,
   makePatrimonyList,
-  makeSectorList
+  makeSectorList,
+  makeSectorCreate
 } from '@/main/factories/pages'
 import { getCurrentAccountAdapter, setCurrentAccountAdapter } from '@/main/adapters'
 import { ApiContext, PrivateRoute } from '@/presentation/components'
@@ -26,6 +27,7 @@ const Router: React.FC = () => {
           <PrivateRoute path="/patrimonies/new" exact component={makePatrimonyCreate} />
           <PrivateRoute path="/patrimonies/update/:id" exact component={makePatrimonyUpdate} />
           <PrivateRoute path="/sectors" exact component={makeSectorList} />
+          <PrivateRoute path="/sectors/new" exact component={makeSectorCreate} />
         </Switch>
       </BrowserRouter>
     </ApiContext.Provider>
