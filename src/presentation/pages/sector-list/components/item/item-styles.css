@@ -1,0 +1,22 @@
+.sector-item {
+  background-color: var(--color-white);
+  box-shadow: 0px 1px 3px -1px var(--color-black);
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+
+}
+
+ .sector-item .item-body span {
+  font-family: 'Poppins';
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.sector-item footer {
+  display: flex;
+  align-items: center;
+}
