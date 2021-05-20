@@ -22,7 +22,7 @@ const SectorList: React.FC = () => {
       ...old,
       sectors: [
         { id: '1', name: 'UPA' },
-        { id: '2', name: 'UPA' },
+        { id: '2', name: 'Admin' },
         { id: '3', name: 'UPA' },
         { id: '4', name: 'UPA' },
         { id: '5', name: 'UPA' },
@@ -54,7 +54,7 @@ const SectorList: React.FC = () => {
             {state.mainError && <Error />}
             {state.sectors.map((sector) => (
               <Item
-                handleDelete={(id: number) => { } }
+                handleDelete={(id: number) => { console.log('Entrou') } }
                 sector={sector}
                 key={sector.id}
               />))}
