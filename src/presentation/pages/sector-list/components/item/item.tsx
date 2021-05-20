@@ -35,7 +35,10 @@ const Item: React.FC<Props> = ({ sector, handleDelete }: Props) => {
         <Dialog
           open={open}
           text={`Tem certeza que deseja excluir esse setor: ${sector.name} ?`}
-          handleAction={() => handleDelete(Number(sector.id))}
+          handleAction={() => {
+            handleDelete(Number(sector.id))
+            handleCloseDialog()
+          }}
           handleCloseDialog={handleCloseDialog}
         />
       </div>

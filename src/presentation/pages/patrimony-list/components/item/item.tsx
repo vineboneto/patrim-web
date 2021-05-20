@@ -41,8 +41,11 @@ const Item: React.FC<Props> = ({ patrimony, handleDelete }: Props) => {
         </footer>
         <Dialog
           open={open}
-          handleAction={() => handleDelete(Number(patrimony.id))}
           handleCloseDialog={handleCloseDialog}
+          handleAction={() => {
+            handleDelete(Number(patrimony.id))
+            handleCloseDialog()
+          }}
           text={`Tem certeza que deseja excluir esse patrimônio: ${patrimony.number} ?`}
         />
       </div>
