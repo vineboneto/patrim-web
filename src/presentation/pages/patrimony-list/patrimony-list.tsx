@@ -148,6 +148,18 @@ const PatrimonyList: React.FC<Props> = ({
     }))
   }
 
+  const setOldPage = (): void => setState(old => ({ ...old, oldPage: state.currentPage }))
+
+  const setResetPage = (): void => setState(old => ({ ...old, currentPage: 1, skip: 0 }))
+
+  const isChangeCurrentPage = (): boolean => state.currentPage !== state.oldPage
+
+  const fieldsIsEmpty = (): boolean => {
+    if (!state.category && !state.owner && !state.number) {
+      return true
+    }
+  }
+
   const getPatrimoniesByCategoryId = async (skip: number): Promise<void> => {
     loadPatrimoniesByCategoryId.loadByCategoryId({
       id: Number(state.category),
@@ -165,18 +177,6 @@ const PatrimonyList: React.FC<Props> = ({
     })
       .then((data) => handlePatrimonies(data))
       .catch((error) => handleError(error))
-  }
-
-  const setOldPage = (): void => setState(old => ({ ...old, oldPage: state.currentPage }))
-
-  const setResetPage = (): void => setState(old => ({ ...old, currentPage: 1, skip: 0 }))
-
-  const isChangeCurrentPage = (): boolean => state.currentPage !== state.oldPage
-
-  const fieldsIsEmpty = (): boolean => {
-    if (!state.category && !state.owner && !state.number) {
-      return true
-    }
   }
 
   useEffect(() => {
@@ -273,13 +273,15 @@ const PatrimonyList: React.FC<Props> = ({
       .catch(error => handleError(error))
   }
 
-  const handleReload = (): void => {
+  const handleReload = (e: MouseEvent): void => {
     setState(old => ({
       ...old,
       reload: !state.reload,
       isLoading: true,
       mainError: '',
-      category: ''
+      category: '',
+      owner: '',
+      number: ''
     }))
   }
 
@@ -294,7 +296,7 @@ const PatrimonyList: React.FC<Props> = ({
             </FormContext.Provider>
             <ButtonNew to="/patrimonies/new" />
             {state.isLoading && <Loading />}
-            {state.mainError && <Error handleReload={handleReload} error={state.mainError} />}
+            {state.mainError && <Error error={state.mainError} handleReload={() => handleReload} />}
             {state.patrimonies.map((patrimony) => (
               <Item
                 handleDelete={handleDelete}

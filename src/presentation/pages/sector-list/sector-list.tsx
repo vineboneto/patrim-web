@@ -1,10 +1,20 @@
 import './sector-list-styles.css'
 import { Header, LoadContext, Pagination, Loading, ButtonNew, Error } from '@/presentation/components'
 import { ItemProps, Item } from '@/presentation/pages/sector-list/components'
+import { useErrorHandler } from '@/presentation/hooks'
+import { LoadSectors } from '@/domain/usecases'
 
 import React, { useState, useEffect } from 'react'
+import { SectorModel } from '@/domain/models'
 
-const SectorList: React.FC = () => {
+type Props = {
+  loadSectors: LoadSectors
+}
+
+const SectorList: React.FC<Props> = ({ loadSectors }: Props) => {
+  const handleError = useErrorHandler((error: Error) => {
+    setState(old => ({ ...old, mainError: error.message, isLoading: false }))
+  })
   const [state, setState] = useState({
     isLoading: false,
     openDialog: false,
@@ -17,30 +27,59 @@ const SectorList: React.FC = () => {
     sectors: [] as ItemProps[]
   })
 
-  useEffect(() => {
+  const setSectors = (sectors: SectorModel[]): void => {
     setState(old => ({
       ...old,
-      sectors: [
-        { id: '1', name: 'UPA' },
-        { id: '2', name: 'Admin' },
-        { id: '3', name: 'UPA' },
-        { id: '4', name: 'UPA' },
-        { id: '5', name: 'UPA' },
-        { id: '6', name: 'UPA' },
-        { id: '7', name: 'UPA' },
-        { id: '8', name: 'UPA' },
-        { id: '9', name: 'UPA' },
-        { id: '10', name: 'UPA' },
-        { id: '11', name: 'UPA' },
-        { id: '12', name: 'UPA' },
-        { id: '13', name: 'UPA' },
-        { id: '14', name: 'UPA' },
-        { id: '15', name: 'UPA' },
-        { id: '16', name: 'UPA' },
-        { id: '17', name: 'UPA' },
-        { id: '18', name: 'UPA' }
-      ]
+      isLoading: false,
+      mainError: '',
+      sectors: sectors.map((sector) => ({
+        id: sector.id.toString(),
+        name: sector.name
+      }))
     }))
+  }
+
+  const handleSectors = (data: any): void => {
+    if (data) {
+      setSectors(data.model)
+      setPagination(data.count)
+    } else {
+      setNotFound()
+    }
+  }
+
+  const setPagination = (count: number): void => {
+    setState(old => ({
+      ...old,
+      isLoading: false,
+      totalPage: Math.ceil(count / state.take)
+    }))
+  }
+
+  const setNotFound = (): void => {
+    setState(old => ({
+      ...old,
+      isLoading: false,
+      sectors: [],
+      mainError: 'Dados não encontrados'
+    }))
+  }
+
+  const setLoading = (): void => {
+    setState((old) => ({
+      ...old,
+      isLoading: true
+    }))
+  }
+
+  useEffect(() => {
+    setLoading()
+    loadSectors.load({
+      skip: state.skip,
+      take: state.take
+    })
+      .then(data => handleSectors(data))
+      .catch(error => handleError(error))
   }, [])
 
   return (
