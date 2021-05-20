@@ -2,13 +2,7 @@ import { PatrimonyUpdate } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
 import { AccountModel } from '@/domain/models'
 import { AccessDeniedError } from '@/domain/errors'
-import {
-  populateField,
-  populateFieldSelect,
-  testStatusForField,
-  testStatusForFieldSelect,
-  ValidationStub
-} from '@/tests/presentation/mocks'
+import { getValueInput, populateField, testStatusForField, ValidationStub } from '@/tests/presentation/mocks'
 import {
   UpdatePatrimonySpy,
   LoadCategoriesSpy,
@@ -83,8 +77,8 @@ const simulateValidSubmit = async (number = faker.datatype.number().toString(), 
   populateField('number', number)
   populateField('brand', brand)
   populateField('description', description)
-  populateFieldSelect('owner', owner)
-  populateFieldSelect('category', category)
+  populateField('owner', owner)
+  populateField('category', category)
   const form = screen.getByTestId('form')
   fireEvent.submit(form)
   await waitFor(() => screen.getByTestId('form'))
@@ -98,8 +92,8 @@ describe('PatrimonyUpdate Component', () => {
     expect(screen.getByTestId('submit')).toBeDisabled()
     testStatusForField('number', validationError)
     testStatusForField('brand', validationError)
-    testStatusForFieldSelect('owner', validationError)
-    testStatusForFieldSelect('category', validationError)
+    testStatusForField('owner', validationError)
+    testStatusForField('category', validationError)
   })
 
   test('Should show number error if Validation fails', () => {
@@ -119,15 +113,15 @@ describe('PatrimonyUpdate Component', () => {
   test('Should show owner error if Validation fails', () => {
     const validationError = faker.random.words()
     makeSut({ validationError })
-    populateFieldSelect('owner')
-    testStatusForFieldSelect('owner', validationError)
+    populateField('owner')
+    testStatusForField('owner', validationError)
   })
 
   test('Should show category error if Validation fails', () => {
     const validationError = faker.random.words()
     makeSut({ validationError })
-    populateFieldSelect('category')
-    testStatusForFieldSelect('category', validationError)
+    populateField('category')
+    testStatusForField('category', validationError)
   })
 
   test('Should show valid number state if Validation succeeds', () => {
@@ -144,22 +138,22 @@ describe('PatrimonyUpdate Component', () => {
 
   test('Should show valid owner state if Validation succeeds', () => {
     makeSut()
-    populateFieldSelect('owner')
-    testStatusForFieldSelect('owner')
+    populateField('owner')
+    testStatusForField('owner')
   })
 
   test('Should show valid category state if Validation succeeds', () => {
     makeSut()
-    populateFieldSelect('category')
-    testStatusForFieldSelect('category')
+    populateField('category')
+    testStatusForField('category')
   })
 
   test('Should enable submit button if form is valid', () => {
     makeSut()
     populateField('number')
     populateField('brand')
-    populateFieldSelect('owner')
-    populateFieldSelect('category')
+    populateField('owner')
+    populateField('category')
     expect(screen.getByTestId('submit')).toBeEnabled()
   })
 
@@ -206,20 +200,6 @@ describe('PatrimonyUpdate Component', () => {
     await simulateValidSubmit()
     expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
   })
-
-  // test('Should present success message if update success', async () => {
-  //   makeSut()
-  //   await simulateValidSubmit()
-  //   expect(screen.getByTestId('success-message')).toHaveTextContent('Patrimônio atualizado com sucesso')
-  // })
-
-  // test('Should close alert success on click button close', async () => {
-  //   makeSut()
-  //   await simulateValidSubmit()
-  //   const alertButtonClose = screen.getByTestId('success-message').children[2].children[0]
-  //   fireEvent.click(alertButtonClose)
-  //   expect(screen.getByTestId('status-wrap').children).toHaveLength(0)
-  // })
 
   test('Should close alert error on click button close', async () => {
     const { updatePatrimonySpy } = makeSut()
@@ -272,14 +252,10 @@ describe('PatrimonyUpdate Component', () => {
     const { loadPatrimonyByIdSpy } = makeSut()
     await waitFor(() => screen.getByTestId('form'))
     expect(loadPatrimonyByIdSpy.callsCount).toBe(1)
-    const brandInput = screen.getByTestId('brand').children[1].children[0]
-    expect(brandInput.getAttribute('value')).toBe(loadPatrimonyByIdSpy.model.brand)
-    const numberInput = screen.getByTestId('number').children[1].children[0]
-    expect(numberInput.getAttribute('value')).toBe(loadPatrimonyByIdSpy.model.number)
-    const categorySelect = screen.getByTestId('category').children[1]
-    expect(categorySelect.getAttribute('value')).toBe(loadPatrimonyByIdSpy.model.category.id.toString())
-    const ownerSelect = screen.getByTestId('owner').children[1]
-    expect(ownerSelect.getAttribute('value')).toBe(loadPatrimonyByIdSpy.model.owner.id.toString())
+    expect(getValueInput('brand')).toBe(loadPatrimonyByIdSpy.model.brand)
+    expect(getValueInput('number')).toBe(loadPatrimonyByIdSpy.model.number)
+    expect(getValueInput('category')).toBe(loadPatrimonyByIdSpy.model.category.name)
+    expect(getValueInput('owner')).toBe(loadPatrimonyByIdSpy.model.owner.name)
     const descriptionTextarea = screen.getByTestId('description').children[1].children[0]
     expect(descriptionTextarea.innerHTML).toBe(loadPatrimonyByIdSpy.model.description)
   })

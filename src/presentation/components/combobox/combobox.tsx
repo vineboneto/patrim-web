@@ -24,7 +24,6 @@ const Combobox: React.FC<Props> = (props: Props) => {
   const handleInputChange = (e: any, value: any): void => {
     setState({ ...state, [`${props.name}Input`]: value })
   }
-
   return (
     <Autocomplete
       inputValue={state[`${props.name}Input`]}
@@ -41,6 +40,7 @@ const Combobox: React.FC<Props> = (props: Props) => {
       renderInput={(params) =>
         <TextField
           {...params}
+          value={state[props.name]}
           error={error !== undefined}
           data-testid={props.name}
           label={props.placeholder}

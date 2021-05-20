@@ -4,8 +4,8 @@ import {
   FormContext,
   Input,
   Textarea,
-  Select,
-  ItemProps,
+  Combobox,
+  ComboOptions,
   SubmitButton,
   FormStatus
 } from '@/presentation/components'
@@ -49,12 +49,14 @@ const PatrimonyUpdate: React.FC<Props> = ({
     brand: '',
     brandError: '',
     category: '',
+    categoryInput: '',
     categoryError: '',
     owner: '',
+    ownerInput: '',
     ownerError: '',
     description: '',
-    categories: [] as ItemProps[],
-    owners: [] as ItemProps[]
+    categories: [] as ComboOptions[],
+    owners: [] as ComboOptions[]
   })
 
   useEffect(() => {
@@ -92,6 +94,8 @@ const PatrimonyUpdate: React.FC<Props> = ({
             brand: patrimony.brand,
             number: patrimony.number,
             owner: patrimony.owner.id.toString(),
+            ownerInput: patrimony.owner.name,
+            categoryInput: patrimony.category.name,
             category: patrimony.category.id.toString(),
             description: patrimony.description
           }))
@@ -147,11 +151,11 @@ const PatrimonyUpdate: React.FC<Props> = ({
             <h2>Atualizar Patrimônio</h2>
             <div className="input-group">
               <Input type="text" name="number" placeholder="Número" />
-              <Select name="owner" placeholder="Proprietário" options={state.owners} />
+              <Combobox name="owner" placeholder="Proprietário" options={state.owners} />
             </div>
             <div className="input-group">
               <Input type="text" name="brand" placeholder="Marca" />
-              <Select name="category" placeholder="Categoria" options={state.categories} />
+              <Combobox name="category" placeholder="Categoria" options={state.categories} />
             </div>
             <Textarea name="description" placeholder="Observação" />
             <SubmitButton text="Atualizar" />

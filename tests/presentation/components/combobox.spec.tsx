@@ -1,4 +1,4 @@
-import { FormContext, Combobox, ItemProps } from '@/presentation/components'
+import { FormContext, Combobox, ComboOptions } from '@/presentation/components'
 import { getValueInput, populateField } from '@/tests/presentation/mocks'
 
 import React from 'react'
@@ -6,7 +6,7 @@ import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 import { fireEvent, render, screen } from '@testing-library/react'
 
-const options: ItemProps[] = [
+const options: ComboOptions[] = [
   { value: '1', label: 'value-1' },
   { value: '2', label: 'value-2' },
   { value: '3', label: 'value-3' }

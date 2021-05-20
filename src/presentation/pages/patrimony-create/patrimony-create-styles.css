@@ -47,7 +47,7 @@
     flex-direction: column;
   }
 
-  .patrimony-create-wrap .form-wrap .input-group .select-wrap {
+  .patrimony-create-wrap .form-wrap .input-group > :nth-child(2) {
     width: 100%;
   }
 

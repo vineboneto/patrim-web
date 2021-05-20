@@ -18,7 +18,7 @@ const Input: React.FC<Props> = (props: Props) => {
         type={props.type}
         style={{ width: '100%', margin: '10px 0', backgroundColor: 'var(--color-white)' }}
         name={props.name}
-        value={state[`${props.name}`]}
+        value={state[props.name]}
         onChange={handleChange}
         error={error !== undefined}
         title={error}
