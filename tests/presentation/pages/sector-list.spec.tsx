@@ -79,4 +79,11 @@ describe('SectorList Component', () => {
     expect(history.location.pathname).toBe(`/sectors/update/${loadSectorsSpy.data.model[0].id}`)
     expect(history.length).toBe(2)
   })
+
+  test('Should present correct number of pages', async () => {
+    makeSut()
+    await waitFor(() => screen.getByTestId('sectors'))
+    const numberOfPages = screen.getByTestId('pagination').children[0].querySelectorAll('li').length - 2
+    expect(numberOfPages).toBe(1)
+  })
 })
