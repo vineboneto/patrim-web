@@ -70,4 +70,13 @@ describe('SectorList Component', () => {
     await waitFor(() => screen.getByTestId('sectors'))
     expect(screen.getByTestId('main-error')).toHaveTextContent('Dados não encontrados')
   })
+
+  test('Should go to /sectors/update/:id on click edit sector', async () => {
+    const { history, loadSectorsSpy } = makeSut()
+    await waitFor(() => screen.getByTestId('sectors'))
+    const updatedLink = screen.queryAllByRole('link-update')[0]
+    fireEvent.click(updatedLink)
+    expect(history.location.pathname).toBe(`/sectors/update/${loadSectorsSpy.data.model[0].id}`)
+    expect(history.length).toBe(2)
+  })
 })
