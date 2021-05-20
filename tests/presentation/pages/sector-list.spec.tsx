@@ -5,8 +5,9 @@ import { LoadSectorsSpy, mockAccountModel } from '@/tests/domain/mocks'
 
 import { Router } from 'react-router-dom'
 import { createMemoryHistory, MemoryHistory } from 'history'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
+import { AccessDeniedError } from '@/domain/errors'
 
 type Params = {
   loadSectorsSpy?: LoadSectorsSpy
@@ -49,5 +50,14 @@ describe('SectorList Component', () => {
   test('Should call LoadSectors', () => {
     const { loadSectorsSpy } = makeSut()
     expect(loadSectorsSpy.callsCount).toBe(1)
+  })
+
+  test('Should logout on AccessDeniedError by LoadSectors', async () => {
+    const loadSectorsSpy = new LoadSectorsSpy()
+    jest.spyOn(loadSectorsSpy, 'load').mockRejectedValueOnce(new AccessDeniedError())
+    const { history, setCurrentAccountMock } = makeSut({ loadSectorsSpy })
+    await waitFor(() => screen.getByTestId('sectors'))
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
+    expect(history.location.pathname).toBe('/login')
   })
 })
