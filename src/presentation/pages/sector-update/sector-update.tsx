@@ -1,4 +1,4 @@
-import './sector-create-styles.css'
+import './sector-update-styles.css'
 import {
   Header,
   FormContext,
@@ -8,23 +8,29 @@ import {
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
-import { AddSector } from '@/domain/usecases'
+import { UpdateSector } from '@/domain/usecases'
 
 import React, { FormEvent, useEffect, useState } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
 
 type Props = {
   validation: Validation
-  addSector: AddSector
+  updateSector: UpdateSector
 }
 
-const SectorCreate: React.FC<Props> = ({ addSector, validation }: Props) => {
+type Params = {
+  id: string
+}
+
+const SectorUpdate: React.FC<Props> = ({ updateSector, validation }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
-    setState(old => ({ ...old, mainError: error.message, successMessage: '', isLoading: false }))
+    setState(old => ({ ...old, mainError: error.message, isLoading: false }))
   })
+  const history = useHistory()
+  const { id } = useParams<Params>()
   const [state, setState] = useState({
     isLoading: false,
     isFormInvalid: true,
-    successMessage: '',
     mainError: '',
     name: '',
     nameError: ''
@@ -48,14 +54,17 @@ const SectorCreate: React.FC<Props> = ({ addSector, validation }: Props) => {
     setState(old => ({ ...old, isLoading: true }))
     const { name } = state
 
-    addSector.add({
+    updateSector.update({
+      id: Number(id),
       name
-    }).then((sector) => setState(old => ({
-      ...old,
-      successMessage: 'Setor adicionado com sucesso',
-      isLoading: false,
-      mainError: ''
-    }))).catch((error) => handleError(error))
+    }).then((sector) => {
+      setState(old => ({
+        ...old,
+        isLoading: false,
+        mainError: ''
+      }))
+      history.replace('/sectors')
+    }).catch((error) => handleError(error))
   }
 
   return (
@@ -75,4 +84,4 @@ const SectorCreate: React.FC<Props> = ({ addSector, validation }: Props) => {
   )
 }
 
-export default SectorCreate
+export default SectorUpdate
