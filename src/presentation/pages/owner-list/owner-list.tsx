@@ -23,7 +23,7 @@ const OwnerList: React.FC<Props> = ({ loadOwners, deleteOwner }: Props) => {
     reload: false,
     totalPage: 1,
     skip: 0,
-    take: 18,
+    take: 12,
     currentPage: 1,
     owners: [] as ItemProps[]
   })
