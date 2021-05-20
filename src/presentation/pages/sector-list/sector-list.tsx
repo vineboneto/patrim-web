@@ -80,7 +80,7 @@ const SectorList: React.FC<Props> = ({ loadSectors }: Props) => {
     })
       .then(data => handleSectors(data))
       .catch(error => handleError(error))
-  }, [])
+  }, [state.currentPage])
 
   return (
     <div className="sector-list-wrap" data-testid="sectors">

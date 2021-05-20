@@ -86,4 +86,12 @@ describe('SectorList Component', () => {
     const numberOfPages = screen.getByTestId('pagination').children[0].querySelectorAll('li').length - 2
     expect(numberOfPages).toBe(1)
   })
+
+  test('Should open dialog on click delete button', async () => {
+    makeSut()
+    await waitFor(() => screen.getByTestId('sectors'))
+    fireEvent.click(screen.getAllByRole('open-dialog')[0])
+    await waitFor(() => screen.getByTestId('sectors'))
+    expect(screen.getAllByRole('dialog')[0]).toBeVisible()
+  })
 })

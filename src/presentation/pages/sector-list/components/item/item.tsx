@@ -22,7 +22,7 @@ const Item: React.FC<Props> = ({ sector, handleDelete }: Props) => {
 
   return (
     <div className="col-12 col-md-6 col-lg-4" role="item">
-      <div className="sector-item">
+      <div className="sector-item" data-testid="sector-item">
         <div className="item-body">
           <span>{sector.name}</span>
         </div>

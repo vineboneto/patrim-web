@@ -15,30 +15,30 @@ type Props = {
 const Dialog: React.FC<Props> = (props: Props) => {
   return (
     <DialogM
-          open={props.open}
-          onClose={props.handleCloseDialog}
-          role="dialog"
-        >
-          <DialogTitle>{props.text}</DialogTitle>
-          <DialogActions className="dialog-actions" >
-            <Button
-              style={{ width: 'auto', height: 'auto' }}
-              onClick={props.handleCloseDialog}
-              data-testid="close-dialog"
-              color="primary"
-              text="Fechar"
-              variant="outlined"
-            />
-            <Button
-              style={{ width: 'auto', height: 'auto' }}
-              onClick={props.handleAction}
-              data-testid="delete-patrimony"
-              color="secondary"
-              text="Excluir"
-              variant="outlined"
-            />
-          </DialogActions>
-        </DialogM>
+      role="dialog"
+      open={props.open}
+      onClose={props.handleCloseDialog}
+    >
+      <DialogTitle>{props.text}</DialogTitle>
+      <DialogActions className="dialog-actions" >
+        <Button
+          style={{ width: 'auto', height: 'auto' }}
+          onClick={props.handleCloseDialog}
+          role="close-button"
+          color="primary"
+          text="Fechar"
+          variant="outlined"
+        />
+        <Button
+          style={{ width: 'auto', height: 'auto' }}
+          onClick={props.handleAction}
+          data-testid="action-button"
+          color="secondary"
+          text="Excluir"
+          variant="outlined"
+        />
+      </DialogActions>
+    </DialogM>
   )
 }
 

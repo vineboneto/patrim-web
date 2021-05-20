@@ -292,7 +292,7 @@ describe('PatrimonyList Component', () => {
     await waitFor(() => screen.getByTestId('patrimonies'))
     fireEvent.click(screen.getAllByRole('open-dialog')[0])
     await waitFor(() => screen.getByTestId('patrimonies'))
-    fireEvent.click(screen.getByTestId('delete-patrimony'))
+    fireEvent.click(screen.getByTestId('action-button'))
     expect(deletePatrimonySpy.callsCount).toBe(1)
   })
 
