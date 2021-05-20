@@ -1,0 +1,31 @@
+.owner-item {
+  background-color: var(--color-white);
+  box-shadow: 0px 1px 3px -1px var(--color-black);
+  
+  padding: 10px 30px;
+
+}
+
+.owner-item .item-body h5 {
+  grid-area: title;
+  font-family: 'Poppins';
+  font-size: 24px;
+  color: var(--color-primary);
+  border-bottom: 1px solid var(--color-background);
+  padding-bottom: 15px;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.owner-item footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+ .owner-item footer p {
+  font-family: 'Poppins';
+  font-size: 18px;
+  color: var(--color-black);
+}
+

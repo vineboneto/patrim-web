@@ -1,0 +1,17 @@
+.owner-list-wrap {
+  min-height: 100vh;
+  max-width: 100vw;
+}
+
+.owner-list-wrap .container {
+  width: auto !important;
+}
+
+
+.owner-list-wrap .owner-list-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 160px);
+}
+
