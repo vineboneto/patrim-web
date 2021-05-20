@@ -1,25 +1,29 @@
 import { SectorList } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
 import { AccountModel } from '@/domain/models'
-import { LoadSectorsSpy, mockAccountModel } from '@/tests/domain/mocks'
+import { LoadSectorsSpy, DeleteSectorSpy, mockAccountModel } from '@/tests/domain/mocks'
+import { AccessDeniedError } from '@/domain/errors'
 
 import { Router } from 'react-router-dom'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
-import { AccessDeniedError } from '@/domain/errors'
 
 type Params = {
   loadSectorsSpy?: LoadSectorsSpy
+  deleteSectorSpy?: DeleteSectorSpy
 }
 
 type SutTypes = {
   history: MemoryHistory
   setCurrentAccountMock: (account: AccountModel) => void
-  loadSectorsSpy: LoadSectorsSpy}
+  loadSectorsSpy: LoadSectorsSpy
+  deleteSectorSpy: DeleteSectorSpy
+}
 
 const makeSut = ({
-  loadSectorsSpy = new LoadSectorsSpy()
+  loadSectorsSpy = new LoadSectorsSpy(),
+  deleteSectorSpy = new DeleteSectorSpy()
 }: Params = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/sectors'] })
   const setCurrentAccountMock = jest.fn()
@@ -27,6 +31,7 @@ const makeSut = ({
     <ApiContext.Provider value ={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
         <SectorList
+          deleteSector={deleteSectorSpy}
           loadSectors={loadSectorsSpy}
         />
       </Router>
@@ -35,7 +40,8 @@ const makeSut = ({
   return {
     history,
     setCurrentAccountMock,
-    loadSectorsSpy
+    loadSectorsSpy,
+    deleteSectorSpy
   }
 }
 
@@ -93,5 +99,14 @@ describe('SectorList Component', () => {
     fireEvent.click(screen.getAllByRole('open-dialog')[0])
     await waitFor(() => screen.getByTestId('sectors'))
     expect(screen.getAllByRole('dialog')[0]).toBeVisible()
+  })
+
+  test('Should call DeleteSector onClick', async () => {
+    const { deleteSectorSpy } = makeSut()
+    await waitFor(() => screen.getByTestId('sectors'))
+    fireEvent.click(screen.getAllByRole('open-dialog')[0])
+    await waitFor(() => screen.getByTestId('sectors'))
+    fireEvent.click(screen.getByTestId('action-button'))
+    expect(deleteSectorSpy.callsCount).toBe(1)
   })
 })

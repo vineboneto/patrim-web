@@ -60,6 +60,7 @@ const PatrimonyList: React.FC<Props> = ({
     categories: [] as ComboOptions[],
     categoryInput: '',
     owner: '',
+    ownerInput: '',
     owners: [] as ComboOptions[],
     totalPage: 1,
     skip: 0,
@@ -118,6 +119,8 @@ const PatrimonyList: React.FC<Props> = ({
       mainError: '',
       categoryInput: '',
       number: '',
+      owner: '',
+
       currentPage: 1,
       oldPage: 1,
       skip: 0
@@ -272,19 +275,6 @@ const PatrimonyList: React.FC<Props> = ({
       })
       .catch(error => handleError(error))
   }
-
-  const handleReload = (e: MouseEvent): void => {
-    setState(old => ({
-      ...old,
-      reload: !state.reload,
-      isLoading: true,
-      mainError: '',
-      category: '',
-      owner: '',
-      number: ''
-    }))
-  }
-
   return (
     <div className="patrimony-list-wrap" data-testid="patrimonies">
       <Header title="Patrimônios" />
@@ -296,7 +286,7 @@ const PatrimonyList: React.FC<Props> = ({
             </FormContext.Provider>
             <ButtonNew to="/patrimonies/new" />
             {state.isLoading && <Loading />}
-            {state.mainError && <Error error={state.mainError} handleReload={() => handleReload} />}
+            {state.mainError && <Error error={state.mainError} handleReload={setReload} />}
             {state.patrimonies.map((patrimony) => (
               <Item
                 handleDelete={handleDelete}

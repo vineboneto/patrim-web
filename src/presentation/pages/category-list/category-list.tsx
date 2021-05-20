@@ -1,18 +1,18 @@
-import './sector-list-styles.css'
+import './category-list-styles.css'
 import { Header, LoadContext, Pagination, Loading, ButtonNew, Error } from '@/presentation/components'
-import { ItemProps, Item } from '@/presentation/pages/sector-list/components'
+import { ItemProps, Item } from '@/presentation/pages/category-list/components'
 import { useErrorHandler } from '@/presentation/hooks'
-import { DeleteSector, LoadSectors } from '@/domain/usecases'
+import { DeleteCategory, LoadCategories } from '@/domain/usecases'
 
 import React, { useState, useEffect } from 'react'
-import { SectorModel } from '@/domain/models'
+import { CategoryModel } from '@/domain/models'
 
 type Props = {
-  loadSectors: LoadSectors
-  deleteSector: DeleteSector
+  loadCategories: LoadCategories
+  deleteCategory: DeleteCategory
 }
 
-const SectorList: React.FC<Props> = ({ loadSectors, deleteSector }: Props) => {
+const CategoryList: React.FC<Props> = ({ loadCategories, deleteCategory }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({ ...old, mainError: error.message, isLoading: false }))
   })
@@ -25,24 +25,24 @@ const SectorList: React.FC<Props> = ({ loadSectors, deleteSector }: Props) => {
     skip: 0,
     take: 18,
     currentPage: 1,
-    sectors: [] as ItemProps[]
+    categories: [] as ItemProps[]
   })
 
-  const setSectors = (sectors: SectorModel[]): void => {
+  const setCategories = (categories: CategoryModel[]): void => {
     setState(old => ({
       ...old,
       isLoading: false,
       mainError: '',
-      sectors: sectors.map((sector) => ({
-        id: sector.id.toString(),
-        name: sector.name
+      categories: categories.map((category) => ({
+        id: category.id.toString(),
+        name: category.name
       }))
     }))
   }
 
-  const handleSectors = (data: any): void => {
+  const handleCategories = (data: any): void => {
     if (data) {
-      setSectors(data.model)
+      setCategories(data.model)
       setPagination(data.count)
     } else {
       setNotFound()
@@ -61,7 +61,7 @@ const SectorList: React.FC<Props> = ({ loadSectors, deleteSector }: Props) => {
     setState(old => ({
       ...old,
       isLoading: false,
-      sectors: [],
+      categories: [],
       mainError: 'Dados não encontrados'
     }))
   }
@@ -85,17 +85,17 @@ const SectorList: React.FC<Props> = ({ loadSectors, deleteSector }: Props) => {
 
   useEffect(() => {
     setLoading()
-    loadSectors.load({
+    loadCategories.load({
       skip: state.skip,
       take: state.take
     })
-      .then(data => handleSectors(data))
+      .then(data => handleCategories(data))
       .catch(error => handleError(error))
-  }, [state.currentPage, state.reload])
+  }, [state.currentPage])
 
   const handleDelete = (id: number): void => {
     console.log('Entrou')
-    deleteSector.delete({ id: id })
+    deleteCategory.delete({ id: id })
       .then(() => {
         setReload()
       })
@@ -103,19 +103,19 @@ const SectorList: React.FC<Props> = ({ loadSectors, deleteSector }: Props) => {
   }
 
   return (
-    <div className="sector-list-wrap" data-testid="sectors">
+    <div className="category-list-wrap" data-testid="categories">
       <Header title="Setores" />
-      <div className="container sector-list-content">
+      <div className="container category-list-content">
         <LoadContext.Provider value={{ state, setState }}>
           <div className="row gy-4">
-            <ButtonNew to="/sectors/new" />
+            <ButtonNew to="/categories/new" />
             {state.isLoading && <Loading />}
             {state.mainError && <Error error={state.mainError} handleReload={setReload} />}
-            {state.sectors.map((sector) => (
+            {state.categories.map((category) => (
               <Item
                 handleDelete={handleDelete}
-                sector={sector}
-                key={sector.id}
+                category={category}
+                key={category.id}
               />))}
           </div>
           <div className="row">
@@ -127,4 +127,4 @@ const SectorList: React.FC<Props> = ({ loadSectors, deleteSector }: Props) => {
   )
 }
 
-export default SectorList
+export default CategoryList
