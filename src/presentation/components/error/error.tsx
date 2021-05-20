@@ -1,25 +1,18 @@
 import './error-styles.css'
-import { Button, LoadContext } from '@/presentation/components'
+import { Button } from '@/presentation/components'
 
-import React, { MouseEvent, useContext } from 'react'
+import React from 'react'
 
-const Error: React.FC = () => {
-  const { state, setState } = useContext(LoadContext)
+type Props = {
+  handleReload: () => void
+  error: string
+}
 
-  const handleReload = (e: MouseEvent): void => {
-    setState(old => ({
-      ...old,
-      reload: !state.reload,
-      isLoading: true,
-      mainError: '',
-      category: ''
-    }))
-  }
-
+const Error: React.FC<Props> = ({ error, handleReload }: Props) => {
   return (
     <div className="col-12">
       <div className="error">
-        <span data-testid="main-error">{state.mainError}</span>
+        <span data-testid="main-error">{error}</span>
         <Button color="secondary" variant="outlined" text="Recarregar" onClick={handleReload} data-testid="reload" />
       </div>
     </div>

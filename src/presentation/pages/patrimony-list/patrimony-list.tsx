@@ -273,6 +273,16 @@ const PatrimonyList: React.FC<Props> = ({
       .catch(error => handleError(error))
   }
 
+  const handleReload = (): void => {
+    setState(old => ({
+      ...old,
+      reload: !state.reload,
+      isLoading: true,
+      mainError: '',
+      category: ''
+    }))
+  }
+
   return (
     <div className="patrimony-list-wrap" data-testid="patrimonies">
       <Header title="Patrimônios" />
@@ -284,7 +294,7 @@ const PatrimonyList: React.FC<Props> = ({
             </FormContext.Provider>
             <ButtonNew to="/patrimonies/new" />
             {state.isLoading && <Loading />}
-            {state.mainError && <Error />}
+            {state.mainError && <Error handleReload={handleReload} error={state.mainError} />}
             {state.patrimonies.map((patrimony) => (
               <Item
                 handleDelete={handleDelete}

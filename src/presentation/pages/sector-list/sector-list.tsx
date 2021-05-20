@@ -51,7 +51,7 @@ const SectorList: React.FC = () => {
           <div className="row gy-4">
             <ButtonNew to="/sectors/new" />
             {state.isLoading && <Loading />}
-            {state.mainError && <Error />}
+            {state.mainError && <Error error={state.mainError} handleReload={() => {}} />}
             {state.sectors.map((sector) => (
               <Item
                 handleDelete={(id: number) => { console.log('Entrou') } }
