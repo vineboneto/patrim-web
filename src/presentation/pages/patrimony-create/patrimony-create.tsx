@@ -24,8 +24,16 @@ type Props = {
 
 const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCategories, loadOwners }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
-    setState(old => ({ ...old, mainError: error.message, successMessage: '', isLoading: false }))
+    setState(old => ({
+      ...old,
+      mainError: error.message,
+      successMessage: '',
+      isLoading: false,
+      categoryIsLoading: false,
+      ownerIsLoading: false
+    }))
   })
+
   const [state, setState] = useState({
     isLoading: false,
     isFormInvalid: true,
@@ -37,14 +45,21 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCatego
     brandError: '',
     category: '',
     categoryError: '',
+    categoryIsLoading: false,
     owner: '',
     ownerError: '',
+    ownerIsLoading: false,
     description: '',
     categories: [] as ComboOptions[],
     owners: [] as ComboOptions[]
   })
 
+  const setIsLoading = (field: string, value: boolean): void => {
+    setState(old => ({ ...old, [field]: value }))
+  }
+
   useEffect(() => {
+    setIsLoading('categoryIsLoading', true)
     loadCategories.load({})
       .then(data => {
         if (data) {
@@ -54,10 +69,12 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCatego
           }))
         }
       })
+      .then(() => setIsLoading('categoryIsLoading', false))
       .catch(error => handleError(error))
   }, [])
 
   useEffect(() => {
+    setIsLoading('ownerIsLoading', false)
     loadOwners.load({})
       .then(data => {
         if (data) {
@@ -67,6 +84,7 @@ const PatrimonyCreate: React.FC<Props> = ({ validation, addPatrimony, loadCatego
           }))
         }
       })
+      .then(() => setIsLoading('ownerIsLoading', false))
       .catch(error => handleError(error))
   }, [])
 

@@ -13,6 +13,13 @@ module.exports = merge(common, {
     historyApiFallback: true,
     port: 8080
   },
+  module: {
+    rules: [{
+      test: /\.(ts|js)x?$/,
+      exclude: /node_modules/,
+      loader: 'ts-loader',
+    }],
+  },
   plugins: [
     new DefinePlugin({
       'process.env.API_URL': JSON.stringify('http://localhost:3000/api')

@@ -48,7 +48,13 @@ const PatrimonyList: React.FC<Props> = ({
   deletePatrimony
 }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
-    setState(old => ({ ...old, mainError: error.message, isLoading: false }))
+    setState(old => ({
+      ...old,
+      mainError: error.message,
+      isLoading: false,
+      categoryIsLoading: false,
+      ownerIsLoading: false
+    }))
   })
   const [state, setState] = useState({
     isLoading: true,
@@ -59,9 +65,11 @@ const PatrimonyList: React.FC<Props> = ({
     category: '',
     categories: [] as ComboOptions[],
     categoryInput: '',
+    categoryIsLoading: false,
     owner: '',
     ownerInput: '',
     owners: [] as ComboOptions[],
+    ownerIsLoading: false,
     totalPage: 1,
     skip: 0,
     take: 9,
@@ -117,9 +125,11 @@ const PatrimonyList: React.FC<Props> = ({
       ...old,
       reload: !state.reload,
       mainError: '',
+      category: '',
       categoryInput: '',
       number: '',
       owner: '',
+      ownerInput: '',
 
       currentPage: 1,
       oldPage: 1,
@@ -183,38 +193,34 @@ const PatrimonyList: React.FC<Props> = ({
   }
 
   useEffect(() => {
-    setLoading()
+    setState(old => ({ ...old, ownerIsLoading: true }))
     loadOwners.load({})
       .then(data => {
         if (data) {
           setState(old => ({
             ...old,
-            isLoading: false,
             owners: data.model.map(owner => ({ value: owner.id.toString(), label: owner.name }))
           }))
-        } else {
-          setNotFound()
         }
       })
+      .then(() => setState(old => ({ ...old, ownerIsLoading: false })))
       .catch(error => handleError(error))
-  }, [state.reload])
+  }, [])
 
   useEffect(() => {
-    setLoading()
+    setState(old => ({ ...old, categoryIsLoading: true }))
     loadCategories.load({})
       .then(data => {
         if (data) {
           setState(old => ({
             ...old,
-            isLoading: false,
             categories: data.model.map(category => ({ value: category.id.toString(), label: category.name }))
           }))
-        } else {
-          setNotFound()
         }
       })
+      .then(() => setState(old => ({ ...old, categoryIsLoading: false })))
       .catch(error => handleError(error))
-  }, [state.reload])
+  }, [])
 
   useEffect(() => {
     setLoading()

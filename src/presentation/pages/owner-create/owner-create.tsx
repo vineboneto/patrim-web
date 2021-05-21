@@ -22,7 +22,13 @@ type Props = {
 
 const OwnerCreate: React.FC<Props> = ({ addOwner, validation, loadSectors }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
-    setState(old => ({ ...old, mainError: error.message, successMessage: '', isLoading: false }))
+    setState(old => ({
+      ...old,
+      mainError: error.message,
+      successMessage: '',
+      isLoading: false,
+      sectorIsLoading: false
+    }))
   })
   const [state, setState] = useState({
     isLoading: false,
@@ -32,11 +38,17 @@ const OwnerCreate: React.FC<Props> = ({ addOwner, validation, loadSectors }: Pro
     sector: '',
     sectorError: '',
     sectors: [] as ComboOptions[],
+    sectorIsLoading: false,
     name: '',
     nameError: ''
   })
 
+  const setIsLoading = (field: string, value: boolean): void => {
+    setState(old => ({ ...old, [field]: value }))
+  }
+
   useEffect(() => {
+    setIsLoading('sectorIsLoading', true)
     loadSectors.load({})
       .then(data => {
         if (data) {
@@ -46,6 +58,7 @@ const OwnerCreate: React.FC<Props> = ({ addOwner, validation, loadSectors }: Pro
           }))
         }
       })
+      .then(() => setIsLoading('sectorIsLoading', false))
       .catch(error => handleError(error))
   }, [])
 

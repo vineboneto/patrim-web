@@ -38,7 +38,13 @@ const PatrimonyUpdate: React.FC<Props> = ({
   const { id } = useParams<Params>()
   const history = useHistory()
   const handleError = useErrorHandler((error: Error) => {
-    setState(old => ({ ...old, mainError: error.message, isLoading: false }))
+    setState(old => ({
+      ...old,
+      mainError: error.message,
+      isLoading: false,
+      categoryIsLoading: false,
+      ownerIsLoading: false
+    }))
   })
   const [state, setState] = useState({
     isLoading: false,
@@ -51,15 +57,22 @@ const PatrimonyUpdate: React.FC<Props> = ({
     category: '',
     categoryInput: '',
     categoryError: '',
+    categoryIsLoading: false,
     owner: '',
     ownerInput: '',
     ownerError: '',
+    ownerIsLoading: false,
     description: '',
     categories: [] as ComboOptions[],
     owners: [] as ComboOptions[]
   })
 
+  const setIsLoading = (field: string, value: boolean): void => {
+    setState(old => ({ ...old, [field]: value }))
+  }
+
   useEffect(() => {
+    setIsLoading('categoryIsLoading', true)
     loadCategories.load({})
       .then(data => {
         if (data) {
@@ -69,10 +82,12 @@ const PatrimonyUpdate: React.FC<Props> = ({
           }))
         }
       })
+      .then(() => setIsLoading('categoryIsLoading', false))
       .catch(error => handleError(error))
   }, [])
 
   useEffect(() => {
+    setIsLoading('ownerIsLoading', true)
     loadOwners.load({})
       .then(data => {
         if (data) {
@@ -82,6 +97,7 @@ const PatrimonyUpdate: React.FC<Props> = ({
           }))
         }
       })
+      .then(() => setIsLoading('ownerIsLoading', false))
       .catch(error => handleError(error))
   }, [])
 

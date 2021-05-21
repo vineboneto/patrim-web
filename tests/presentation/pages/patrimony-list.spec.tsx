@@ -132,7 +132,7 @@ describe('PatrimonyList Component', () => {
   test('Should calls LoadOwners', async () => {
     const { loadOwnersSpy } = makeSut()
     await waitFor(() => screen.getByTestId('patrimonies'))
-    expect(loadOwnersSpy.callsCount).toBe(2)
+    expect(loadOwnersSpy.callsCount).toBe(1)
   })
 
   test('Should render main error if LoadOwners fails', async () => {
@@ -160,7 +160,7 @@ describe('PatrimonyList Component', () => {
   test('Should calls LoadCategories', async () => {
     const { loadOwnersSpy } = makeSut()
     await waitFor(() => screen.getByTestId('patrimonies'))
-    expect(loadOwnersSpy.callsCount).toBe(2)
+    expect(loadOwnersSpy.callsCount).toBe(1)
   })
 
   test('Should render main error if LoadCategories fails', async () => {
@@ -219,26 +219,6 @@ describe('PatrimonyList Component', () => {
     await waitFor(() => screen.getByTestId('patrimonies'))
     fireEvent.click(screen.getByTestId('reload'))
     expect(loadPatrimoniesSpy.callsCount).toBe(1)
-    await waitFor(() => screen.getByTestId('patrimonies'))
-  })
-
-  test('Should call LoadOwners on click in reload', async () => {
-    const loadOwnersSpy = new LoadOwnersSpy()
-    jest.spyOn(loadOwnersSpy, 'load').mockRejectedValueOnce(new UnexpectedError())
-    makeSut({ loadOwnersSpy })
-    await waitFor(() => screen.getByTestId('patrimonies'))
-    fireEvent.click(screen.getByTestId('reload'))
-    expect(loadOwnersSpy.callsCount).toBe(1)
-    await waitFor(() => screen.getByTestId('patrimonies'))
-  })
-
-  test('Should call LoadCategories on click in reload', async () => {
-    const loadCategoriesSpy = new LoadCategoriesSpy()
-    jest.spyOn(loadCategoriesSpy, 'load').mockRejectedValueOnce(new UnexpectedError())
-    makeSut({ loadCategoriesSpy })
-    await waitFor(() => screen.getByTestId('patrimonies'))
-    fireEvent.click(screen.getByTestId('reload'))
-    expect(loadCategoriesSpy.callsCount).toBe(1)
     await waitFor(() => screen.getByTestId('patrimonies'))
   })
 

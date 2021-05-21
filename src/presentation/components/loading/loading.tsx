@@ -3,10 +3,14 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 
 import React from 'react'
 
-const Loading: React.FC = () => {
+type Props = {
+  size?: number
+}
+
+const Loading: React.FC<Props> = ({ size }: Props) => {
   return (
     <div className="col-12 loading">
-      <CircularProgress color="inherit" data-testid="spinner" />
+      <CircularProgress color="inherit" size={size} data-testid="spinner" />
     </div>
   )
 }
