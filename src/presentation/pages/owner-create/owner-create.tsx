@@ -81,11 +81,11 @@ const OwnerCreate: React.FC<Props> = ({ addOwner, validation, loadSectors }: Pro
 
   return (
     <div className="owner-create-wrap">
-      <Header title="Novo Setor" />
+      <Header title="Novo Proprietário" />
       <FormContext.Provider value={{ state, setState }} >
         <div className="form-wrap" data-testid="form-wrap">
           <form data-testid="form" onSubmit={handleSubmit}>
-            <h2>Nova Setor</h2>
+            <h2>Novo Proprietário</h2>
             <div className="input-group">
               <Input type="text" name="name" placeholder="Nome" />
               <Combobox name="sector" placeholder="Setores" options={state.sectors} />

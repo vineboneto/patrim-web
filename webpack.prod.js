@@ -6,9 +6,6 @@ const { DefinePlugin } = require('webpack')
 
 module.exports = merge(common, {
   mode: 'production',
-  optimization: {
-    minimize: true
-  },
   plugins: [
     new DefinePlugin({
       'process.env.API_URL': JSON.stringify('https://patrim-api.herokuapp.com/api')
