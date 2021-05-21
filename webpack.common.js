@@ -9,12 +9,18 @@ module.exports = {
   entry: './src/main/index.tsx',
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name]-[chunkhash].bundle.js',
-    chunkFilename: '[name].[chunkhash].bundle.js',
+    filename: 'main-bundle-[fullhash].js',
     publicPath: '/',
   },
   module: {
     rules: [{
+      test: /\.ts(x?)$/,
+      loader: 'ts-loader',
+      exclude: /node_modules/,
+      options: {
+        configFile: 'tsconfig-build.json'
+      }
+    }, {
       test: /\.css$/,
       use: [MiniCssExtractPlugin.loader, 'css-loader']
     }]
@@ -31,7 +37,7 @@ module.exports = {
       filename: '[name]-[contenthash].css'
     }),
     new PurgecssPlugin({
-      paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`, { nodir: true }),
+      paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`,  { nodir: true }),
     })
   ]
 }
