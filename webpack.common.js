@@ -13,6 +13,12 @@ module.exports = {
     chunkFilename: '[name].[chunkhash].bundle.js',
     publicPath: '/',
   },
+  module: {
+    rules: [{
+      test: /\.css$/,
+      use: [MiniCssExtractPlugin.loader, 'css-loader']
+    }]
+  },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', 'css'],
     alias: {

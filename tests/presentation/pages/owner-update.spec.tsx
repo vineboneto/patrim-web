@@ -1,4 +1,4 @@
-import { OwnerCreate } from '@/presentation/pages'
+import { OwnerUpdate } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
 import { AccountModel } from '@/domain/models'
 import {
@@ -6,43 +6,43 @@ import {
   testStatusForField,
   ValidationStub
 } from '@/tests/presentation/mocks'
-import { AddOwnerSpy, LoadSectorsSpy, mockAccountModel } from '@/tests/domain/mocks'
+import { UpdateOwnerSpy, LoadSectorsSpy, mockAccountModel } from '@/tests/domain/mocks'
+import { AccessDeniedError } from '@/domain/errors'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import faker from 'faker'
-import { AccessDeniedError } from '@/domain/errors'
 
 type Params = {
   validationError?: string
-  addOwnerSpy?: AddOwnerSpy
+  updateOwnerSpy?: UpdateOwnerSpy
   loadSectorsSpy?: LoadSectorsSpy
 }
 
 type SutTypes = {
   validationStub: ValidationStub
-  addOwnerSpy: AddOwnerSpy
+  updateOwnerSpy: UpdateOwnerSpy
   loadSectorsSpy: LoadSectorsSpy
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
 }
 
 const makeSut = ({
-  addOwnerSpy = new AddOwnerSpy(),
+  updateOwnerSpy = new UpdateOwnerSpy(),
   loadSectorsSpy = new LoadSectorsSpy(),
   validationError = undefined
 }: Params = {}): SutTypes => {
-  const history = createMemoryHistory({ initialEntries: ['/owners/new'] })
+  const history = createMemoryHistory({ initialEntries: ['/owners/update'] })
   const setCurrentAccountMock = jest.fn()
   const validationStub = new ValidationStub()
   validationStub.errorMessage = validationError
   render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
-        <OwnerCreate
-          addOwner={addOwnerSpy}
+        <OwnerUpdate
+          updateOwner={updateOwnerSpy}
           loadSectors={loadSectorsSpy}
           validation={validationStub}
         />
@@ -51,7 +51,7 @@ const makeSut = ({
   )
   return {
     validationStub,
-    addOwnerSpy,
+    updateOwnerSpy,
     setCurrentAccountMock,
     history,
     loadSectorsSpy
@@ -67,7 +67,7 @@ const simulateValidSubmit = async (name = faker.name.findName(), sector = faker.
   await waitFor(() => screen.getByTestId('form'))
 }
 
-describe('OwnerCreate Component', () => {
+describe('OwnerUpdate Component', () => {
   test('Should start with initial state', () => {
     const validationError = faker.random.words()
     makeSut({ validationError })
@@ -101,13 +101,14 @@ describe('OwnerCreate Component', () => {
     expect(screen.getByTestId('submit')).toBeEnabled()
   })
 
-  test('Should call AddOwner with correct values', async () => {
-    const { addOwnerSpy } = makeSut()
+  test('Should call UpdateOwner with correct values', async () => {
+    const { updateOwnerSpy } = makeSut()
     const name = faker.name.findName()
     const sector = faker.datatype.number().toString()
     simulateValidSubmit(name, sector)
       .then(() => {
-        expect(addOwnerSpy.params).toEqual({
+        expect(updateOwnerSpy.params).toEqual({
+          id: Number('1'),
           name,
           sectorId: Number(sector)
         })
@@ -115,34 +116,20 @@ describe('OwnerCreate Component', () => {
       .catch(error => console.log(error))
   })
 
-  test('Should not call AddOwner if form is invalid', async () => {
+  test('Should not call UpdateOwner if form is invalid', async () => {
     const validationError = faker.random.words()
-    const { addOwnerSpy } = makeSut({ validationError })
+    const { updateOwnerSpy } = makeSut({ validationError })
     await simulateValidSubmit()
-    expect(addOwnerSpy.callsCount).toBe(0)
+    expect(updateOwnerSpy.callsCount).toBe(0)
   })
 
-  test('Should present error if add fails', async () => {
-    const { addOwnerSpy } = makeSut()
+  test('Should present error if update fails', async () => {
+    const { updateOwnerSpy } = makeSut()
     const error = new Error()
     error.message = 'something error'
-    jest.spyOn(addOwnerSpy, 'add').mockRejectedValueOnce(error)
+    jest.spyOn(updateOwnerSpy, 'update').mockRejectedValueOnce(error)
     await simulateValidSubmit()
     expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
-  })
-
-  test('Should present success message if add success', async () => {
-    makeSut()
-    await simulateValidSubmit()
-    expect(screen.getByTestId('success-message')).toHaveTextContent('Proprietário adicionado com sucesso')
-  })
-
-  test('Should close alert success on click button close', async () => {
-    makeSut()
-    await simulateValidSubmit()
-    const alertButtonClose = screen.getByTestId('success-message').children[2].children[0]
-    fireEvent.click(alertButtonClose)
-    expect(screen.getByTestId('status-wrap').children).toHaveLength(0)
   })
 
   test('Should calls LoadSectors', async () => {
@@ -172,10 +159,10 @@ describe('OwnerCreate Component', () => {
   })
 
   test('Should close alert error on click button close', async () => {
-    const { addOwnerSpy } = makeSut()
+    const { updateOwnerSpy } = makeSut()
     const error = new Error()
     error.message = 'something error'
-    jest.spyOn(addOwnerSpy, 'add').mockRejectedValueOnce(error)
+    jest.spyOn(updateOwnerSpy, 'update').mockRejectedValueOnce(error)
     await simulateValidSubmit()
     const alertButtonClose = screen.getByTestId('main-error').children[2].children[0]
     fireEvent.click(alertButtonClose)

@@ -69,11 +69,11 @@ const SectorUpdate: React.FC<Props> = ({ updateSector, validation }: Props) => {
 
   return (
     <div className="sector-update-wrap">
-      <Header title="Novo Setor" />
+      <Header title="Atualizar Setor" />
       <FormContext.Provider value={{ state, setState }} >
         <div className="form-wrap" data-testid="form-wrap">
           <form data-testid="form" onSubmit={handleSubmit}>
-            <h2>Novo Setor</h2>
+            <h2>Atualizar Setor</h2>
             <Input type="text" name="name" placeholder="Nome" />
             <SubmitButton text="Atualizar" />
             <FormStatus />
