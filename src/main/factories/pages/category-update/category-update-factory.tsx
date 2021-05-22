@@ -1,4 +1,4 @@
-import { makeRemoteUpdateCategory } from '@/main/factories/usecases'
+import { makeRemoteLoadCategoryById, makeRemoteUpdateCategory } from '@/main/factories/usecases'
 import { makeCategoryUpdateValidation } from '@/main/factories/pages'
 import { CategoryUpdate } from '@/presentation/pages'
 
@@ -16,6 +16,7 @@ export const makeCategoryUpdate: React.FC = () => {
     <CategoryUpdate
       updateCategory={makeRemoteUpdateCategory(Number(id))}
       validation={makeCategoryUpdateValidation()}
+      loadCategoryById={makeRemoteLoadCategoryById(Number(id))}
     />
   )
 }
