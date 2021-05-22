@@ -10,7 +10,7 @@ import {
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
-import { LoadSectors, UpdateOwner } from '@/domain/usecases'
+import { LoadOwnerById, LoadSectors, UpdateOwner } from '@/domain/usecases'
 
 import React, { FormEvent, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
@@ -19,13 +19,14 @@ type Props = {
   validation: Validation
   updateOwner: UpdateOwner
   loadSectors: LoadSectors
+  loadOwnerById: LoadOwnerById
 }
 
 type Params = {
   id: string
 }
 
-const OwnerUpdate: React.FC<Props> = ({ updateOwner, validation, loadSectors }: Props) => {
+const OwnerUpdate: React.FC<Props> = ({ updateOwner, validation, loadSectors, loadOwnerById }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({
       ...old,
@@ -42,6 +43,7 @@ const OwnerUpdate: React.FC<Props> = ({ updateOwner, validation, loadSectors }: 
     isFormInvalid: true,
     mainError: '',
     sector: '',
+    sectorInput: '',
     sectorError: '',
     sectors: [] as ComboOptions[],
     sectorIsLoading: false,
@@ -65,6 +67,21 @@ const OwnerUpdate: React.FC<Props> = ({ updateOwner, validation, loadSectors }: 
         }
       })
       .then(() => setIsLoading('sectorIsLoading', false))
+      .catch(error => handleError(error))
+  }, [])
+
+  useEffect(() => {
+    loadOwnerById.loadById({ id: Number(id) })
+      .then((owner) => {
+        if (owner) {
+          setState(old => ({
+            ...old,
+            name: owner.name,
+            sector: owner.sector.id.toString(),
+            sectorInput: owner.sector.name
+          }))
+        }
+      })
       .catch(error => handleError(error))
   }, [])
 

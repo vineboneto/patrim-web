@@ -1,5 +1,5 @@
 import { OwnerUpdate } from '@/presentation/pages'
-import { makeRemoteLoadSectors, makeRemoteUpdateOwner } from '@/main/factories/usecases'
+import { makeRemoteLoadOwnerById, makeRemoteLoadSectors, makeRemoteUpdateOwner } from '@/main/factories/usecases'
 import { makeOwnerUpdateValidation } from '@/main/factories/pages'
 
 import React from 'react'
@@ -14,6 +14,7 @@ export const makeOwnerUpdate: React.FC = () => {
 
   return (
     <OwnerUpdate
+      loadOwnerById={makeRemoteLoadOwnerById(Number(id))}
       validation={makeOwnerUpdateValidation()}
       updateOwner={makeRemoteUpdateOwner(Number(id))}
       loadSectors={makeRemoteLoadSectors()}

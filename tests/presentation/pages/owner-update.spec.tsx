@@ -2,11 +2,12 @@ import { OwnerUpdate } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
 import { AccountModel } from '@/domain/models'
 import {
+  getValueInput,
   populateField,
   testStatusForField,
   ValidationStub
 } from '@/tests/presentation/mocks'
-import { UpdateOwnerSpy, LoadSectorsSpy, mockAccountModel } from '@/tests/domain/mocks'
+import { UpdateOwnerSpy, LoadSectorsSpy, mockAccountModel, LoadOwnerByIdSpy } from '@/tests/domain/mocks'
 import { AccessDeniedError } from '@/domain/errors'
 
 import React from 'react'
@@ -19,12 +20,14 @@ type Params = {
   validationError?: string
   updateOwnerSpy?: UpdateOwnerSpy
   loadSectorsSpy?: LoadSectorsSpy
+  loadOwnerByIdSpy?: LoadOwnerByIdSpy
 }
 
 type SutTypes = {
   validationStub: ValidationStub
   updateOwnerSpy: UpdateOwnerSpy
   loadSectorsSpy: LoadSectorsSpy
+  loadOwnerByIdSpy: LoadOwnerByIdSpy
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
 }
@@ -32,6 +35,7 @@ type SutTypes = {
 const makeSut = ({
   updateOwnerSpy = new UpdateOwnerSpy(),
   loadSectorsSpy = new LoadSectorsSpy(),
+  loadOwnerByIdSpy = new LoadOwnerByIdSpy(),
   validationError = undefined
 }: Params = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/owners/update'] })
@@ -42,6 +46,7 @@ const makeSut = ({
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
         <OwnerUpdate
+          loadOwnerById={loadOwnerByIdSpy}
           updateOwner={updateOwnerSpy}
           loadSectors={loadSectorsSpy}
           validation={validationStub}
@@ -52,6 +57,7 @@ const makeSut = ({
   return {
     validationStub,
     updateOwnerSpy,
+    loadOwnerByIdSpy,
     setCurrentAccountMock,
     history,
     loadSectorsSpy
@@ -156,6 +162,24 @@ describe('OwnerUpdate Component', () => {
     await waitFor(() => screen.getByTestId('sector'))
     expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
     expect(history.location.pathname).toBe('/login')
+  })
+
+  test('Should calls LoadOwnerById', async () => {
+    const { loadOwnerByIdSpy } = makeSut()
+    await waitFor(() => screen.getByTestId('form'))
+    expect(loadOwnerByIdSpy.callsCount).toBe(1)
+    expect(getValueInput('name')).toBe(loadOwnerByIdSpy.model.name)
+    expect(getValueInput('sector')).toBe(loadOwnerByIdSpy.model.sector.name)
+  })
+
+  test('Should render main error if LoadOwnerById fails', async () => {
+    const loadOwnerByIdSpy = new LoadOwnerByIdSpy()
+    const error = new Error()
+    error.message = 'something error'
+    jest.spyOn(loadOwnerByIdSpy, 'loadById').mockRejectedValueOnce(error)
+    makeSut({ loadOwnerByIdSpy })
+    await waitFor(() => screen.getByTestId('form'))
+    expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
   })
 
   test('Should close alert error on click button close', async () => {
