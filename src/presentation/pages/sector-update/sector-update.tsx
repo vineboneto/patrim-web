@@ -8,7 +8,7 @@ import {
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
-import { UpdateSector } from '@/domain/usecases'
+import { LoadSectorById, UpdateSector } from '@/domain/usecases'
 
 import React, { FormEvent, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
@@ -16,13 +16,14 @@ import { useHistory, useParams } from 'react-router-dom'
 type Props = {
   validation: Validation
   updateSector: UpdateSector
+  loadSectorById: LoadSectorById
 }
 
 type Params = {
   id: string
 }
 
-const SectorUpdate: React.FC<Props> = ({ updateSector, validation }: Props) => {
+const SectorUpdate: React.FC<Props> = ({ updateSector, validation, loadSectorById }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({ ...old, mainError: error.message, isLoading: false }))
   })
@@ -35,6 +36,19 @@ const SectorUpdate: React.FC<Props> = ({ updateSector, validation }: Props) => {
     name: '',
     nameError: ''
   })
+
+  useEffect(() => {
+    loadSectorById.loadById({ id: Number(id) })
+      .then((sector) => {
+        if (sector) {
+          setState(old => ({
+            ...old,
+            name: sector.name
+          }))
+        }
+      })
+      .catch(error => handleError(error))
+  }, [])
 
   useEffect(() => { validate('name') }, [state.name])
 

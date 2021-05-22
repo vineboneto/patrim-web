@@ -2,11 +2,12 @@ import { SectorUpdate } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/components'
 import { AccountModel } from '@/domain/models'
 import {
+  getValueInput,
   populateField,
   testStatusForField,
   ValidationStub
 } from '@/tests/presentation/mocks'
-import { UpdateSectorSpy, mockAccountModel } from '@/tests/domain/mocks'
+import { UpdateSectorSpy, mockAccountModel, LoadSectorByIdSpy } from '@/tests/domain/mocks'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -17,18 +18,21 @@ import faker from 'faker'
 type Params = {
   validationError?: string
   updateSectorSpy?: UpdateSectorSpy
+  loadSectorByIdSpy?: LoadSectorByIdSpy
 }
 
 type SutTypes = {
   validationStub: ValidationStub
   updateSectorSpy: UpdateSectorSpy
+  loadSectorByIdSpy: LoadSectorByIdSpy
   setCurrentAccountMock: (account: AccountModel) => void
   history: MemoryHistory
 }
 
 const makeSut = ({
   updateSectorSpy = new UpdateSectorSpy(),
-  validationError = undefined
+  validationError = undefined,
+  loadSectorByIdSpy = new LoadSectorByIdSpy()
 }: Params = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/sectors/update/1'] })
   const setCurrentAccountMock = jest.fn()
@@ -38,6 +42,7 @@ const makeSut = ({
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
         <SectorUpdate
+          loadSectorById={loadSectorByIdSpy}
           updateSector={updateSectorSpy}
           validation={validationStub}
         />
@@ -48,6 +53,7 @@ const makeSut = ({
     validationStub,
     updateSectorSpy,
     setCurrentAccountMock,
+    loadSectorByIdSpy,
     history
   }
 }
@@ -114,6 +120,23 @@ describe('SectorUpdate Component', () => {
     error.message = 'something error'
     jest.spyOn(updateSectorSpy, 'update').mockRejectedValueOnce(error)
     await simulateValidSubmit()
+    expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
+  })
+
+  test('Should calls LoadSectorById', async () => {
+    const { loadSectorByIdSpy } = makeSut()
+    await waitFor(() => screen.getByTestId('form'))
+    expect(loadSectorByIdSpy.callsCount).toBe(1)
+    expect(getValueInput('name')).toBe(loadSectorByIdSpy.model.name)
+  })
+
+  test('Should render main error if LoadSectorById fails', async () => {
+    const loadSectorByIdSpy = new LoadSectorByIdSpy()
+    const error = new Error()
+    error.message = 'something error'
+    jest.spyOn(loadSectorByIdSpy, 'loadById').mockRejectedValueOnce(error)
+    makeSut({ loadSectorByIdSpy })
+    await waitFor(() => screen.getByTestId('form'))
     expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
   })
 

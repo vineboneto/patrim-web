@@ -1,4 +1,4 @@
-import { makeRemoteUpdateSector } from '@/main/factories/usecases'
+import { makeRemoteLoadSectorById, makeRemoteUpdateSector } from '@/main/factories/usecases'
 import { makeSectorUpdateValidation } from '@/main/factories/pages'
 import { SectorUpdate } from '@/presentation/pages'
 
@@ -14,6 +14,7 @@ export const makeSectorUpdate: React.FC = () => {
 
   return (
     <SectorUpdate
+      loadSectorById={makeRemoteLoadSectorById(Number(id))}
       updateSector={makeRemoteUpdateSector(Number(id))}
       validation={makeSectorUpdateValidation()}
     />
