@@ -28,7 +28,7 @@ const Item: React.FC<Props> = ({ patrimony, handleDelete }: Props) => {
     <div className="col-12 col-md-6 col-lg-4" role="item">
       <div className="patrimony-item">
         <div className="item-body">
-          <h5>{patrimony.category}<span>{patrimony.number}</span></h5>
+          <h5>{patrimony.category}<span>{patrimony.number || 'S/N'}</span></h5>
           <p><span>Proprietário:</span> {patrimony.owner}</p>
           <p><span>Marca:</span> {patrimony.brand}</p>
           <p><span>Setor:</span> {patrimony.sector}</p>
