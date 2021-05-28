@@ -1,0 +1,23 @@
+.dialog-category-create-wrap .form-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.dialog-category-create-wrap .form-wrap form {
+  display: flex;
+  flex-direction: column;
+  
+  width: 500px;
+  padding: 20px;
+  background-color: var(--color-white);
+}
+
+.dialog-category-create-wrap .form-wrap .status-wrap {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

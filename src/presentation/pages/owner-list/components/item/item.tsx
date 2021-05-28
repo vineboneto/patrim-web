@@ -38,12 +38,13 @@ const Item: React.FC<Props> = ({ owner, handleDelete }: Props) => {
         </footer>
         <Dialog
           open={open}
-          text={`Tem certeza que deseja excluir esse proprietário: ${owner.name} ?`}
+          title={`Tem certeza que deseja excluir esse proprietário: ${owner.name} ?`}
           handleCloseDialog={handleCloseDialog}
           handleAction={() => {
             handleDelete(Number(owner.id))
             handleCloseDialog()
           }}
+          textActionDialog="Excluir"
         />
       </div>
     </div >

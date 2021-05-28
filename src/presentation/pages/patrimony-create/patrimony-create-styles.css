@@ -34,6 +34,17 @@
   width: 50%;
 }
 
+.patrimony-create-wrap .form-wrap .input-group {
+  position: relative;
+}
+
+.patrimony-create-wrap .form-wrap .category-dialog-content .open-dialog-category {
+  position: absolute;
+  right: -15px;
+  bottom: 35px;
+  z-index: 1000;
+}
+
 .patrimony-create-wrap .form-wrap .status-wrap {
   margin-top: 20px;
   display: flex;

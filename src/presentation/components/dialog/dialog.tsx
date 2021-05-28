@@ -6,24 +6,27 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 
 type Props = {
-  text: string
+  title: string
+  textActionDialog: string
   open: boolean
   handleCloseDialog: () => void
   handleAction: (params?: any) => void
+  children?: any
 }
 
-const Dialog: React.FC<Props> = (props: Props) => {
+const Dialog: React.FC<Props> = ({ handleAction, handleCloseDialog, open, title, textActionDialog, children }: Props) => {
   return (
     <DialogM
       role="dialog"
-      open={props.open}
-      onClose={props.handleCloseDialog}
+      open={open}
+      onClose={handleCloseDialog}
     >
-      <DialogTitle>{props.text}</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
+      {children}
       <DialogActions className="dialog-actions" >
         <Button
           style={{ width: 'auto', height: 'auto' }}
-          onClick={props.handleCloseDialog}
+          onClick={handleCloseDialog}
           role="close-button"
           color="primary"
           text="Fechar"
@@ -31,10 +34,10 @@ const Dialog: React.FC<Props> = (props: Props) => {
         />
         <Button
           style={{ width: 'auto', height: 'auto' }}
-          onClick={props.handleAction}
+          onClick={handleAction}
           data-testid="action-button"
           color="secondary"
-          text="Excluir"
+          text={textActionDialog}
           variant="outlined"
         />
       </DialogActions>

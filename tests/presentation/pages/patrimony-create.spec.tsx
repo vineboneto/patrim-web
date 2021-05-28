@@ -3,7 +3,7 @@ import { ApiContext } from '@/presentation/components'
 import { AccountModel } from '@/domain/models'
 import { AccessDeniedError } from '@/domain/errors'
 import { populateField, testStatusForField, ValidationStub } from '@/tests/presentation/mocks'
-import { AddPatrimonySpy, LoadCategoriesSpy, LoadOwnersSpy, mockAccountModel } from '@/tests/domain/mocks'
+import { AddCategorySpy, AddPatrimonySpy, LoadCategoriesSpy, LoadOwnersSpy, mockAccountModel } from '@/tests/domain/mocks'
 
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -14,6 +14,7 @@ import faker from 'faker'
 type Params = {
   validationError?: string
   addPatrimonySpy?: AddPatrimonySpy
+  addCategorySpy?: AddCategorySpy
   loadCategoriesSpy?: LoadCategoriesSpy
   loadOwnersSpy?: LoadOwnersSpy
 }
@@ -21,6 +22,7 @@ type Params = {
 type SutTypes = {
   validationStub: ValidationStub
   addPatrimonySpy: AddPatrimonySpy
+  addCategorySpy: AddCategorySpy
   loadCategoriesSpy: LoadCategoriesSpy
   loadOwnersSpy: LoadOwnersSpy
   setCurrentAccountMock: (account: AccountModel) => void
@@ -29,6 +31,7 @@ type SutTypes = {
 
 const makeSut = ({
   addPatrimonySpy = new AddPatrimonySpy(),
+  addCategorySpy = new AddCategorySpy(),
   validationError = undefined,
   loadCategoriesSpy = new LoadCategoriesSpy(),
   loadOwnersSpy = new LoadOwnersSpy()
@@ -41,6 +44,8 @@ const makeSut = ({
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
         <PatrimonyCreate
+          addCategory={addCategorySpy}
+          validationCategory={validationStub}
           loadCategories={loadCategoriesSpy}
           loadOwners={loadOwnersSpy}
           addPatrimony={addPatrimonySpy}
@@ -50,6 +55,7 @@ const makeSut = ({
     </ApiContext.Provider>
   )
   return {
+    addCategorySpy,
     validationStub,
     addPatrimonySpy,
     loadCategoriesSpy,
