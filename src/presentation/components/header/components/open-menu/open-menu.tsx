@@ -34,18 +34,26 @@ const OpenMenu: React.FC = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} >
-          <Link to="/" data-testid="patrimonies-menu">Patrimônios</Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose} >
-          <Link to="/owners" data-testid="owners-menu">Proprietários</Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose} >
-          <Link to="/categories" data-testid="categories-menu">Categorias</Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose} >
-          <Link to="/sectors" data-testid="sectors-menu">Setores</Link>
-        </MenuItem>
+        <Link to="/" data-testid="patrimonies-menu">
+          <MenuItem onClick={handleClose}>
+            Patrimônios
+          </MenuItem>
+        </Link>
+        <Link to="/owners" data-testid="owners-menu">
+          <MenuItem onClick={handleClose} >
+            Proprietários
+          </MenuItem>
+        </Link>
+        <Link to="/categories" data-testid="categories-menu">
+          <MenuItem onClick={handleClose} >
+            Categorias
+          </MenuItem>
+        </Link>
+        <Link to="/sectors" data-testid="sectors-menu">
+          <MenuItem onClick={handleClose} >
+            Setores
+          </MenuItem>
+        </Link>
       </Menu>
     </div>
   )
