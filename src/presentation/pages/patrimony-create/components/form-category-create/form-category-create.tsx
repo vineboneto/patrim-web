@@ -1,5 +1,5 @@
 import './form-category-create-styles.css'
-import { FormContext, Input, Dialog, FormStatus } from '@/presentation/components'
+import { FormContext, Input, Dialog, FormStatus, FormContent } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
 import { AddCategory } from '@/domain/usecases'
@@ -64,14 +64,12 @@ const CategoryCreate: React.FC<Props> = ({ addCategory, validation, open, handle
       handleCloseDialog={handleCloseDialog}
       textActionDialog="Criar"
     >
-      <div className="form-category-create-wrap">
+      <div className="form-content-dialog">
         <FormContext.Provider value={{ state, setState }} >
-          <div className="form-wrap" data-testid="form-wrap">
-            <form data-testid="form" onSubmit={handleSubmit}>
-              <Input type="text" name="name" placeholder="Nome" />
-              <FormStatus />
-            </form>
-          </div>
+          <FormContent>
+            <Input type="text" name="name" placeholder="Nome" />
+            <FormStatus />
+          </FormContent>
         </FormContext.Provider>
       </div>
     </Dialog>

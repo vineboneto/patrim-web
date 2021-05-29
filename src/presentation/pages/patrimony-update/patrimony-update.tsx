@@ -9,7 +9,8 @@ import {
   ComboOptions,
   SubmitButton,
   FormStatus,
-  TitleForm
+  TitleForm,
+  FormContent
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
@@ -164,22 +165,20 @@ const PatrimonyUpdate: React.FC<Props> = ({
     <div className="patrimony-update-wrap">
       <Header title="Atualizar Patrimônio" />
       <FormContext.Provider value={{ state, setState }} >
-        <div className="form-wrap" data-testid="form-wrap">
-          <form data-testid="form" onSubmit={handleSubmit}>
-            <TitleForm>Atualizar Patrimônio</TitleForm>
-            <InputGroup>
-              <Input type="text" name="number" placeholder="Número" />
-              <Combobox name="owner" placeholder="Proprietário" options={state.owners} />
-            </InputGroup>
-            <InputGroup>
-              <Input type="text" name="brand" placeholder="Marca" />
-              <Combobox name="category" placeholder="Categoria" options={state.categories} />
-            </InputGroup>
-            <Textarea name="description" placeholder="Observação" />
-            <SubmitButton text="Atualizar" />
-            <FormStatus />
-          </form>
-        </div>
+        <FormContent handleSubmit={handleSubmit}>
+          <TitleForm>Atualizar Patrimônio</TitleForm>
+          <InputGroup>
+            <Input type="text" name="number" placeholder="Número" />
+            <Combobox name="owner" placeholder="Proprietário" options={state.owners} />
+          </InputGroup>
+          <InputGroup>
+            <Input type="text" name="brand" placeholder="Marca" />
+            <Combobox name="category" placeholder="Categoria" options={state.categories} />
+          </InputGroup>
+          <Textarea name="description" placeholder="Observação" />
+          <SubmitButton text="Atualizar" />
+          <FormStatus />
+        </FormContent>
       </FormContext.Provider>
     </div>
   )

@@ -8,11 +8,11 @@
 }
 
 @media (max-width: 922px) {
-  .patrimony-create-wrap .form-wrap .input-group {
+  .input-group {
     flex-direction: column;
   }
 
-  .patrimony-create-wrap .form-wrap .input-group > :nth-child(2) {
+  .input-group > :nth-child(2) {
     width: 100%;
   }
 }

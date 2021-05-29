@@ -5,7 +5,8 @@ import {
   Input,
   SubmitButton,
   FormStatus,
-  TitleForm
+  TitleForm,
+  FormContent
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
@@ -63,14 +64,12 @@ const CategoryCreate: React.FC<Props> = ({ addCategory, validation }: Props) => 
     <div className="category-create-wrap">
       <Header title="Novo Categoria" />
       <FormContext.Provider value={{ state, setState }} >
-        <div className="form-wrap" data-testid="form-wrap">
-          <form data-testid="form" onSubmit={handleSubmit}>
-            <TitleForm>Nova Categoria</TitleForm>
-            <Input type="text" name="name" placeholder="Nome" />
-            <SubmitButton text="Criar" />
-            <FormStatus />
-          </form>
-        </div>
+        <FormContent handleSubmit={handleSubmit}>
+          <TitleForm>Nova Categoria</TitleForm>
+          <Input type="text" name="name" placeholder="Nome" />
+          <SubmitButton text="Criar" />
+          <FormStatus />
+        </FormContent>
       </FormContext.Provider>
     </div>
   )

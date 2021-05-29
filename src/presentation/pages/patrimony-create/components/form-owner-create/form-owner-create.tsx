@@ -5,7 +5,8 @@ import {
   Input,
   Combobox,
   ComboOptions,
-  Dialog
+  Dialog,
+  FormContent
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
@@ -109,16 +110,14 @@ const OwnerCreate: React.FC<Props> = ({
       textActionDialog="criar"
       handleAction={handleSubmit}
     >
-      <div className="form-owner-create-wrap">
+      <div className="form-content-dialog">
         <FormContext.Provider value={{ state, setState }} >
-          <div className="form-wrap" data-testid="form-wrap">
-            <form data-testid="form" onSubmit={handleSubmit}>
-              <InputGroup>
-                <Input type="text" name="name" placeholder="Nome" />
-                <Combobox name="sector" placeholder="Setores" options={state.sectors} />
-              </InputGroup>
-            </form>
-          </div>
+          <FormContent>
+            <InputGroup>
+              <Input type="text" name="name" placeholder="Nome" />
+              <Combobox name="sector" placeholder="Setores" options={state.sectors} />
+            </InputGroup>
+          </FormContent>
         </FormContext.Provider>
       </div>
     </Dialog>

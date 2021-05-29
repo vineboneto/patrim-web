@@ -9,7 +9,8 @@ import {
   SubmitButton,
   FormStatus,
   InputGroup,
-  TitleForm
+  TitleForm,
+  FormContent
 } from '@/presentation/components'
 import { DialogContentOwner, DialogContentCategory } from '@/presentation/pages/patrimony-create/components'
 import { Validation } from '@/presentation/protocols'
@@ -147,26 +148,24 @@ const PatrimonyCreate: React.FC<Props> = ({
     <div className="patrimony-create-wrap">
       <Header title="Novo Patrimônio" />
       <FormContext.Provider value={{ state, setState }} >
-        <div className="form-wrap" data-testid="form-wrap">
-          <form data-testid="form" onSubmit={handleSubmit}>
-            <TitleForm>Novo Patrimônio</TitleForm>
-            <InputGroup>
-              <Input type="text" name="number" placeholder="Número" />
-              <DialogContext.Provider value={{ add: addOwner, load: loadSectors, validation: validationOwner }}>
-                <DialogContentOwner />
-              </DialogContext.Provider>
-            </InputGroup>
-            <InputGroup>
-              <Input type="text" name="brand" placeholder="Marca" />
-              <DialogContext.Provider value={{ add: addCategory, validation: validationCategory }}>
-                <DialogContentCategory />
-              </DialogContext.Provider>
-            </InputGroup>
-            <Textarea name="description" placeholder="Observação" />
-            <SubmitButton text="Criar" />
-            <FormStatus />
-          </form>
-        </div>
+        <FormContent handleSubmit={handleSubmit}>
+          <TitleForm>Novo Patrimônio</TitleForm>
+          <InputGroup>
+            <Input type="text" name="number" placeholder="Número" />
+            <DialogContext.Provider value={{ add: addOwner, load: loadSectors, validation: validationOwner }}>
+              <DialogContentOwner />
+            </DialogContext.Provider>
+          </InputGroup>
+          <InputGroup>
+            <Input type="text" name="brand" placeholder="Marca" />
+            <DialogContext.Provider value={{ add: addCategory, validation: validationCategory }}>
+              <DialogContentCategory />
+            </DialogContext.Provider>
+          </InputGroup>
+          <Textarea name="description" placeholder="Observação" />
+          <SubmitButton text="Criar" />
+          <FormStatus />
+        </FormContent>
       </FormContext.Provider>
     </div>
   )

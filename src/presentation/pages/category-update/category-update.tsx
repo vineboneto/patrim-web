@@ -5,7 +5,8 @@ import {
   Input,
   SubmitButton,
   FormStatus,
-  TitleForm
+  TitleForm,
+  FormContent
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
@@ -86,14 +87,12 @@ const CategoryUpdate: React.FC<Props> = ({ updateCategory, loadCategoryById, val
     <div className="category-update-wrap">
       <Header title="Atualizar Categoria" />
       <FormContext.Provider value={{ state, setState }} >
-        <div className="form-wrap" data-testid="form-wrap">
-          <form data-testid="form" onSubmit={handleSubmit}>
-            <TitleForm>Atualizar Categoria</TitleForm>
-            <Input type="text" name="name" placeholder="Nome" />
-            <SubmitButton text="Atualizar" />
-            <FormStatus />
-          </form>
-        </div>
+        <FormContent handleSubmit={handleSubmit} >
+          <TitleForm>Atualizar Categoria</TitleForm>
+          <Input type="text" name="name" placeholder="Nome" />
+          <SubmitButton text="Atualizar" />
+          <FormStatus />
+        </FormContent>
       </FormContext.Provider>
     </div>
   )

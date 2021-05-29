@@ -1,15 +1,3 @@
-.form-category-create-wrap .form-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.form-category-create-wrap .form-wrap form {
-  display: flex;
-  flex-direction: column;
-  
-  width: 500px;
-  padding: 20px;
-  background-color: var(--color-white);
+.form-content-dialog form {
+  box-shadow: none;
 }

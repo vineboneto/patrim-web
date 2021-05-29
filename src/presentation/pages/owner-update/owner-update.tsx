@@ -8,7 +8,8 @@ import {
   Combobox,
   InputGroup,
   ComboOptions,
-  TitleForm
+  TitleForm,
+  FormContent
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
@@ -124,17 +125,15 @@ const OwnerUpdate: React.FC<Props> = ({ updateOwner, validation, loadSectors, lo
     <div className="owner-update-wrap">
       <Header title="Atualizar Proprietário" />
       <FormContext.Provider value={{ state, setState }} >
-        <div className="form-wrap" data-testid="form-wrap">
-          <form data-testid="form" onSubmit={handleSubmit}>
-            <TitleForm>Atualizar Proprietário</TitleForm>
-            <InputGroup>
-              <Input type="text" name="name" placeholder="Nome" />
-              <Combobox name="sector" placeholder="Setores" options={state.sectors} />
-            </InputGroup>
-            <SubmitButton text="Atualizar" />
-            <FormStatus />
-          </form>
-        </div>
+        <FormContent handleSubmit={handleSubmit}>
+          <TitleForm>Atualizar Proprietário</TitleForm>
+          <InputGroup>
+            <Input type="text" name="name" placeholder="Nome" />
+            <Combobox name="sector" placeholder="Setores" options={state.sectors} />
+          </InputGroup>
+          <SubmitButton text="Atualizar" />
+          <FormStatus />
+        </FormContent>
       </FormContext.Provider>
     </div>
   )
