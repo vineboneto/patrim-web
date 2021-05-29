@@ -3,11 +3,13 @@ import {
   Header,
   FormContext,
   Input,
+  InputGroup,
   Textarea,
   Combobox,
   ComboOptions,
   SubmitButton,
-  FormStatus
+  FormStatus,
+  TitleForm
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
@@ -164,15 +166,15 @@ const PatrimonyUpdate: React.FC<Props> = ({
       <FormContext.Provider value={{ state, setState }} >
         <div className="form-wrap" data-testid="form-wrap">
           <form data-testid="form" onSubmit={handleSubmit}>
-            <h2>Atualizar Patrimônio</h2>
-            <div className="input-group">
+            <TitleForm>Atualizar Patrimônio</TitleForm>
+            <InputGroup>
               <Input type="text" name="number" placeholder="Número" />
               <Combobox name="owner" placeholder="Proprietário" options={state.owners} />
-            </div>
-            <div className="input-group">
+            </InputGroup>
+            <InputGroup>
               <Input type="text" name="brand" placeholder="Marca" />
               <Combobox name="category" placeholder="Categoria" options={state.categories} />
-            </div>
+            </InputGroup>
             <Textarea name="description" placeholder="Observação" />
             <SubmitButton text="Atualizar" />
             <FormStatus />

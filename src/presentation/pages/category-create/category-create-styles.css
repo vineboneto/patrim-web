@@ -19,16 +19,3 @@
   border-radius: 8px;
   box-shadow: 0px 1px 3px -1px var(--color-black);
 }
-
-.category-create-wrap .form-wrap form h2 {
-  font-family: 'Poppins';
-  font-weight: 400;
-}
-
-.category-create-wrap .form-wrap .status-wrap {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}

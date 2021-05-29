@@ -20,35 +20,3 @@
   box-shadow: 0px 1px 3px -1px var(--color-black);
 }
 
-.patrimony-update-wrap .form-wrap form h2 {
-  font-family: 'Poppins';
-  font-weight: 400;
-}
-
-.patrimony-update-wrap .form-wrap .input-group {
-  display: flex;
-  justify-content: space-between;
-}
-
-.patrimony-update-wrap .form-wrap .input-group > :nth-child(2) {
-  width: 50%;
-}
-
-.patrimony-update-wrap .form-wrap .status-wrap {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-@media (max-width: 922px) {
-  .patrimony-update-wrap .form-wrap .input-group {
-    flex-direction: column;
-  }
-
-  .patrimony-update-wrap .form-wrap .input-group > :nth-child(2) {
-    width: 100%;
-  }
-}
-

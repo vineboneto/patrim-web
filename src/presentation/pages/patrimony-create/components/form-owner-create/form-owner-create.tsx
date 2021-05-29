@@ -1,8 +1,8 @@
 import './form-owner-create-styles.css'
 import {
   FormContext,
+  InputGroup,
   Input,
-  FormStatus,
   Combobox,
   ComboOptions,
   Dialog
@@ -113,11 +113,10 @@ const OwnerCreate: React.FC<Props> = ({
         <FormContext.Provider value={{ state, setState }} >
           <div className="form-wrap" data-testid="form-wrap">
             <form data-testid="form" onSubmit={handleSubmit}>
-              <div className="input-group">
+              <InputGroup>
                 <Input type="text" name="name" placeholder="Nome" />
                 <Combobox name="sector" placeholder="Setores" options={state.sectors} />
-              </div>
-              <FormStatus />
+              </InputGroup>
             </form>
           </div>
         </FormContext.Provider>

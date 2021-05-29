@@ -13,11 +13,3 @@
   padding: 20px;
   background-color: var(--color-white);
 }
-
-.form-category-create-wrap .form-wrap .status-wrap {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}

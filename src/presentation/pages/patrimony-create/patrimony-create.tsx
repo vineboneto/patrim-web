@@ -7,7 +7,9 @@ import {
   DialogContext,
   ComboOptions,
   SubmitButton,
-  FormStatus
+  FormStatus,
+  InputGroup,
+  TitleForm
 } from '@/presentation/components'
 import { DialogContentOwner, DialogContentCategory } from '@/presentation/pages/patrimony-create/components'
 import { Validation } from '@/presentation/protocols'
@@ -147,19 +149,19 @@ const PatrimonyCreate: React.FC<Props> = ({
       <FormContext.Provider value={{ state, setState }} >
         <div className="form-wrap" data-testid="form-wrap">
           <form data-testid="form" onSubmit={handleSubmit}>
-            <h2>Novo Patrimônio</h2>
-            <div className="input-group">
+            <TitleForm>Novo Patrimônio</TitleForm>
+            <InputGroup>
               <Input type="text" name="number" placeholder="Número" />
               <DialogContext.Provider value={{ add: addOwner, load: loadSectors, validation: validationOwner }}>
                 <DialogContentOwner />
               </DialogContext.Provider>
-            </div>
-            <div className="input-group">
+            </InputGroup>
+            <InputGroup>
               <Input type="text" name="brand" placeholder="Marca" />
               <DialogContext.Provider value={{ add: addCategory, validation: validationCategory }}>
                 <DialogContentCategory />
               </DialogContext.Provider>
-            </div>
+            </InputGroup>
             <Textarea name="description" placeholder="Observação" />
             <SubmitButton text="Criar" />
             <FormStatus />

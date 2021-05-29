@@ -6,7 +6,9 @@ import {
   SubmitButton,
   FormStatus,
   Combobox,
-  ComboOptions
+  InputGroup,
+  ComboOptions,
+  TitleForm
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
@@ -124,11 +126,11 @@ const OwnerUpdate: React.FC<Props> = ({ updateOwner, validation, loadSectors, lo
       <FormContext.Provider value={{ state, setState }} >
         <div className="form-wrap" data-testid="form-wrap">
           <form data-testid="form" onSubmit={handleSubmit}>
-            <h2>Atualizar Proprietário</h2>
-            <div className="input-group">
+            <TitleForm>Atualizar Proprietário</TitleForm>
+            <InputGroup>
               <Input type="text" name="name" placeholder="Nome" />
               <Combobox name="sector" placeholder="Setores" options={state.sectors} />
-            </div>
+            </InputGroup>
             <SubmitButton text="Atualizar" />
             <FormStatus />
           </form>

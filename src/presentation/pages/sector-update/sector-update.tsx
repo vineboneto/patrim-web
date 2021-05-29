@@ -4,7 +4,8 @@ import {
   FormContext,
   Input,
   SubmitButton,
-  FormStatus
+  FormStatus,
+  TitleForm
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
@@ -87,7 +88,7 @@ const SectorUpdate: React.FC<Props> = ({ updateSector, validation, loadSectorByI
       <FormContext.Provider value={{ state, setState }} >
         <div className="form-wrap" data-testid="form-wrap">
           <form data-testid="form" onSubmit={handleSubmit}>
-            <h2>Atualizar Setor</h2>
+            <TitleForm>Atualizar Setor</TitleForm>
             <Input type="text" name="name" placeholder="Nome" />
             <SubmitButton text="Atualizar" />
             <FormStatus />

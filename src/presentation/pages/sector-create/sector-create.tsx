@@ -4,7 +4,8 @@ import {
   FormContext,
   Input,
   SubmitButton,
-  FormStatus
+  FormStatus,
+  TitleForm
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
@@ -64,7 +65,7 @@ const SectorCreate: React.FC<Props> = ({ addSector, validation }: Props) => {
       <FormContext.Provider value={{ state, setState }} >
         <div className="form-wrap" data-testid="form-wrap">
           <form data-testid="form" onSubmit={handleSubmit}>
-            <h2>Novo Setor</h2>
+            <TitleForm>Novo Setor</TitleForm>
             <Input type="text" name="name" placeholder="Nome" />
             <SubmitButton text="Criar" />
             <FormStatus />

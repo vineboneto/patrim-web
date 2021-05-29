@@ -1,5 +1,5 @@
 import './login-styles.css'
-import { ApiContext, FormContext, FormStatus, Input, LoginContainer, Logo, SubmitButton } from '@/presentation/components'
+import { ApiContext, FormContext, FormStatus, Input, LoginContainer, Logo, SubmitButton, TitleForm } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { Authentication } from '@/domain/usecases'
 
@@ -65,7 +65,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
       <FormContext.Provider value={{ state, setState }}>
         <LoginContainer>
           <form data-testid="form" onSubmit={handleSubmit}>
-            <h2>Login</h2>
+            <TitleForm>Login</TitleForm>
             <Input type="text" name="email" placeholder="Digite o seu email" />
             <Input type="password" name="password" placeholder="Digite a sua senha" />
             <div className="action-wrap">

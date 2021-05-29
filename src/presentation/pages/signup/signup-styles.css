@@ -7,11 +7,6 @@
   width: 60%;
 }
 
-.signup-wrap form h2 {
-  font-family: 'Poppins';
-  font-weight: 400;
-}
-
 .signup-wrap .action-wrap {
   display: flex;
   flex-direction: row-reverse;

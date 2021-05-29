@@ -3,10 +3,12 @@ import {
   Header,
   FormContext,
   Input,
+  InputGroup,
   SubmitButton,
   FormStatus,
   Combobox,
-  ComboOptions
+  ComboOptions,
+  TitleForm
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
@@ -98,11 +100,11 @@ const OwnerCreate: React.FC<Props> = ({ addOwner, validation, loadSectors }: Pro
       <FormContext.Provider value={{ state, setState }} >
         <div className="form-wrap" data-testid="form-wrap">
           <form data-testid="form" onSubmit={handleSubmit}>
-            <h2>Novo Proprietário</h2>
-            <div className="input-group">
+            <TitleForm>Novo Proprietário</TitleForm>
+            <InputGroup>
               <Input type="text" name="name" placeholder="Nome" />
               <Combobox name="sector" placeholder="Setores" options={state.sectors} />
-            </div>
+            </InputGroup>
             <SubmitButton text="Criar" />
             <FormStatus />
           </form>

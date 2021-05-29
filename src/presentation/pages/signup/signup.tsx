@@ -1,5 +1,5 @@
 import './signup-styles.css'
-import { Input, Logo, FormStatus, FormContext, SubmitButton, ApiContext, LoginContainer } from '@/presentation/components'
+import { Input, Logo, FormStatus, FormContext, SubmitButton, ApiContext, LoginContainer, TitleForm } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { AddAccount } from '@/domain/usecases'
 
@@ -72,7 +72,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
       <FormContext.Provider value={{ state, setState }}>
         <LoginContainer>
           <form data-testid="form" onSubmit={handleSubmit}>
-            <h2>Crie sua Conta</h2>
+            <TitleForm>Crie sua Conta</TitleForm>
             <Input type="name" name="name" placeholder="Digite o seu nome" />
             <Input type="name" name="email" placeholder="Digite o seu email" />
             <Input type="password" name="password" placeholder="Digite a sua senha" />
