@@ -1,0 +1,43 @@
+.dialog-owner-create-wrap .form-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.dialog-owner-create-wrap .form-wrap form {
+  display: flex;
+  flex-direction: column;
+  
+  width: 500px;
+  padding: 20px;
+  background-color: var(--color-white);
+  border-radius: 8px;
+}
+
+.dialog-owner-create-wrap .form-wrap .input-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dialog-owner-create-wrap .form-wrap .input-group > :nth-child(2) {
+  width: 50%;
+}
+
+.dialog-owner-create-wrap .form-wrap .status-wrap {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 922px) {
+  .dialog-owner-create-wrap .form-wrap .input-group {
+    flex-direction: column;
+  }
+
+  .dialog-owner-create-wrap .form-wrap .input-group > :nth-child(2) {
+    width: 100%;
+  }
+}

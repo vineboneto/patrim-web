@@ -9,10 +9,10 @@ import {
   SubmitButton,
   FormStatus
 } from '@/presentation/components'
-import { DialogCategory } from '@/presentation/pages/patrimony-create/components'
+import { DialogCategory, DialogOwner } from '@/presentation/pages/patrimony-create/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
-import { AddCategory, AddPatrimony, LoadCategories, LoadOwners } from '@/domain/usecases'
+import { AddCategory, AddOwner, AddPatrimony, LoadCategories, LoadOwners, LoadSectors } from '@/domain/usecases'
 
 import React, { FormEvent, useEffect, useState } from 'react'
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded'
@@ -20,20 +20,26 @@ import IconButton from '@material-ui/core/IconButton'
 
 type Props = {
   validation: Validation
+  validationCategory: Validation
+  validationOwner: Validation
   addPatrimony: AddPatrimony
   addCategory: AddCategory
-  validationCategory: Validation
+  addOwner: AddOwner
   loadCategories: LoadCategories
   loadOwners: LoadOwners
+  loadSectors: LoadSectors
 }
 
 const PatrimonyCreate: React.FC<Props> = ({
   validation,
+  validationOwner,
   validationCategory,
   addPatrimony,
+  addOwner,
   addCategory,
   loadCategories,
-  loadOwners
+  loadOwners,
+  loadSectors
 }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({
@@ -64,7 +70,8 @@ const PatrimonyCreate: React.FC<Props> = ({
     description: '',
     categories: [] as ComboOptions[],
     owners: [] as ComboOptions[],
-    openDialogCategory: false
+    openDialogCategory: false,
+    openDialogOwner: false
   })
 
   const setIsLoading = (field: string, value: boolean): void => {
@@ -99,7 +106,7 @@ const PatrimonyCreate: React.FC<Props> = ({
       })
       .then(() => setIsLoading('ownerIsLoading', false))
       .catch(error => handleError(error))
-  }, [])
+  }, [state.openDialogOwner])
 
   useEffect(() => { validate('number') }, [state.number])
   useEffect(() => { validate('brand') }, [state.brand])
@@ -145,13 +152,28 @@ const PatrimonyCreate: React.FC<Props> = ({
             <h2>Novo Patrimônio</h2>
             <div className="input-group">
               <Input type="text" name="number" placeholder="Número" />
-              <Combobox name="owner" placeholder="Proprietário" options={state.owners} />
+              <div className="dialog-content">
+                <IconButton
+                  className="open-dialog-content"
+                  onClick={() => setState(old => ({ ...old, openDialogOwner: true }))}
+                >
+                  <AddCircleRoundedIcon color="primary" />
+                </IconButton>
+                <Combobox name="owner" placeholder="Proprietário" options={state.owners} />
+                <DialogOwner
+                  open={state.openDialogOwner}
+                  validation={validationOwner}
+                  handleCloseDialog={() => setState(old => ({ ...old, openDialogOwner: false }))}
+                  addOwner={addOwner}
+                  loadSectors={loadSectors}
+                />
+              </div>
             </div>
             <div className="input-group">
               <Input type="text" name="brand" placeholder="Marca" />
-              <div className="category-dialog-content">
+              <div className="dialog-content">
                 <IconButton
-                  className="open-dialog-category"
+                  className="open-dialog-content"
                   onClick={() => setState(old => ({ ...old, openDialogCategory: true }))}
                 >
                   <AddCircleRoundedIcon color="primary" />

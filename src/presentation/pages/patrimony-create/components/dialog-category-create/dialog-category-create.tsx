@@ -20,6 +20,7 @@ const DialogCategoryCreate: React.FC<Props> = ({ addCategory, validation, open, 
   const [state, setState] = useState({
     isLoading: false,
     mainError: '',
+    isFormInvalid: true,
     name: '',
     nameError: ''
   })
@@ -38,7 +39,7 @@ const DialogCategoryCreate: React.FC<Props> = ({ addCategory, validation, open, 
 
   const handleSubmit = async (event: FormEvent): Promise<void> => {
     event.preventDefault()
-    if (state.isLoading) return
+    if (state.isLoading || state.isFormInvalid) return
     setState(old => ({ ...old, isLoading: true }))
     const { name } = state
 

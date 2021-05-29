@@ -34,11 +34,11 @@
   width: 50%;
 }
 
-.patrimony-create-wrap .form-wrap .input-group {
+.patrimony-create-wrap .form-wrap .input-group .dialog-content {
   position: relative;
 }
 
-.patrimony-create-wrap .form-wrap .category-dialog-content .open-dialog-category {
+.patrimony-create-wrap .dialog-content .open-dialog-content {
   position: absolute;
   right: -15px;
   bottom: 35px;
