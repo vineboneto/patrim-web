@@ -4,19 +4,17 @@ import {
   FormContext,
   Input,
   Textarea,
-  Combobox,
+  DialogContext,
   ComboOptions,
   SubmitButton,
   FormStatus
 } from '@/presentation/components'
-import { DialogCategory, DialogOwner } from '@/presentation/pages/patrimony-create/components'
+import { DialogContentOwner, DialogContentCategory } from '@/presentation/pages/patrimony-create/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
 import { AddCategory, AddOwner, AddPatrimony, LoadCategories, LoadOwners, LoadSectors } from '@/domain/usecases'
 
 import React, { FormEvent, useEffect, useState } from 'react'
-import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded'
-import IconButton from '@material-ui/core/IconButton'
 
 type Props = {
   validation: Validation
@@ -152,40 +150,15 @@ const PatrimonyCreate: React.FC<Props> = ({
             <h2>Novo Patrimônio</h2>
             <div className="input-group">
               <Input type="text" name="number" placeholder="Número" />
-              <div className="dialog-content">
-                <IconButton
-                  className="open-dialog-content"
-                  onClick={() => setState(old => ({ ...old, openDialogOwner: true }))}
-                >
-                  <AddCircleRoundedIcon color="primary" />
-                </IconButton>
-                <Combobox name="owner" placeholder="Proprietário" options={state.owners} />
-                <DialogOwner
-                  open={state.openDialogOwner}
-                  validation={validationOwner}
-                  handleCloseDialog={() => setState(old => ({ ...old, openDialogOwner: false }))}
-                  addOwner={addOwner}
-                  loadSectors={loadSectors}
-                />
-              </div>
+              <DialogContext.Provider value={{ add: addOwner, load: loadSectors, validation: validationOwner }}>
+                <DialogContentOwner />
+              </DialogContext.Provider>
             </div>
             <div className="input-group">
               <Input type="text" name="brand" placeholder="Marca" />
-              <div className="dialog-content">
-                <IconButton
-                  className="open-dialog-content"
-                  onClick={() => setState(old => ({ ...old, openDialogCategory: true }))}
-                >
-                  <AddCircleRoundedIcon color="primary" />
-                </IconButton>
-                <Combobox name="category" placeholder="Categoria" options={state.categories} />
-                <DialogCategory
-                  open={state.openDialogCategory}
-                  validation={validationCategory}
-                  handleCloseDialog={() => setState(old => ({ ...old, openDialogCategory: false }))}
-                  addCategory={addCategory}
-                />
-              </div>
+              <DialogContext.Provider value={{ add: addCategory, validation: validationCategory }}>
+                <DialogContentCategory />
+              </DialogContext.Provider>
             </div>
             <Textarea name="description" placeholder="Observação" />
             <SubmitButton text="Criar" />

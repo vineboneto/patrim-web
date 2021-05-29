@@ -1,0 +1,6 @@
+.patrimony-create-wrap .open-dialog-content {
+  position: absolute;
+  right: -15px;
+  bottom: 35px;
+  z-index: 1000;
+}

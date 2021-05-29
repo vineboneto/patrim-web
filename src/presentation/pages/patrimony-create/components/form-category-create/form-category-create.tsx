@@ -1,4 +1,4 @@
-import './dialog-category-create-styles.css'
+import './form-category-create-styles.css'
 import { FormContext, Input, Dialog, FormStatus } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { useErrorHandler } from '@/presentation/hooks'
@@ -13,7 +13,7 @@ type Props = {
   handleCloseDialog: () => void
 }
 
-const DialogCategoryCreate: React.FC<Props> = ({ addCategory, validation, open, handleCloseDialog }: Props) => {
+const CategoryCreate: React.FC<Props> = ({ addCategory, validation, open, handleCloseDialog }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({ ...old, mainError: error.message, isLoading: false, name: '' }))
   })
@@ -64,7 +64,7 @@ const DialogCategoryCreate: React.FC<Props> = ({ addCategory, validation, open, 
       handleCloseDialog={handleCloseDialog}
       textActionDialog="Criar"
     >
-      <div className="dialog-category-create-wrap">
+      <div className="form-category-create-wrap">
         <FormContext.Provider value={{ state, setState }} >
           <div className="form-wrap" data-testid="form-wrap">
             <form data-testid="form" onSubmit={handleSubmit}>
@@ -78,4 +78,4 @@ const DialogCategoryCreate: React.FC<Props> = ({ addCategory, validation, open, 
   )
 }
 
-export default DialogCategoryCreate
+export default CategoryCreate

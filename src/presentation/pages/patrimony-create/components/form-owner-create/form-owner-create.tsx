@@ -1,4 +1,4 @@
-import './dialog-owner-create-styles.css'
+import './form-owner-create-styles.css'
 import {
   FormContext,
   Input,
@@ -109,7 +109,7 @@ const OwnerCreate: React.FC<Props> = ({
       textActionDialog="criar"
       handleAction={handleSubmit}
     >
-      <div className="dialog-owner-create-wrap">
+      <div className="form-owner-create-wrap">
         <FormContext.Provider value={{ state, setState }} >
           <div className="form-wrap" data-testid="form-wrap">
             <form data-testid="form" onSubmit={handleSubmit}>

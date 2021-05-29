@@ -1,2 +1,6 @@
-export { default as DialogCategory } from './dialog-category-create/dialog-category-create'
-export { default as DialogOwner } from './dialog-owner-create/dialog-owner-create'
+export { default as FormCategory } from './form-category-create/form-category-create'
+export { default as FormOwner } from './form-owner-create/form-owner-create'
+export { default as OpenDialogButton } from './open-dialog-button/open-dialog-button'
+export { default as DialogContent } from './dialog-content/dialog-content'
+export { default as DialogContentOwner } from './dialog-content-owner/dialog-content-owner'
+export { default as DialogContentCategory } from './dialog-content-category/dialog-content-category'
