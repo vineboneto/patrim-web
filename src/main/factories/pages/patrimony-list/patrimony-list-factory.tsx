@@ -5,7 +5,9 @@ import {
   makeRemoteLoadOwners,
   makeRemoteLoadPatrimonies,
   makeRemoteLoadPatrimoniesByCategoryId,
-  makeRemoteLoadPatrimoniesByOwnerId
+  makeRemoteLoadPatrimoniesByOwnerId,
+  makeRemoteLoadPatrimoniesBySectorId,
+  makeRemoteLoadSectors
 } from '@/main/factories/usecases'
 import { PatrimonyList } from '@/presentation/pages'
 
@@ -17,10 +19,12 @@ export const makePatrimonyList: React.FC = () => {
       loadPatrimonies={makeRemoteLoadPatrimonies()}
       loadOwners={makeRemoteLoadOwners()}
       loadCategories={makeRemoteLoadCategories()}
+      loadSectors={makeRemoteLoadSectors()}
       loadPatrimoniesByCategoryId={makeRemoteLoadPatrimoniesByCategoryId()}
+      loadPatrimoniesByOwnerId={makeRemoteLoadPatrimoniesByOwnerId()}
+      loadPatrimoniesBySectorId={makeRemoteLoadPatrimoniesBySectorId()}
       loadPatrimonyByNumber={makeLoadPatrimonyByNumber()}
       deletePatrimony={makeRemoteDeletePatrimony()}
-      loadPatrimoniesByOwnerId={makeRemoteLoadPatrimoniesByOwnerId()}
     />
   )
 }

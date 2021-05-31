@@ -10,7 +10,7 @@ type Props = {
 
 const OpenDialogButton: React.FC<Props> = ({ handleOpenDialog }: Props) => {
   return (
-    <IconButton className="open-dialog-content" onClick={handleOpenDialog}>
+    <IconButton className="open-dialog-content" onClick={handleOpenDialog} tabIndex={-1}>
       <AddCircleRoundedIcon color="primary" />
     </IconButton>
   )

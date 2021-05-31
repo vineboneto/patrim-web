@@ -22,7 +22,9 @@ import {
   LoadPatrimonies,
   LoadPatrimoniesByCategoryId,
   LoadPatrimoniesByOwnerId,
-  LoadPatrimonyByNumber
+  LoadPatrimoniesBySectorId,
+  LoadPatrimonyByNumber,
+  LoadSectors
 } from '@/domain/usecases'
 import { PatrimonyModel } from '@/domain/models'
 
@@ -32,8 +34,10 @@ type Props = {
   loadPatrimonies: LoadPatrimonies
   loadOwners: LoadOwners
   loadCategories: LoadCategories
+  loadSectors: LoadSectors
   loadPatrimoniesByCategoryId: LoadPatrimoniesByCategoryId
   loadPatrimoniesByOwnerId: LoadPatrimoniesByOwnerId
+  loadPatrimoniesBySectorId: LoadPatrimoniesBySectorId
   loadPatrimonyByNumber: LoadPatrimonyByNumber
   deletePatrimony: DeletePatrimony
 }
@@ -42,8 +46,10 @@ const PatrimonyList: React.FC<Props> = ({
   loadPatrimonies,
   loadOwners,
   loadCategories,
+  loadSectors,
   loadPatrimoniesByCategoryId,
   loadPatrimoniesByOwnerId,
+  loadPatrimoniesBySectorId,
   loadPatrimonyByNumber,
   deletePatrimony
 }: Props) => {
@@ -53,7 +59,8 @@ const PatrimonyList: React.FC<Props> = ({
       mainError: error.message,
       isLoading: false,
       categoryIsLoading: false,
-      ownerIsLoading: false
+      ownerIsLoading: false,
+      sectorIsLoading: false
     }))
   })
   const [state, setState] = useState({
@@ -63,13 +70,17 @@ const PatrimonyList: React.FC<Props> = ({
     reload: false,
     number: '',
     category: '',
-    categories: [] as ComboOptions[],
     categoryInput: '',
+    categories: [] as ComboOptions[],
     categoryIsLoading: false,
     owner: '',
     ownerInput: '',
     owners: [] as ComboOptions[],
     ownerIsLoading: false,
+    sector: '',
+    sectorInput: '',
+    sectors: [] as ComboOptions[],
+    sectorIsLoading: false,
     totalPage: 1,
     skip: 0,
     take: 9,
@@ -125,11 +136,13 @@ const PatrimonyList: React.FC<Props> = ({
       ...old,
       reload: !state.reload,
       mainError: '',
+      number: '',
       category: '',
       categoryInput: '',
-      number: '',
       owner: '',
       ownerInput: '',
+      sector: '',
+      sectorInput: '',
 
       currentPage: 1,
       oldPage: 1,
@@ -168,7 +181,7 @@ const PatrimonyList: React.FC<Props> = ({
   const isChangeCurrentPage = (): boolean => state.currentPage !== state.oldPage
 
   const fieldsIsEmpty = (): boolean => {
-    if (!state.category && !state.owner && !state.number) {
+    if (!state.category && !state.owner && !state.number && !state.sector) {
       return true
     }
   }
@@ -182,9 +195,20 @@ const PatrimonyList: React.FC<Props> = ({
       .then((data) => handlePatrimonies(data))
       .catch((error) => handleError(error))
   }
+
   const getPatrimoniesByOwnerId = async (skip: number): Promise<void> => {
     loadPatrimoniesByOwnerId.loadByOwnerId({
       id: Number(state.owner),
+      skip: skip,
+      take: state.take
+    })
+      .then((data) => handlePatrimonies(data))
+      .catch((error) => handleError(error))
+  }
+
+  const getPatrimoniesBySectorId = async (skip: number): Promise<void> => {
+    loadPatrimoniesBySectorId.loadBySectorId({
+      id: Number(state.sector),
       skip: skip,
       take: state.take
     })
@@ -223,6 +247,21 @@ const PatrimonyList: React.FC<Props> = ({
   }, [])
 
   useEffect(() => {
+    setState(old => ({ ...old, sectorIsLoading: true }))
+    loadSectors.load({})
+      .then(data => {
+        if (data) {
+          setState(old => ({
+            ...old,
+            sectors: data.model.map(sector => ({ value: sector.id.toString(), label: sector.name }))
+          }))
+        }
+      })
+      .then(() => setState(old => ({ ...old, sectorIsLoading: false })))
+      .catch(error => handleError(error))
+  }, [])
+
+  useEffect(() => {
     setLoading()
     setOldPage()
     if (fieldsIsEmpty()) {
@@ -250,6 +289,19 @@ const PatrimonyList: React.FC<Props> = ({
 
   useEffect(() => {
     setLoading()
+    if (state.sector) {
+      if (isChangeCurrentPage()) {
+        setOldPage()
+        getPatrimoniesBySectorId(state.skip)
+      } else {
+        getPatrimoniesBySectorId(0)
+        setResetPage()
+      }
+    }
+  }, [state.sector, state.currentPage])
+
+  useEffect(() => {
+    setLoading()
     if (state.owner) {
       if (isChangeCurrentPage()) {
         setOldPage()
@@ -272,7 +324,7 @@ const PatrimonyList: React.FC<Props> = ({
 
   useEffect(() => {
     if (fieldsIsEmpty()) setReload()
-  }, [state.category, state.number, state.owner])
+  }, [state.category, state.number, state.owner, state.sector])
 
   const handleDelete = (id: number): void => {
     deletePatrimony.delete({ id: id })
